@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-[#282a36] text-[#f8f8f2] font-mono p-5;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #282a36;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #44475a;
+  border-radius: 4px;
+  border: 2px solid #282a36;
+}
