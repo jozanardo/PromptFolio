@@ -38,9 +38,6 @@ const COMMANDS = {
   // Removed 'achievements' and 'website'
 };
 
-const USER = 'visitante';
-const HOST = 'portfolio.dev';
-
 function App() {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([
@@ -240,19 +237,17 @@ function App() {
   return (
     <div className="min-h-screen p-5 bg-dracula-bg text-dracula-fg font-mono text-sm md:text-base" onClick={() => inputRef.current?.focus()}>
       {/* Header similar to the image - requires a pixel font or SVG */}
-      <div className="mb-4 text-dracula-yellow text-2xl md:text-4xl font-bold">
-        {/* Placeholder for pixelated name */}
+      <div className="mb-4 text-accent text-2xl md:text-4xl font-bold">
         JOAO ZANARDO
       </div>
+
 
       {history.map((item, index) => (
         <div key={index} className="whitespace-pre-wrap break-words">
           {item.type === 'input' ? (
             <div>
-              <span className="text-dracula-green">{USER}@{HOST}</span>
-              <span className="text-dracula-fg">:</span>
-              <span className="text-dracula-purple">~</span>
-              <span className="text-dracula-fg">$ {item.text}</span>
+              <span className="text-accent font-bold mr-2">{'>'}</span>
+              <span className="text-dracula-fg">{item.text}</span>
             </div>
           ) : (
             <div className="text-dracula-fg">{item.text}</div>
@@ -261,10 +256,7 @@ function App() {
       ))}
 
       <div className="flex items-center mt-2">
-        <span className="text-dracula-green">{USER}@{HOST}</span>
-        <span className="text-dracula-fg">:</span>
-        <span className="text-dracula-purple">~</span>
-        <span className="text-dracula-fg">$</span>
+      <span className="text-accent font-bold mr-2">{'>'}</span>
         <input
           ref={inputRef}
           type="text"

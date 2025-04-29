@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx,css}",
   ],
   theme: {
     extend: {
       colors: {
+        'accent': '#00A67E',
         'dracula-bg': '#282a36',
         'dracula-current': '#44475a',
         'dracula-fg': '#f8f8f2',
@@ -17,10 +19,9 @@ module.exports = {
         'dracula-purple': '#bd93f9',
         'dracula-red': '#ff5555',
         'dracula-yellow': '#f1fa8c',
-        accent: '#00A67E'
       },
       fontFamily: {
-        mono: ['\'Courier New\'', 'Courier', 'monospace'],
+        mono: ['Courier New','Courier','monospace'],
       },
     },
   },
