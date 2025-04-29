@@ -17,6 +17,7 @@ module.exports = {
         'dracula-purple': '#bd93f9',
         'dracula-red': '#ff5555',
         'dracula-yellow': '#f1fa8c',
+        accent: '#00A67E'
       },
       fontFamily: {
         mono: ['\'Courier New\'', 'Courier', 'monospace'],
