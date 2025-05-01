@@ -1,0 +1,212 @@
+[
+    {
+        "name": "Lambda_Chess",
+        "description": "Engine de Xadrez em Haskell feita para o Projeto final da disciplina de Paradigmas da Programa\u00e7\u00e3o.",
+        "html_url": "https://github.com/jozanardo/Lambda_Chess",
+        "language": "Haskell",
+        "updated_at": "2025-04-29T00:00:54Z"
+    },
+    {
+        "name": "Grid-generator",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Grid-generator",
+        "language": "Go",
+        "updated_at": "2025-02-27T02:40:31Z"
+    },
+    {
+        "name": "05-nest-clean",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/05-nest-clean",
+        "language": "TypeScript",
+        "updated_at": "2025-01-18T00:52:41Z"
+    },
+    {
+        "name": "jozanardo",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/jozanardo",
+        "language": null,
+        "updated_at": "2024-12-06T16:56:27Z"
+    },
+    {
+        "name": "C-Sharp-Fundamentals",
+        "description": "Practical challenge of C-Sharp training on the Rocketseat platform",
+        "html_url": "https://github.com/jozanardo/C-Sharp-Fundamentals",
+        "language": "C#",
+        "updated_at": "2024-09-24T02:08:21Z"
+    },
+    {
+        "name": "ignite-nodejs-04-clean-domain",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/ignite-nodejs-04-clean-domain",
+        "language": "TypeScript",
+        "updated_at": "2024-06-29T03:01:46Z"
+    },
+    {
+        "name": "LFA-Q1-2024",
+        "description": "This repository contains the source code of the practical project developed in the first four months of 2024 in the subject of formal languages and automatons taught by the Federal University of ABC",
+        "html_url": "https://github.com/jozanardo/LFA-Q1-2024",
+        "language": "Python",
+        "updated_at": "2024-04-07T17:51:15Z"
+    },
+    {
+        "name": "ignite-nodejs-03-api-solid-nodejs",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/ignite-nodejs-03-api-solid-nodejs",
+        "language": "TypeScript",
+        "updated_at": "2024-02-15T02:09:34Z"
+    },
+    {
+        "name": "Aplicacao-interativa-com-graficos-3D-iluminacao-e-texturizacao",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Aplicacao-interativa-com-graficos-3D-iluminacao-e-texturizacao",
+        "language": "HTML",
+        "updated_at": "2023-12-03T20:43:54Z"
+    },
+    {
+        "name": "Aplicao-grafica-3D-com-animacoes",
+        "description": "Development framework accompanying the course MCTA008-17 Computer Graphics at UFABC, Brazil",
+        "html_url": "https://github.com/jozanardo/Aplicao-grafica-3D-com-animacoes",
+        "language": "C++",
+        "updated_at": "2023-11-13T01:25:47Z"
+    },
+    {
+        "name": "zookepeer",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/zookepeer",
+        "language": "Java",
+        "updated_at": "2023-10-19T02:34:20Z"
+    },
+    {
+        "name": "Napster",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Napster",
+        "language": "Java",
+        "updated_at": "2023-10-19T02:32:40Z"
+    },
+    {
+        "name": "Aplicacao-interativa-com-graficos-2D",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Aplicacao-interativa-com-graficos-2D",
+        "language": "HTML",
+        "updated_at": "2023-10-15T18:36:31Z"
+    },
+    {
+        "name": "Compiladores",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Compiladores",
+        "language": "Java",
+        "updated_at": "2023-08-15T22:39:10Z"
+    },
+    {
+        "name": "Server-nlw-eSports",
+        "description": "Projeto desenvolvido no evento Next Level Week (NLW) da Rocketseat",
+        "html_url": "https://github.com/jozanardo/Server-nlw-eSports",
+        "language": "TypeScript",
+        "updated_at": "2023-05-16T22:01:10Z"
+    },
+    {
+        "name": "Web-nlw-eSports",
+        "description": "Projeto desenvolvido no evento Next Level Week (NLW) da Rocketseat",
+        "html_url": "https://github.com/jozanardo/Web-nlw-eSports",
+        "language": "TypeScript",
+        "updated_at": "2023-05-16T22:01:03Z"
+    },
+    {
+        "name": "Daily_Diet_API",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Daily_Diet_API",
+        "language": "TypeScript",
+        "updated_at": "2023-05-16T21:59:52Z"
+    },
+    {
+        "name": "Ignite-NodeJs-api-rest",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Ignite-NodeJs-api-rest",
+        "language": "TypeScript",
+        "updated_at": "2023-05-05T22:35:10Z"
+    },
+    {
+        "name": "FLOP-Backend-for-tests",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/FLOP-Backend-for-tests",
+        "language": "TypeScript",
+        "updated_at": "2023-04-23T21:36:39Z"
+    },
+    {
+        "name": "FLOP",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/FLOP",
+        "language": "TypeScript",
+        "updated_at": "2023-04-23T21:27:10Z"
+    },
+    {
+        "name": "Chapter-II-Rocketseat-Ignite---ReactJs",
+        "description": "Desafio: Criando um hook de carrinho de compras",
+        "html_url": "https://github.com/jozanardo/Chapter-II-Rocketseat-Ignite---ReactJs",
+        "language": "TypeScript",
+        "updated_at": "2023-03-13T00:34:55Z"
+    },
+    {
+        "name": "ignews",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/ignews",
+        "language": "SCSS",
+        "updated_at": "2023-02-28T00:08:06Z"
+    },
+    {
+        "name": "Projeto-Aed-II--Arquivos-e-Compressao",
+        "description": "Transmiss\u00e3o de arquivos multim\u00eddia em  redes de comunica\u00e7\u00e3o (streaming on- demand)",
+        "html_url": "https://github.com/jozanardo/Projeto-Aed-II--Arquivos-e-Compressao",
+        "language": "Python",
+        "updated_at": "2022-11-18T09:48:37Z"
+    },
+    {
+        "name": "Server-nlwReturn",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Server-nlwReturn",
+        "language": "TypeScript",
+        "updated_at": "2022-09-19T00:19:26Z"
+    },
+    {
+        "name": "FeedbackWidget-nlwReturn",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/FeedbackWidget-nlwReturn",
+        "language": "TypeScript",
+        "updated_at": "2022-09-19T00:19:13Z"
+    },
+    {
+        "name": "Happy",
+        "description": "Projeto constru\u00eddo durante a terceira edi\u00e7\u00e3o do Next Level Week. Workshop proporcionado pela Rockeseat.",
+        "html_url": "https://github.com/jozanardo/Happy",
+        "language": "Handlebars",
+        "updated_at": "2022-05-22T22:37:29Z"
+    },
+    {
+        "name": "AppDtMoney",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/AppDtMoney",
+        "language": "TypeScript",
+        "updated_at": "2022-04-05T17:03:23Z"
+    },
+    {
+        "name": "Conceitos-do-React",
+        "description": "Desafio referente ao primeiro cap\u00edtulo do treinamento ignite proporcionado pela Rockeseat onde o intuito \u00e9 colocar em pr\u00e1tica os conceitos do React.",
+        "html_url": "https://github.com/jozanardo/Conceitos-do-React",
+        "language": "TypeScript",
+        "updated_at": "2021-09-09T19:44:13Z"
+    },
+    {
+        "name": "Componentizando-a-aplicacao",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/Componentizando-a-aplicacao",
+        "language": "TypeScript",
+        "updated_at": "2021-09-09T19:44:12Z"
+    },
+    {
+        "name": "atv03-inheritance",
+        "description": null,
+        "html_url": "https://github.com/jozanardo/atv03-inheritance",
+        "language": "Java",
+        "updated_at": "2021-09-09T19:44:10Z"
+    }
+]
