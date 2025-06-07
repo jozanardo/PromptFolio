@@ -1,76 +1,122 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n';
 import MarkdownRenderer from './MarkdownRenderer';
-import { isCommand, Command } from '../commands';
-import { HistoryItem } from '../types'; 
+import { isCommand } from '../commands';
+import {
+  HistoryItem,
+  HistoryHelp,
+  HistoryInput,
+  HistoryOutput,
+  HistoryError,
+  HistoryMarkdown,
+} from '../types';
 
 interface HistoryProps {
   history: HistoryItem[];
 }
 
-export const History: React.FC<HistoryProps> = ({ history }) => (
-  <div className="mt-4 space-y-1">
-    {history.map((item, idx) => {
-      switch (item.type) {
-        case 'input':
-          return <InputLine key={idx} text={item.text} />;
+const History: React.FC<HistoryProps> = ({ history }) => {
+  const { lang } = useLanguage();
+  const t = translations[lang];
 
-        case 'error':
-          return <ErrorLine key={idx} cmd={item.cmd} message={item.message} />;
-
-        case 'markdown':
-          return <MarkdownRenderer key={idx} html={item.html} />;
-
-        case 'output':
-          return <OutputLine key={idx} text={item.text} />;
-
-        default:
-          return null;
+  const helpGroupStart = useMemo(() => {
+    const starts = new Set<number>();
+    let prevWasHelp = false;
+    history.forEach((item, idx) => {
+      if (item.type === 'help') {
+        if (!prevWasHelp) starts.add(idx);
+        prevWasHelp = true;
+      } else {
+        prevWasHelp = false;
       }
-    })}
-  </div>
-);
-
-const InputLine: React.FC<{ text: string }> = ({ text }) => (
-  <div className="flex items-center">
-    <span className="text-accent neon-accent font-bold mr-2">{'>'}</span>
-    <span className="text-dracula-fg">{text}</span>
-  </div>
-);
-
-const ErrorLine: React.FC<{ cmd: string; message: string }> = ({ cmd, message }) => (
-  <div className="flex items-center">
-    <span className="text-red-500 neon-error font-bold mr-2">{cmd}</span>
-    <span className="text-dracula-fg">: {message}</span>
-  </div>
-);
-
-const OutputLine: React.FC<{ text: string }> = ({ text }) => {
-  const { leading, token, rest } = splitLeadingToken(text);
-
-  if (isCommand(token as string)) {
-    return (
-      <div className="ml-6 whitespace-pre-wrap">
-        <span>{leading}</span>
-        <span className="text-accent font-semibold">{token}</span>
-        <span>{rest}</span>
-      </div>
-    );
-  }
+    });
+    return starts;
+  }, [history]);
 
   return (
-    <div className="text-dracula-fg ml-6 whitespace-pre-wrap">
-      {text}
+    <div className="mt-4 space-y-1">
+      {history.map((item, idx) => {
+        if (item.type === 'input') {
+          return (
+            <div key={idx} className="flex items-center">
+              <span className="text-accent neon-accent font-bold mr-2">
+                {'>'}
+              </span>
+              <span className="text-dracula-fg">{item.text}</span>
+            </div>
+          );
+        }
+
+        if (item.type === 'error') {
+          return (
+            <div key={idx} className="flex items-center">
+              <span className="text-red-500 neon-error font-bold mr-2">
+                {item.cmd}
+              </span>
+              <span className="text-dracula-fg">: {item.message}</span>
+            </div>
+          );
+        }
+
+        if (item.type === 'markdown') {
+          return <MarkdownRenderer key={idx} html={item.html} />;
+        }
+
+        if (item.type === 'help') {
+          const help = item as HistoryHelp;
+          return (
+            <div key={idx} className="ml-6">
+              {helpGroupStart.has(idx) && (
+                <div className="mb-1 text-dracula-fg font-semibold">
+                  {t.helpTitle}
+                </div>
+              )}
+              <div className="flex items-baseline">
+                <span className="text-accent font-semibold mr-2">
+                  {help.cmd}
+                </span>
+                <span className="text-dracula-fg">– {help.description}</span>
+              </div>
+              <div className="ml-8 text-dracula-fg">
+                {t.usageLabel}: {help.usage}
+              </div>
+            </div>
+          );
+        }
+
+        if (item.type === 'output') {
+          const leading = item.text.match(/^\s*/)?.[0] ?? '';
+          const trimmed = item.text.slice(leading.length);
+          const token = trimmed.split(/\s+/)[0];
+          if (isCommand(token)) {
+            const rest = trimmed.slice(token.length);
+            return (
+              <div key={idx} className="ml-6 whitespace-pre-wrap">
+                <span>{leading}</span>
+                <span className="text-accent font-semibold">{token}</span>
+                <span>{rest}</span>
+              </div>
+            );
+          }
+          return (
+            <div
+              key={idx}
+              className="text-dracula-fg ml-6 whitespace-pre-wrap"
+            >
+              {item.text}
+            </div>
+          );
+        }
+
+        return (
+          <div key={idx} className="text-dracula-fg ml-6">
+            {JSON.stringify(item)}
+          </div>
+        );
+      })}
     </div>
   );
 };
-
-function splitLeadingToken(text: string) {
-  const match = text.match(/^\s*/)!;
-  const leading = match[0];
-  const trimmed = text.slice(leading.length);
-  const [token, ...restParts] = trimmed.split(/(\s+)/, 2);
-  const rest = restParts.length > 1 ? restParts[1] + trimmed.slice(token.length + restParts[1].length) : '';
-  return { leading, token, rest };
-}
 
 export default History;

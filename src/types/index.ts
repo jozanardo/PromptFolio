@@ -1,3 +1,5 @@
+import type { Command } from '../commands';
+
 export interface HistoryInput {
   type: 'input';
   text: string;
@@ -19,8 +21,16 @@ export interface HistoryMarkdown {
   html: string;
 }
 
+export interface HistoryHelp {
+  type: 'help';
+  cmd: Command;
+  description: string;
+  usage: string;
+}
+
 export type HistoryItem =
   | HistoryInput
   | HistoryOutput
   | HistoryError
-  | HistoryMarkdown;
+  | HistoryMarkdown
+  | HistoryHelp;

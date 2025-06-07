@@ -1,22 +1,24 @@
 import React from 'react';
-import { Command } from '../commands';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n';
 
-const Header: React.FC = () => {
+export default function Header() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+
   return (
     <header className="mb-4 text-center">
       <h1 className="text-accent neon-accent text-2xl md:text-4xl font-bold">
-        JOAO ZANARDO
+        JOÃO ZANARDO
       </h1>
-      <p>Bem-vindo ao meu portfólio terminal!</p>
-      <p>
-        Digite{' '}
+      <p>{t.welcome}</p>
+      <p className="mt-1">
+        {t.promptPre}
         <span className="text-accent neon-accent font-bold">
-          '{Command.HELP}'
-        </span>{' '}
-        para ver a lista de comandos.
+          '{t.promptCmd}'
+        </span>
+        {t.promptPost}
       </p>
     </header>
   );
-};
-
-export default Header;
+}

@@ -1,13 +1,7 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  RefObject,
-} from 'react';
-import { Command, isCommand } from '../commands';
-import { useHelp } from '../features/help/useHelp';
+import { useState, useEffect, useRef, RefObject } from 'react';
+import { Command, isCommand, CommandMeta } from '../commands';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n';
 import { useWhoami } from '../features/whoami/useWhoami';
 import { useProjects } from '../features/projects/useProjects';
 import {
@@ -16,31 +10,35 @@ import {
   HistoryOutput,
   HistoryError,
   HistoryMarkdown,
+  HistoryHelp,
 } from '../types';
 
 export function useCommandProcessor(): {
   input: string;
-  setInput: Dispatch<SetStateAction<string>>;
+  setInput: (value: string) => void;
   history: HistoryItem[];
   inputRef: RefObject<HTMLInputElement | null>;
   endRef: RefObject<HTMLDivElement | null>;
   processCommand: (commandInput: string) => Promise<void>;
 } {
+  // Estado do terminal
   const [input, setInput] = useState<string>('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const endRef = useRef<HTMLDivElement | null>(null);
 
-  const { getHelpLines } = useHelp();
+  const { lang } = useLanguage();
+  const t = translations[lang];
+
   const {
     loading: whoamiLoading,
     html: whoamiHtml,
     error: whoamiError,
     loadReadme,
-  } = useWhoami('jozanardo', 'jozanardo');
+  } = useWhoami();
+
   const {
     filteredProjects,
-    filters,
     setFilters,
     loading: projectsLoading,
     error: projectsError,
@@ -72,7 +70,7 @@ export function useCommandProcessor(): {
     }
   }, [whoamiError]);
 
-  const processCommand = async (commandInput: string) => {
+  async function processCommand(commandInput: string) {
     const [cmd, ...args] = commandInput.trim().split(/\s+/);
 
     if (cmd === Command.CLEAR) {
@@ -97,25 +95,16 @@ export function useCommandProcessor(): {
       let showHelp = false;
       let showLangs = false;
 
-      args.forEach(arg => {
+      for (const arg of args) {
         if (arg === '--help') showHelp = true;
         else if (arg === '--list-langs') showLangs = true;
         else if (arg.startsWith('--lang=')) langFilter = arg.split('=')[1].toLowerCase();
         else if (arg.startsWith('--desc=')) descFilter = arg.split('=')[1].toLowerCase();
         else if (arg.startsWith('--name=')) nameFilter = arg.split('=')[1].toLowerCase();
-      });
+      }
 
       if (showHelp) {
-        const helpLines = [
-          'Uso: projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--list-langs] [--help]',
-          'Opções:',
-          '  --lang=<linguagem>   Filtrar por linguagem',
-          '  --desc=<texto>       Filtrar por texto na descrição',
-          '  --name=<nome>        Filtrar por nome do projeto',
-          '  --list-langs         Listar linguagens disponíveis',
-          '  --help               Mostrar esta ajuda',
-        ];
-        push(...helpLines.map(line => ({ type: 'output', text: line } as HistoryOutput)));
+        push({ type: 'output', text: t.projectsHelpUsage } as HistoryOutput);
         setInput('');
         return;
       }
@@ -126,13 +115,17 @@ export function useCommandProcessor(): {
         } else if (projectsError) {
           push({ type: 'output', text: `❌ ${projectsError}` } as HistoryOutput);
         } else {
-          const langs = Array.from(new Set(filteredProjects.map(r => r.language).filter(Boolean))).sort() as string[];
-          const lines = ['Linguagens disponíveis:'];
-          langs.forEach(lang => {
-            const count = filteredProjects.filter(r => r.language === lang).length;
-            lines.push(`  ${lang} (${count} ${count === 1 ? 'projeto' : 'projetos'})`);
-          });
-          push(...lines.map(line => ({ type: 'output', text: line } as HistoryOutput)));
+          const langs = Array.from(
+            new Set(filteredProjects.map(r => r.language).filter(Boolean))
+          ) as string[];
+          const lines: string[] = [t.availableLangsTitle];
+          for (const langCode of langs) {
+            const count = filteredProjects.filter(r => r.language === langCode).length;
+            lines.push(
+              `  ${langCode} (${count} ${count === 1 ? t.projectSingular : t.projectPlural})`
+            );
+          }
+          push(...lines.map(text => ({ type: 'output', text } as HistoryOutput)));
         }
         setInput('');
         return;
@@ -141,40 +134,53 @@ export function useCommandProcessor(): {
       setFilters({ lang: langFilter, desc: descFilter, name: nameFilter });
 
       if (projectsLoading) {
-        push({ type: 'output', text: '🔄 Carregando projetos…' } as HistoryOutput);
+        push({ type: 'output', text: '🔄 Buscando projetos…' } as HistoryOutput);
       } else if (projectsError) {
         push({ type: 'output', text: `❌ ${projectsError}` } as HistoryOutput);
       } else {
-        const descParts: string[] = [];
-        if (langFilter) descParts.push(`linguagem: ${langFilter}`);
-        if (descFilter) descParts.push(`descrição: "${descFilter}"`);
-        if (nameFilter) descParts.push(`nome: "${nameFilter}"`);
+        const parts: string[] = [];
+        if (langFilter) parts.push(`linguagem: ${langFilter}`);
+        if (descFilter) parts.push(`descrição: "${descFilter}"`);
+        if (nameFilter) parts.push(`nome: "${nameFilter}"`);
 
-        const header = descParts.length
-          ? `Projetos filtrados por ${descParts.join(', ')}:`
-          : 'Todos os projetos:';
+        const header = parts.length
+          ? `${t.allProjectsTitle} (${parts.join(', ')})`
+          : t.allProjectsTitle;
+        push({ type: 'output', text: header } as HistoryOutput);
 
-        const lines: string[] = [header];
         if (filteredProjects.length > 0) {
-          lines.push(
-            `Encontrados ${filteredProjects.length} ${
-              filteredProjects.length === 1 ? 'projeto' : 'projetos'
-            }`
-          );
+          push({
+            type: 'output',
+            text: `${t.foundMessage} ${filteredProjects.length} ${
+              filteredProjects.length === 1 ? t.projectSingular : t.projectPlural
+            }`,
+          } as HistoryOutput);
+
           filteredProjects.forEach((repo, i) => {
-            lines.push(`\n[${i + 1}] ${repo.name} (${repo.language || 'N/A'})`);
+            push({
+              type: 'output',
+              text: `\n[${i + 1}] ${repo.name} (${repo.language || 'N/A'})`,
+            } as HistoryOutput);
             if (repo.description) {
-              lines.push(`    Descrição: ${repo.description}`);
+              push({
+                type: 'output',
+                text: `    ${t.descriptionLabel}: ${repo.description}`,
+              } as HistoryOutput);
             }
-            lines.push(`    URL: ${repo.html_url}`);
-            lines.push(
-              `    Atualizado em: ${new Date(repo.updated_at).toLocaleDateString()}`
-            );
+            push({
+              type: 'output',
+              text: `    URL: ${repo.html_url}`,
+            } as HistoryOutput);
+            push({
+              type: 'output',
+              text: `    ${t.updatedLabel}: ${new Date(
+                repo.updated_at
+              ).toLocaleDateString()}`,
+            } as HistoryOutput);
           });
         } else {
-          lines.push('Nenhum projeto encontrado com os filtros informados.');
+          push({ type: 'output', text: t.noProjectsMessage } as HistoryOutput);
         }
-        push(...lines.map(line => ({ type: 'output', text: line } as HistoryOutput)));
       }
 
       setInput('');
@@ -182,8 +188,14 @@ export function useCommandProcessor(): {
     }
 
     if (cmd === Command.HELP || cmd === Command.LS) {
-      const lines = getHelpLines();
-      push(...lines.map(line => ({ type: 'output', text: line } as HistoryOutput)));
+      for (const [key, meta] of CommandMeta.entries()) {
+        push({
+          type: 'help',
+          cmd: key,
+          description: meta.description,
+          usage: meta.usage,
+        } as HistoryHelp);
+      }
       setInput('');
       return;
     }
@@ -192,35 +204,45 @@ export function useCommandProcessor(): {
       push({
         type: 'error',
         cmd,
-        message: "command not found. Type 'help' to view available commands.",
+        message: t.notFoundMessage,
       } as HistoryError);
       setInput('');
       return;
     }
 
-    const outputLines: string[] = [];
-    switch (cmd) {
-      case Command.ABOUT:
-        outputLines.push('Sobre mim:');
-        outputLines.push('Sou apaixonado por tecnologia e desenvolvimento de software.');
-        outputLines.push('Atualmente estudando Ciência da Computação na UFABC.');
-        break;
-      case Command.SKILLS:
-        outputLines.push('Minhas habilidades incluem:');
-        outputLines.push('- TypeScript, JavaScript, Python, Java, C#, Go, Haskell');
-        outputLines.push('- React, Node.js, NestJS, Next.js, Tailwind CSS');
-        outputLines.push('- Git, Docker, Linux');
-        break;
-      case Command.CONTACT:
-        outputLines.push('Entre em contato:');
-        outputLines.push('- GitHub: https://github.com/jozanardo');
-        outputLines.push('- LinkedIn: [Seu LinkedIn]');
-        outputLines.push('- Email: [Seu Email]');
-        break;
+    if (cmd === Command.ABOUT) {
+      push({ type: 'output', text: t.aboutTitle } as HistoryOutput);
+      push({ type: 'output', text: t.aboutLine1 } as HistoryOutput);
+      push({ type: 'output', text: t.aboutLine2 } as HistoryOutput);
+      setInput('');
+      return;
     }
-    push(...outputLines.map(line => ({ type: 'output', text: line } as HistoryOutput)));
-    setInput('');
-  };
 
-  return { input, setInput, history, inputRef, endRef, processCommand };
+    if (cmd === Command.SKILLS) {
+      push({ type: 'output', text: t.skillsTitle } as HistoryOutput);
+      t.skillsList.forEach(line =>
+        push({ type: 'output', text: line } as HistoryOutput)
+      );
+      setInput('');
+      return;
+    }
+
+    if (cmd === Command.CONTACT) {
+      push({ type: 'output', text: t.contactTitle } as HistoryOutput);
+      t.contactList.forEach(line =>
+        push({ type: 'output', text: line } as HistoryOutput)
+      );
+      setInput('');
+      return;
+    }
+  }
+
+  return {
+    input,
+    setInput,
+    history,
+    inputRef,
+    endRef,
+    processCommand,
+  };
 }
