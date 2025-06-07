@@ -1,4 +1,7 @@
-export default function Header() {
+import React from 'react';
+import { Command } from '../commands';
+
+const Header: React.FC = () => {
   return (
     <header className="mb-4 text-center">
       <h1 className="text-accent neon-accent text-2xl md:text-4xl font-bold">
@@ -7,9 +10,13 @@ export default function Header() {
       <p>Bem-vindo ao meu portfólio terminal!</p>
       <p>
         Digite{' '}
-        <span className="text-accent neon-accent font-bold">'help'</span>{' '}
+        <span className="text-accent neon-accent font-bold">
+          '{Command.HELP}'
+        </span>{' '}
         para ver a lista de comandos.
       </p>
     </header>
   );
-}
+};
+
+export default Header;

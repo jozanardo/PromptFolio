@@ -1,24 +1,27 @@
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 import Header from './components/Header';
 import History from './components/History';
 import InputPrompt from './components/InputPrompt';
 import { useTerminal } from './context/TerminalContext';
 
-export default function App() {
+const App: React.FC = () => {
   const {
     input,
     setInput,
     history,
     inputRef,
     endRef,
-    processCommand
+    processCommand,
   } = useTerminal();
 
-  const handleChange = e => setInput(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setInput(e.target.value);
+  };
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      processCommand(input);
+      void processCommand(input);
     }
   };
 
@@ -41,4 +44,6 @@ export default function App() {
       <div ref={endRef} />
     </div>
   );
-}
+};
+
+export default App;
