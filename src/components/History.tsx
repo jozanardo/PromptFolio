@@ -5,11 +5,7 @@ import MarkdownRenderer from './MarkdownRenderer';
 import { isCommand } from '../commands';
 import {
   HistoryItem,
-  HistoryHelp,
-  HistoryInput,
-  HistoryOutput,
-  HistoryError,
-  HistoryMarkdown,
+  HistoryHelp
 } from '../types';
 
 interface HistoryProps {
@@ -76,7 +72,9 @@ const History: React.FC<HistoryProps> = ({ history }) => {
                 <span className="text-accent font-semibold mr-2">
                   {help.cmd}
                 </span>
-                <span className="text-dracula-fg">– {help.description}</span>
+                <span className="text-dracula-fg">
+                  – {t.commandDescriptions[help.cmd]}
+                </span>
               </div>
               <div className="ml-8 text-dracula-fg">
                 {t.usageLabel}: {help.usage}

@@ -42,6 +42,18 @@ export const translations = {
     descriptionLabel: 'Description',
     updatedLabel: 'Updated at',
     noProjectsMessage: 'No projects found with the applied filters.',
+
+    // commandDescriptions
+    commandDescriptions: {
+      help:    'List all available commands.',
+      ls:      'List all available commands.',
+      whoami:  'What I do',
+      about:   'Know about me',
+      skills:  'What tech stacks I use',
+      projects:'See my projects (with filters!)',
+      contact: 'Want to say something?',
+      clear:   'Clears the history (header stays)',
+    } as const,
   },
   pt: {
     // general
@@ -85,5 +97,17 @@ export const translations = {
     descriptionLabel: 'Descrição',
     updatedLabel: 'Atualizado em',
     noProjectsMessage: 'Nenhum projeto encontrado com os filtros aplicados.',
+
+    // commandDescriptions
+    commandDescriptions: {
+      help:    'Lista todos os comandos disponíveis.',
+      ls:      'Lista todos os comandos disponíveis.',
+      whoami:  'Quem sou eu.',
+      about:   'Saiba mais sobre mim.',
+      skills:  'Quais tecnologias eu uso.',
+      projects:'Veja meus projetos (use filtros!).',
+      contact: 'Quer dizer algo?',
+      clear:   'Limpa o histórico (header fixo).',
+    } as const,
   },
 } as const;
