@@ -1,63 +1,242 @@
-
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --bg: #f6f4ef;
+  --surface: #fbfaf7;
+  --surface-2: #f0ede6;
+  --surface-overlay: rgba(251, 250, 247, 0.88);
+  --text: #1f2328;
+  --text-muted: #5f6773;
+  --text-soft: #7a828e;
+  --border: #ddd7cc;
+  --border-strong: #c9c1b4;
+  --accent: #058549;
+  --accent-soft: #d8ebe4;
+  --success: #2f6b4f;
+  --error: #a34a3d;
+  --focus: #058549;
+  --wash-1: rgba(36, 92, 74, 0.1);
+  --wash-2: rgba(255, 255, 255, 0.65);
+  --shadow-shell: 0 24px 80px rgba(31, 35, 40, 0.08);
+  --selection-bg: #cfe0d9;
+  --selection-text: #1f2328;
+}
+
+[data-theme='dark'] {
+  --bg: #111315;
+  --surface: #171a1d;
+  --surface-2: #1d2125;
+  --surface-overlay: rgba(23, 26, 29, 0.88);
+  --text: #ece8df;
+  --text-muted: #b0a99c;
+  --text-soft: #8f897d;
+  --border: #2a2f34;
+  --border-strong: #3a4148;
+  --accent: #7ec0a9;
+  --accent-soft: #1f322d;
+  --success: #7ab78f;
+  --error: #d08b7d;
+  --focus: #7ec0a9;
+  --wash-1: rgba(126, 192, 169, 0.12);
+  --wash-2: rgba(17, 19, 21, 0.34);
+  --shadow-shell: 0 28px 90px rgba(0, 0, 0, 0.32);
+  --selection-bg: #29433c;
+  --selection-text: #ece8df;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
 body {
-  @apply bg-[#282a36] text-[#f8f8f2] font-mono p-5;
-  font-family: 'Courier New', Courier, monospace;
+  @apply min-h-screen bg-canvas text-primary font-mono antialiased;
+  margin: 0;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', monospace;
+  background-image:
+    radial-gradient(circle at top left, var(--wash-1), transparent 34%),
+    radial-gradient(circle at top right, var(--wash-2), transparent 38%);
+  background-attachment: fixed;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-@keyframes logo-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+#root {
+  min-height: 100vh;
 }
 
-.card {
-  padding: 2em;
+* {
+  box-sizing: border-box;
 }
 
-.read-the-docs {
-  color: #888;
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.22em;
+  transition: color 140ms ease;
+}
+
+a:hover {
+  color: var(--text);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #282a36;
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background-color: #44475a;
-  border-radius: 4px;
-  border: 2px solid #282a36;
+  background-color: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
 }
 
-.neon-accent {
-  text-shadow:
-    0 0 2px rgba(0, 166, 126, 0.8),
-    0 0 6px rgba(0, 166, 126, 0.6);
+.terminal-shell {
+  box-shadow: var(--shadow-shell);
 }
 
-.neon-error {
-  text-shadow:
-    0 0 2px rgba(255, 85, 85, 0.8),
-    0 0 6px rgba(255, 85, 85, 0.6);
+.topbar-surface {
+  background: var(--surface-overlay);
+}
+
+.control-group {
+  @apply inline-flex items-center gap-1 rounded-full border border-subtle bg-surface-2 p-1;
+}
+
+.control-button {
+  @apply inline-flex min-w-[3.8rem] items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-[0.75rem] font-medium uppercase tracking-[0.16em] text-muted transition-colors duration-150;
+}
+
+.control-button:hover {
+  @apply text-primary;
+}
+
+.control-button:focus-visible {
+  @apply outline-none ring-2 ring-focus ring-offset-2 ring-offset-canvas;
+}
+
+.control-button-active {
+  @apply border border-subtle-strong bg-surface text-primary;
+}
+
+.theme-icon {
+  @apply inline-flex items-center justify-center text-soft transition-colors duration-150;
+}
+
+.theme-icon-active {
+  color: var(--accent);
+}
+
+.prompt-glyph {
+  @apply select-none text-accent;
+}
+
+.history-section-label {
+  @apply text-[0.78rem] font-medium uppercase tracking-[0.18em] text-muted;
+}
+
+.markdown {
+  @apply mt-6 ml-7 overflow-hidden rounded-[24px] border border-subtle bg-surface-2 px-5 py-4 text-primary;
+}
+
+.markdown > * + * {
+  margin-top: 1rem;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.markdown p,
+.markdown li,
+.markdown td,
+.markdown th,
+.markdown blockquote {
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-left: 1.25rem;
+}
+
+.markdown img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+}
+
+.markdown code {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-radius: 0.5rem;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.92em;
+}
+
+.markdown pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown th,
+.markdown td {
+  padding: 0.7rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  .markdown {
+    margin-left: 0;
+    padding: 1rem;
+  }
 }

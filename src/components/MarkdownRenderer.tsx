@@ -6,7 +6,7 @@ export interface MarkdownRendererProps {
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ html }) => (
   <div
-    className="markdown prose prose-invert max-w-none"
+    className="markdown"
     dangerouslySetInnerHTML={{ __html: html }}
   />
 );
