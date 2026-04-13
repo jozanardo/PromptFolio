@@ -8,7 +8,7 @@ export default function TopBar() {
 
   return (
     <div className="topbar-surface fixed inset-x-0 top-0 z-30 border-b border-subtle backdrop-blur-xl">
-      <div className="flex items-center justify-between gap-4 px-[6%] py-3 md:px-[10%] xl:px-[15%]">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6 md:px-8">
         <div className="min-w-0 text-[0.78rem] uppercase tracking-[0.18em] text-muted">
           <span className="text-primary">PromptFolio</span>
           {lang === 'pt' ? (
