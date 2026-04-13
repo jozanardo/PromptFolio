@@ -25,7 +25,7 @@ const InputPrompt: React.FC<InputPromptProps> = ({
       autoFocus
       spellCheck="false"
       autoComplete="off"
-      autoCapitalize="off"
+      autoCapitalize="none"
       aria-label="Terminal input"
     />
   </div>

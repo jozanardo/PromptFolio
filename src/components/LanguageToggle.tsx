@@ -12,7 +12,7 @@ export default function LanguageToggle() {
     <div
       className="control-group"
       role="group"
-      aria-label="Language selector"
+      aria-label={lang === 'pt' ? 'Seletor de idioma' : 'Language selector'}
     >
       {options.map(option => {
         const active = lang === option.value;

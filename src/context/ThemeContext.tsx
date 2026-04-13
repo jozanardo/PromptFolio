@@ -1,7 +1,7 @@
 import React, {
   createContext,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   ReactNode,
@@ -19,14 +19,27 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'theme';
 
-function getInitialTheme(): Theme {
+function readStoredTheme(): Theme | null {
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark') {
+      return stored;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+function resolveTheme(): Theme {
   if (typeof window === 'undefined') {
     return 'dark';
   }
 
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'light' || stored === 'dark') {
-    return stored;
+  const storedTheme = readStoredTheme();
+  if (storedTheme) {
+    return storedTheme;
   }
 
   return window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -34,15 +47,24 @@ function getInitialTheme(): Theme {
     : 'light';
 }
 
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
+}
+
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const [theme, setThemeState] = useState<Theme>(resolveTheme);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-    localStorage.setItem(STORAGE_KEY, theme);
+  useLayoutEffect(() => {
+    applyTheme(theme);
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      // Ignore storage failures and keep the theme in memory.
+    }
   }, [theme]);
 
   const value = useMemo(
