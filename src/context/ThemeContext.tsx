@@ -42,9 +42,13 @@ function resolveTheme(): Theme {
     return storedTheme;
   }
 
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light';
+  if (typeof window.matchMedia === 'function') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  }
+
+  return 'dark';
 }
 
 function applyTheme(theme: Theme) {
