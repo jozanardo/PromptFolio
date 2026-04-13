@@ -5,10 +5,16 @@ export const translations = {
     helpTitle: 'Available commands:',
     usageLabel: 'Usage',
     notFoundMessage: "Command not found. Type 'help' to view a list of available commands.",
-    welcome: "Welcome to my terminal portfolio!",
+    welcome: "Welcome to my terminal portfolio.",
+    intro:
+      'PromptFolio is an interactive portfolio where you can explore my profile, technical stack, GitHub projects, and contact links through terminal-style commands.',
+    guidance:
+      'If this is your first time here, start with one of these paths:',
     promptPre:  "Type ",
     promptCmd:  "help",
     promptPost: " to view a list of commands.",
+    inputAriaLabel: 'Terminal input',
+    quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about
     aboutTitle: 'About me:',
@@ -60,10 +66,16 @@ export const translations = {
     helpTitle: 'Comandos disponíveis:',
     usageLabel: 'Uso',
     notFoundMessage: "Comando não encontrado. Digite 'help' para ver a lista de comandos.",
-    welcome: "Bem-vindo ao meu portfólio terminal!",
+    welcome: "Bem-vindo ao meu portfólio terminal.",
+    intro:
+      'O PromptFolio é um portfólio interativo em formato terminal, onde você pode explorar meu perfil, stack técnica, projetos no GitHub e formas de contato por meio de comandos.',
+    guidance:
+      'Se esta é sua primeira vez aqui, comece por um destes caminhos:',
     promptPre:  "Digite ",
     promptCmd:  "help",
     promptPost: " para ver a lista de comandos.",
+    inputAriaLabel: 'Entrada do terminal',
+    quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about
     aboutTitle: 'Sobre mim:',

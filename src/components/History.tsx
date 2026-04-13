@@ -31,26 +31,29 @@ const History: React.FC<HistoryProps> = ({ history }) => {
   }, [history]);
 
   return (
-    <div className="mt-4 space-y-1">
+    <div className="space-y-4">
       {history.map((item, idx) => {
         if (item.type === 'input') {
           return (
-            <div key={idx} className="flex items-center">
-              <span className="text-accent neon-accent font-bold mr-2">
+            <div key={idx} className="flex items-start gap-3 text-primary">
+              <span className="prompt-glyph pt-0.5 font-medium">
                 {'>'}
               </span>
-              <span className="text-dracula-fg">{item.text}</span>
+              <span className="leading-7">{item.text}</span>
             </div>
           );
         }
 
         if (item.type === 'error') {
           return (
-            <div key={idx} className="flex items-center">
-              <span className="text-red-500 neon-error font-bold mr-2">
-                {item.cmd}
-              </span>
-              <span className="text-dracula-fg">: {item.message}</span>
+            <div
+              key={idx}
+              className="ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3"
+            >
+              <div className="flex items-start gap-2 leading-7">
+                <span className="font-medium text-danger">{item.cmd}</span>
+                <span className="text-primary">: {item.message}</span>
+              </div>
             </div>
           );
         }
@@ -62,22 +65,24 @@ const History: React.FC<HistoryProps> = ({ history }) => {
         if (item.type === 'help') {
           const help = item as HistoryHelp;
           return (
-            <div key={idx} className="ml-6">
+            <div key={idx} className="ml-3">
               {helpGroupStart.has(idx) && (
-                <div className="mb-1 text-dracula-fg font-semibold">
+                <div className="history-section-label mb-3 ml-4">
                   {t.helpTitle}
                 </div>
               )}
-              <div className="flex items-baseline">
-                <span className="text-accent font-semibold mr-2">
-                  {help.cmd}
-                </span>
-                <span className="text-dracula-fg">
-                  – {t.commandDescriptions[help.cmd]}
-                </span>
-              </div>
-              <div className="ml-8 text-dracula-fg">
-                {t.usageLabel}: {help.usage}
+              <div className="border-l border-subtle pl-4">
+                <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4">
+                  <span className="min-w-[5.5rem] font-medium text-accent">
+                    {help.cmd}
+                  </span>
+                  <span className="leading-7 text-primary">
+                    {t.commandDescriptions[help.cmd]}
+                  </span>
+                </div>
+                <div className="mt-1 text-sm leading-6 text-muted">
+                  {t.usageLabel}: {help.usage}
+                </div>
               </div>
             </div>
           );
@@ -90,9 +95,12 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           if (isCommand(token)) {
             const rest = trimmed.slice(token.length);
             return (
-              <div key={idx} className="ml-6 whitespace-pre-wrap">
+              <div
+                key={idx}
+                className="ml-7 whitespace-pre-wrap leading-7 text-primary"
+              >
                 <span>{leading}</span>
-                <span className="text-accent font-semibold">{token}</span>
+                <span className="font-medium text-accent">{token}</span>
                 <span>{rest}</span>
               </div>
             );
@@ -100,7 +108,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           return (
             <div
               key={idx}
-              className="text-dracula-fg ml-6 whitespace-pre-wrap"
+              className="ml-7 whitespace-pre-wrap leading-7 text-primary"
             >
               {item.text}
             </div>
@@ -108,7 +116,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
         }
 
         return (
-          <div key={idx} className="text-dracula-fg ml-6">
+          <div key={idx} className="ml-7 text-primary">
             {JSON.stringify(item)}
           </div>
         );
