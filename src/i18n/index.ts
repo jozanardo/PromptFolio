@@ -13,6 +13,7 @@ export const translations = {
     promptPre:  "Type ",
     promptCmd:  "help",
     promptPost: " to view a list of commands.",
+    inputAriaLabel: 'Terminal input',
     quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about
@@ -73,6 +74,7 @@ export const translations = {
     promptPre:  "Digite ",
     promptCmd:  "help",
     promptPost: " para ver a lista de comandos.",
+    inputAriaLabel: 'Entrada do terminal',
     quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about
