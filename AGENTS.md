@@ -225,8 +225,8 @@ Current official dark tokens:
 - `--success: #7ab78f`
 - `--error: #d08b7d`
 - `--focus: #7ec0a9`
-- `--wash-1: rgba(126, 192, 169, 0.08)`
-- `--wash-2: rgba(17, 19, 21, 0.22)`
+- `--wash-1: rgba(126, 192, 169, 0.12)`
+- `--wash-2: rgba(17, 19, 21, 0.34)`
 - `--shadow-shell: 0 28px 90px rgba(0, 0, 0, 0.32)`
 - `--selection-bg: #29433c`
 - `--selection-text: #ece8df`
