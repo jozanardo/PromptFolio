@@ -2,18 +2,26 @@
 export const translations = {
   en: {
     // general
+    notebookEyebrow: 'Personal command notebook',
     helpTitle: 'Available commands:',
     usageLabel: 'Usage',
     notFoundMessage: "Command not found. Type 'help' to view a list of available commands.",
-    welcome: "Welcome to my terminal portfolio.",
+    welcome: 'Welcome to my command notebook.',
     intro:
-      'PromptFolio is an interactive portfolio where you can explore my profile, technical stack, GitHub projects, and contact links through terminal-style commands.',
-    guidance:
-      'If this is your first time here, start with one of these paths:',
-    promptPre:  "Type ",
-    promptCmd:  "help",
-    promptPost: " to view a list of commands.",
+      'PromptFolio is a calm terminal workspace where you can explore my profile, technical stack, GitHub projects, and contact links through command-style navigation.',
+    guidance: 'Suggested starting points:',
+    promptPre: 'Type ',
+    promptCmd: 'help',
+    promptPost: ' to list the available commands.',
     inputAriaLabel: 'Terminal input',
+    fillPromptAriaLabel: 'Fill prompt with',
+    readmeLoading: 'Loading GitHub README…',
+    loadingLanguages: 'Loading languages…',
+    projectsLoading: 'Searching projects…',
+    filterLangLabel: 'language',
+    filterDescLabel: 'description',
+    filterNameLabel: 'name',
+    urlLabel: 'URL',
     quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about
@@ -63,18 +71,26 @@ export const translations = {
   },
   pt: {
     // general
+    notebookEyebrow: 'Caderno de comandos pessoal',
     helpTitle: 'Comandos disponíveis:',
     usageLabel: 'Uso',
     notFoundMessage: "Comando não encontrado. Digite 'help' para ver a lista de comandos.",
-    welcome: "Bem-vindo ao meu portfólio terminal.",
+    welcome: 'Bem-vindo ao meu caderno de comandos.',
     intro:
-      'O PromptFolio é um portfólio interativo em formato terminal, onde você pode explorar meu perfil, stack técnica, projetos no GitHub e formas de contato por meio de comandos.',
-    guidance:
-      'Se esta é sua primeira vez aqui, comece por um destes caminhos:',
-    promptPre:  "Digite ",
-    promptCmd:  "help",
-    promptPost: " para ver a lista de comandos.",
+      'O PromptFolio é um workspace terminal calmo, onde você pode explorar meu perfil, stack técnica, projetos no GitHub e formas de contato por meio de navegação por comandos.',
+    guidance: 'Pontos sugeridos para começar:',
+    promptPre: 'Digite ',
+    promptCmd: 'help',
+    promptPost: ' para listar os comandos disponíveis.',
     inputAriaLabel: 'Entrada do terminal',
+    fillPromptAriaLabel: 'Preencher prompt com',
+    readmeLoading: 'Carregando README do GitHub…',
+    loadingLanguages: 'Carregando linguagens…',
+    projectsLoading: 'Buscando projetos…',
+    filterLangLabel: 'linguagem',
+    filterDescLabel: 'descrição',
+    filterNameLabel: 'nome',
+    urlLabel: 'URL',
     quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
 
     // about

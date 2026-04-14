@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n';
 
@@ -17,9 +17,11 @@ const InputPrompt: React.FC<InputPromptProps> = ({
 }) => {
   const { lang } = useLanguage();
   const t = translations[lang];
+  const [isFocused, setIsFocused] = useState(false);
+  const isActive = isFocused || input.length > 0;
 
   return (
-    <div className="flex items-center gap-3 py-1 text-primary">
+    <div className={`prompt-line ${isActive ? 'prompt-line-active' : ''}`}>
       <span className="prompt-glyph font-medium">{'>'}</span>
       <input
         ref={inputRef}
@@ -27,8 +29,9 @@ const InputPrompt: React.FC<InputPromptProps> = ({
         value={input}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         className="min-w-0 flex-1 bg-transparent text-primary outline-none placeholder:text-soft caret-accent"
-        autoFocus
         spellCheck="false"
         autoComplete="off"
         autoCapitalize="none"

@@ -31,7 +31,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
   }, [history]);
 
   return (
-    <div className="space-y-4">
+    <div className="history-flow space-y-5">
       {history.map((item, idx) => {
         if (item.type === 'input') {
           return (
@@ -48,7 +48,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           return (
             <div
               key={idx}
-              className="ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3"
+              className="history-error ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3"
             >
               <div className="flex items-start gap-2 leading-7">
                 <span className="font-medium text-danger">{item.cmd}</span>
@@ -71,7 +71,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
                   {t.helpTitle}
                 </div>
               )}
-              <div className="border-l border-subtle pl-4">
+              <div className="border-l border-subtle-strong pl-4">
                 <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4">
                   <span className="min-w-[5.5rem] font-medium text-accent">
                     {help.cmd}
