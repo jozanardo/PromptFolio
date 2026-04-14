@@ -195,8 +195,8 @@ Current official light tokens:
 - `--success: #2f6b4f`
 - `--error: #a34a3d`
 - `--focus: #058549`
-- `--wash-1: rgba(122, 130, 142, 0.24)`
-- `--wash-2: rgba(31, 35, 40, 0.1)`
+- `--wash-1: rgba(36, 92, 74, 0.1)`
+- `--wash-2: rgba(255, 255, 255, 0.65)`
 - `--shadow-shell: 0 24px 80px rgba(31, 35, 40, 0.2)`
 - `--selection-bg: #cfe0d9`
 - `--selection-text: #1f2328`
