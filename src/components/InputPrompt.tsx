@@ -7,6 +7,7 @@ export interface InputPromptProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
   inputRef: React.RefObject<HTMLInputElement | null>;
+  isVisible: boolean;
 }
 
 const InputPrompt: React.FC<InputPromptProps> = ({
@@ -14,6 +15,7 @@ const InputPrompt: React.FC<InputPromptProps> = ({
   onChange,
   onKeyDown,
   inputRef,
+  isVisible,
 }) => {
   const { lang } = useLanguage();
   const t = translations[lang];
@@ -35,6 +37,7 @@ const InputPrompt: React.FC<InputPromptProps> = ({
         spellCheck="false"
         autoComplete="off"
         autoCapitalize="none"
+        tabIndex={isVisible ? 0 : -1}
         aria-label={t.inputAriaLabel}
       />
     </div>

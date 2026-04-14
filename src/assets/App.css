@@ -17,14 +17,14 @@
   --success: #2f6b4f;
   --error: #a34a3d;
   --focus: #058549;
-  --wash-1: rgba(36, 92, 74, 0.1);
-  --wash-2: rgba(255, 255, 255, 0.65);
+  --wash-1: rgba(36, 92, 74, 0.065);
+  --wash-2: rgba(255, 255, 255, 0.42);
   --shadow-shell: 0 24px 80px rgba(31, 35, 40, 0.08);
   --selection-bg: #cfe0d9;
   --selection-text: #1f2328;
   --prompt-wash: rgba(5, 133, 73, 0.075);
-  --grain: rgba(31, 35, 40, 0.055);
-  --grain-soft: rgba(31, 35, 40, 0.03);
+  --grain: rgba(31, 35, 40, 0.028);
+  --grain-soft: rgba(31, 35, 40, 0.014);
   --shell-sheen: rgba(255, 255, 255, 0.56);
 }
 
@@ -43,14 +43,14 @@
   --success: #7ab78f;
   --error: #d08b7d;
   --focus: #7ec0a9;
-  --wash-1: rgba(126, 192, 169, 0.12);
-  --wash-2: rgba(17, 19, 21, 0.34);
+  --wash-1: rgba(126, 192, 169, 0.08);
+  --wash-2: rgba(17, 19, 21, 0.22);
   --shadow-shell: 0 28px 90px rgba(0, 0, 0, 0.32);
   --selection-bg: #29433c;
   --selection-text: #ece8df;
   --prompt-wash: rgba(126, 192, 169, 0.08);
-  --grain: rgba(236, 232, 223, 0.04);
-  --grain-soft: rgba(236, 232, 223, 0.022);
+  --grain: rgba(236, 232, 223, 0.022);
+  --grain-soft: rgba(236, 232, 223, 0.012);
   --shell-sheen: rgba(255, 255, 255, 0.04);
 }
 
@@ -145,7 +145,7 @@ button {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.28;
+  opacity: 0.15;
   background-image:
     radial-gradient(var(--grain) 0.7px, transparent 0.7px),
     radial-gradient(var(--grain-soft) 0.5px, transparent 0.5px);
@@ -421,7 +421,7 @@ button {
 
 @media (max-width: 640px) {
   .page-atmosphere {
-    opacity: 0.22;
+    opacity: 0.11;
   }
 
   .prompt-line {

@@ -13,25 +13,51 @@ import { useTerminal } from './context/TerminalContext';
 const App: React.FC = () => {
   const { input, setInput, history, inputRef, endRef, processCommand } =
     useTerminal();
+  const [prefersReducedMotion] = useState<boolean>(() => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    return typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+  });
   const [shellVisible, setShellVisible] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
   const [promptVisible, setPromptVisible] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setShellVisible(true);
+      setContentVisible(true);
+      setPromptVisible(true);
+      return;
+    }
+
     const shellTimer = window.setTimeout(() => setShellVisible(true), 40);
     const contentTimer = window.setTimeout(() => setContentVisible(true), 180);
     const promptTimer = window.setTimeout(() => setPromptVisible(true), 320);
-    const focusTimer = window.setTimeout(() => {
-      inputRef.current?.focus();
-    }, 430);
 
     return () => {
       window.clearTimeout(shellTimer);
       window.clearTimeout(contentTimer);
       window.clearTimeout(promptTimer);
-      window.clearTimeout(focusTimer);
     };
-  }, [inputRef]);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!promptVisible) {
+      return;
+    }
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+    };
+  }, [inputRef, promptVisible]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -66,7 +92,11 @@ const App: React.FC = () => {
 
             <div
               className="flex-1 px-6 py-8 sm:px-8 md:px-12 md:py-9 lg:px-16"
-              onClick={() => inputRef.current?.focus()}
+              onClick={() => {
+                if (promptVisible) {
+                  inputRef.current?.focus();
+                }
+              }}
             >
               <div
                 className={`transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
@@ -79,10 +109,11 @@ const App: React.FC = () => {
               </div>
 
               <div
+                aria-hidden={!promptVisible}
                 className={`mt-10 transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
                   promptVisible
                     ? 'translate-y-0 opacity-100'
-                    : 'translate-y-3 opacity-0'
+                    : 'pointer-events-none translate-y-3 opacity-0'
                 }`}
               >
                 <InputPrompt
@@ -90,6 +121,7 @@ const App: React.FC = () => {
                   onChange={handleChange}
                   onKeyDown={handleKeyDown}
                   inputRef={inputRef}
+                  isVisible={promptVisible}
                 />
               </div>
 

@@ -16,6 +16,10 @@ export default function Header({
   const t = translations[lang];
 
   const handleQuickStart = (command: string) => {
+    if (!isContentVisible) {
+      return;
+    }
+
     setInput(command);
     window.requestAnimationFrame(() => {
       inputRef.current?.focus();
@@ -31,7 +35,7 @@ export default function Header({
             isContentVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
           }`}
         >
-          <div className="eyebrow">{t.notebookEyebrow}</div>
+          <div className="eyebrow">{t.eyebrowLabel}</div>
 
           <p className="max-w-2xl text-[1.35rem] leading-8 text-primary md:text-[1.65rem] md:leading-10">
             {t.welcome}
@@ -43,6 +47,7 @@ export default function Header({
         </div>
 
         <div
+          aria-hidden={!isContentVisible}
           className={`space-y-3 transition-[opacity,transform] duration-500 delay-75 ease-out motion-reduce:transform-none ${
             isContentVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
           }`}
@@ -59,6 +64,8 @@ export default function Header({
                 onClick={() => handleQuickStart(command)}
                 className="quick-command"
                 aria-label={`${t.fillPromptAriaLabel} ${command}`}
+                disabled={!isContentVisible}
+                tabIndex={isContentVisible ? 0 : -1}
               >
                 <span className="quick-command-glyph">{'>'}</span>
                 <span>{command}</span>
@@ -68,6 +75,7 @@ export default function Header({
         </div>
 
         <div
+          aria-hidden={!isPromptVisible}
           className={`inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-subtle bg-surface-2 px-3 py-2 text-[0.82rem] text-soft transition-[opacity,transform] duration-500 delay-150 ease-out motion-reduce:transform-none ${
             isPromptVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
           }`}

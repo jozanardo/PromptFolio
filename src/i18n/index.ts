@@ -2,14 +2,14 @@
 export const translations = {
   en: {
     // general
-    notebookEyebrow: 'Personal command notebook',
+    eyebrowLabel: 'Interactive terminal portfolio',
     helpTitle: 'Available commands:',
     usageLabel: 'Usage',
     notFoundMessage: "Command not found. Type 'help' to view a list of available commands.",
-    welcome: 'Welcome to my command notebook.',
+    welcome: 'Welcome to my terminal portfolio.',
     intro:
       'PromptFolio is a calm terminal workspace where you can explore my profile, technical stack, GitHub projects, and contact links through command-style navigation.',
-    guidance: 'Suggested starting points:',
+    guidance: 'Suggested starting commands:',
     promptPre: 'Type ',
     promptCmd: 'help',
     promptPost: ' to list the available commands.',
@@ -71,14 +71,14 @@ export const translations = {
   },
   pt: {
     // general
-    notebookEyebrow: 'Caderno de comandos pessoal',
+    eyebrowLabel: 'Portfólio terminal interativo',
     helpTitle: 'Comandos disponíveis:',
     usageLabel: 'Uso',
     notFoundMessage: "Comando não encontrado. Digite 'help' para ver a lista de comandos.",
-    welcome: 'Bem-vindo ao meu caderno de comandos.',
+    welcome: 'Bem-vindo ao meu portfólio terminal.',
     intro:
       'O PromptFolio é um workspace terminal calmo, onde você pode explorar meu perfil, stack técnica, projetos no GitHub e formas de contato por meio de navegação por comandos.',
-    guidance: 'Pontos sugeridos para começar:',
+    guidance: 'Comandos sugeridos para começar:',
     promptPre: 'Digite ',
     promptCmd: 'help',
     promptPost: ' para listar os comandos disponíveis.',
