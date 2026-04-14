@@ -35,8 +35,8 @@ const History: React.FC<HistoryProps> = ({ history }) => {
       {history.map((item, idx) => {
         if (item.type === 'input') {
           return (
-            <div key={idx} className="flex items-start gap-3 text-primary">
-              <span className="prompt-glyph pt-0.5 font-medium">
+            <div key={idx} className="relative pl-7 text-primary">
+              <span className="prompt-glyph absolute left-0 top-0.5 font-medium">
                 {'>'}
               </span>
               <span className="leading-7">{item.text}</span>
@@ -48,9 +48,9 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           return (
             <div
               key={idx}
-              className="history-error ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3"
+              className="history-error ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3 pl-5"
             >
-              <div className="flex items-start gap-2 leading-7">
+              <div className="flex items-start gap-2.5 pl-3 leading-7">
                 <span className="font-medium text-danger">{item.cmd}</span>
                 <span className="text-primary">: {item.message}</span>
               </div>
