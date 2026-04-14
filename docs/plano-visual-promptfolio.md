@@ -8,7 +8,7 @@ O objetivo não é "enfeitar o terminal". O objetivo é construir uma interface 
 
 - minimalista
 - fluida
-- legivel
+- legível
 - editorial
 - tecnologica sem exagero
 
