@@ -45,12 +45,15 @@ export function useCommandProcessor(): {
   } = useProjects();
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [history]);
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    endRef.current?.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    });
+  }, [history]);
 
   const push = (...items: HistoryItem[]) =>
     setHistory(prev => [...prev, ...items]);
@@ -82,7 +85,7 @@ export function useCommandProcessor(): {
     push({ type: 'input', text: commandInput } as HistoryInput);
 
     if (cmd === Command.WHOAMI) {
-      push({ type: 'output', text: '🔄 Carregando README do GitHub…' } as HistoryOutput);
+      push({ type: 'output', text: `🔄 ${t.readmeLoading}` } as HistoryOutput);
       await loadReadme();
       setInput('');
       return;
@@ -111,7 +114,7 @@ export function useCommandProcessor(): {
 
       if (showLangs) {
         if (projectsLoading) {
-          push({ type: 'output', text: '🔄 Carregando linguagens…' } as HistoryOutput);
+          push({ type: 'output', text: `🔄 ${t.loadingLanguages}` } as HistoryOutput);
         } else if (projectsError) {
           push({ type: 'output', text: `❌ ${projectsError}` } as HistoryOutput);
         } else {
@@ -134,14 +137,14 @@ export function useCommandProcessor(): {
       setFilters({ lang: langFilter, desc: descFilter, name: nameFilter });
 
       if (projectsLoading) {
-        push({ type: 'output', text: '🔄 Buscando projetos…' } as HistoryOutput);
+        push({ type: 'output', text: `🔄 ${t.projectsLoading}` } as HistoryOutput);
       } else if (projectsError) {
         push({ type: 'output', text: `❌ ${projectsError}` } as HistoryOutput);
       } else {
         const parts: string[] = [];
-        if (langFilter) parts.push(`linguagem: ${langFilter}`);
-        if (descFilter) parts.push(`descrição: "${descFilter}"`);
-        if (nameFilter) parts.push(`nome: "${nameFilter}"`);
+        if (langFilter) parts.push(`${t.filterLangLabel}: ${langFilter}`);
+        if (descFilter) parts.push(`${t.filterDescLabel}: "${descFilter}"`);
+        if (nameFilter) parts.push(`${t.filterNameLabel}: "${nameFilter}"`);
 
         const header = parts.length
           ? `${t.allProjectsTitle} (${parts.join(', ')})`
@@ -169,7 +172,7 @@ export function useCommandProcessor(): {
             }
             push({
               type: 'output',
-              text: `    URL: ${repo.html_url}`,
+              text: `    ${t.urlLabel}: ${repo.html_url}`,
             } as HistoryOutput);
             push({
               type: 'output',
