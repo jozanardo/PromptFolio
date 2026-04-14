@@ -10,7 +10,7 @@ O objetivo não é "enfeitar o terminal". O objetivo é construir uma interface 
 - fluida
 - legível
 - editorial
-- tecnologica sem exagero
+- tecnológica sem exagero
 
 Em termos práticos, queremos um produto que seja agradável de usar por vários minutos, e não apenas impactante nos primeiros 10 segundos.
 
