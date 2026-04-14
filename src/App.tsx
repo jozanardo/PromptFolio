@@ -25,14 +25,18 @@ const App: React.FC = () => {
   const [shellVisible, setShellVisible] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
   const [promptVisible, setPromptVisible] = useState(false);
+  const [promptInteractive, setPromptInteractive] = useState(false);
 
   useEffect(() => {
     if (prefersReducedMotion) {
       setShellVisible(true);
       setContentVisible(true);
       setPromptVisible(true);
+      setPromptInteractive(true);
       return;
     }
+
+    setPromptInteractive(false);
 
     const shellTimer = window.setTimeout(() => setShellVisible(true), 40);
     const contentTimer = window.setTimeout(() => setContentVisible(true), 180);
@@ -46,7 +50,7 @@ const App: React.FC = () => {
   }, [prefersReducedMotion]);
 
   useEffect(() => {
-    if (!promptVisible) {
+    if (!promptInteractive) {
       return;
     }
 
@@ -57,7 +61,7 @@ const App: React.FC = () => {
     return () => {
       window.cancelAnimationFrame(focusFrame);
     };
-  }, [inputRef, promptVisible]);
+  }, [inputRef, promptInteractive]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -86,14 +90,14 @@ const App: React.FC = () => {
             <div className="border-b border-subtle px-6 py-8 sm:px-8 md:px-12 md:py-10 lg:px-16">
               <Header
                 isContentVisible={contentVisible}
-                isPromptVisible={promptVisible}
+                isPromptVisible={promptInteractive}
               />
             </div>
 
             <div
               className="flex-1 px-6 py-8 sm:px-8 md:px-12 md:py-9 lg:px-16"
               onClick={() => {
-                if (promptVisible) {
+                if (promptInteractive) {
                   inputRef.current?.focus();
                 }
               }}
@@ -109,19 +113,32 @@ const App: React.FC = () => {
               </div>
 
               <div
-                aria-hidden={!promptVisible}
+                aria-hidden={!promptInteractive}
+                onTransitionEnd={event => {
+                  if (
+                    prefersReducedMotion ||
+                    promptInteractive ||
+                    !promptVisible ||
+                    event.target !== event.currentTarget ||
+                    event.propertyName !== 'opacity'
+                  ) {
+                    return;
+                  }
+
+                  setPromptInteractive(true);
+                }}
                 className={`mt-10 transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
                   promptVisible
                     ? 'translate-y-0 opacity-100'
                     : 'pointer-events-none translate-y-3 opacity-0'
-                }`}
+                } ${promptInteractive ? '' : 'pointer-events-none'}`}
               >
                 <InputPrompt
                   input={input}
                   onChange={handleChange}
                   onKeyDown={handleKeyDown}
                   inputRef={inputRef}
-                  isVisible={promptVisible}
+                  isVisible={promptInteractive}
                 />
               </div>
 

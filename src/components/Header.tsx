@@ -16,7 +16,7 @@ export default function Header({
   const t = translations[lang];
 
   const handleQuickStart = (command: string) => {
-    if (!isContentVisible) {
+    if (!isContentVisible || !isPromptVisible) {
       return;
     }
 
@@ -64,8 +64,8 @@ export default function Header({
                 onClick={() => handleQuickStart(command)}
                 className="quick-command"
                 aria-label={`${t.fillPromptAriaLabel} ${command}`}
-                disabled={!isContentVisible}
-                tabIndex={isContentVisible ? 0 : -1}
+                disabled={!isContentVisible || !isPromptVisible}
+                tabIndex={isContentVisible && isPromptVisible ? 0 : -1}
               >
                 <span className="quick-command-glyph">{'>'}</span>
                 <span>{command}</span>
