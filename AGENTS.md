@@ -12,7 +12,7 @@ PromptFolio is not a generic portfolio website and it is not a theatrical fake t
 
 PromptFolio should feel like:
 
-- a personal command notebook
+- a personal command archive
 - a calm, authored workspace
 - a precise, thoughtful artifact built by an engineer
 - an editorial interface where reading and interaction coexist naturally
@@ -27,7 +27,7 @@ PromptFolio should not feel like:
 
 The single clearest design sentence for the product is:
 
-`PromptFolio should feel like opening a personal command notebook written by a thoughtful engineer.`
+`PromptFolio should feel like opening a personal command archive authored by a thoughtful engineer.`
 
 ## 2. Emotional Target
 
@@ -49,7 +49,7 @@ The emotional target is not "impressive through effects." It is "memorable throu
 
 The most memorable moment in the product is the first reveal of the shell.
 
-That reveal should feel like the notebook is opening, not like an app is loading.
+That reveal should feel like the shell is settling into place, not like an app is loading.
 
 The reveal choreography should follow this order:
 
@@ -89,7 +89,7 @@ The right design balance is:
 - more authored than generic
 - more human than mechanical
 - more editorial than dashboard-like
-- more notebook-like than software-panel-like
+- more authored-workspace-like than software-panel-like
 
 ## 5. Signature Elements
 
@@ -109,7 +109,7 @@ It should feel stable and calm, not promotional.
 
 ### 5.2 The shell as object
 
-The main shell is the notebook itself:
+The main shell is the central artifact:
 
 - a clearly defined object over the page background
 - calm, solid, and editorial
@@ -140,7 +140,7 @@ Do not spread line motifs everywhere. They should organize reading, not become d
 
 ### 5.5 Near-invisible atmosphere
 
-The page may use barely perceptible texture and soft tonal atmosphere to support the notebook metaphor.
+The page may use barely perceptible texture and soft tonal atmosphere to support the calm archival atmosphere.
 
 If texture is used, it must be:
 
@@ -154,7 +154,7 @@ It must never read as a visual effect layer.
 
 The design direction is:
 
-`editorial terminal minimalism with a personal notebook feel`
+`editorial terminal minimalism with a personal archive feel`
 
 In practice, that means:
 
@@ -195,9 +195,9 @@ Current official light tokens:
 - `--success: #2f6b4f`
 - `--error: #a34a3d`
 - `--focus: #058549`
-- `--wash-1: rgba(36, 92, 74, 0.1)`
-- `--wash-2: rgba(255, 255, 255, 0.65)`
-- `--shadow-shell: 0 24px 80px rgba(31, 35, 40, 0.08)`
+- `--wash-1: rgba(122, 130, 142, 0.24)`
+- `--wash-2: rgba(31, 35, 40, 0.1)`
+- `--shadow-shell: 0 24px 80px rgba(31, 35, 40, 0.2)`
 - `--selection-bg: #cfe0d9`
 - `--selection-text: #1f2328`
 
@@ -225,8 +225,8 @@ Current official dark tokens:
 - `--success: #7ab78f`
 - `--error: #d08b7d`
 - `--focus: #7ec0a9`
-- `--wash-1: rgba(126, 192, 169, 0.12)`
-- `--wash-2: rgba(17, 19, 21, 0.34)`
+- `--wash-1: rgba(126, 192, 169, 0.08)`
+- `--wash-2: rgba(17, 19, 21, 0.22)`
 - `--shadow-shell: 0 28px 90px rgba(0, 0, 0, 0.32)`
 - `--selection-bg: #29433c`
 - `--selection-text: #ece8df`
@@ -345,7 +345,7 @@ PromptFolio should use differentiated reading widths:
 This supports the intended balance:
 
 - header as editorial orientation
-- history as active notebook content
+- history as active terminal content
 
 ### 10.4 Vertical rhythm
 
@@ -370,7 +370,7 @@ That means:
 - the shell grows with the content
 - the top bar remains the only fixed element
 
-Do not introduce inner shell scrolling as the default behavior. It makes the product feel more like an app panel and less like a notebook.
+Do not introduce inner shell scrolling as the default behavior. It makes the product feel more like an app panel and less like a continuous personal archive.
 
 ## 12. Top Bar Rules
 
@@ -387,13 +387,13 @@ Rules:
 
 Current copy rules:
 
-- English: `PromptFolio powered by Joao Zanardo`
-- Portuguese: `PromptFolio por Joao Zanardo`
+- English: `PromptFolio powered by João Zanardo`
+- Portuguese: `PromptFolio por João Zanardo`
 
 Color rules:
 
 - `PromptFolio` uses primary text color
-- `Joao Zanardo` uses primary text color
+- `João Zanardo` uses primary text color
 - `powered by` / `por` uses accent color
 
 This distinction is deliberate and should be preserved.
@@ -477,7 +477,7 @@ When activated, a quick-start chip should:
 
 It should not execute the command automatically by default.
 
-That behavior keeps the notebook and command-line feeling intact while still improving usability for first-time visitors.
+That behavior keeps the authored terminal feeling intact while still improving usability for first-time visitors.
 
 ## 15. History Rules
 
@@ -486,7 +486,7 @@ The history is the core of the experience.
 It should feel like:
 
 - continuous reading
-- a notebook being filled over time
+- a terminal record being built over time
 - a calm command-driven conversation
 
 It should not feel like:
@@ -526,7 +526,7 @@ Help output should use thin structural cues and grouping so it reads as organize
 
 ### 15.5 Markdown treatment
 
-Markdown blocks should feel like attached pages inside the notebook.
+Markdown blocks should feel like attached pages inside the shell.
 
 They may be more structured than plain output, but they must still belong to the same visual world.
 
@@ -540,7 +540,7 @@ Rules:
 
 - keep it borderless by default
 - keep the background transparent in the resting state
-- preserve the feeling of typing directly into the notebook flow
+- preserve the feeling of typing directly into the terminal flow
 - avoid turning it into a standard input control
 
 ### 16.1 Focus behavior
@@ -616,7 +616,7 @@ Do not allow:
 
 Both themes must preserve:
 
-- the notebook metaphor
+- the archive metaphor
 - the same reading rhythm
 - the same spacing logic
 - the same interaction language
@@ -653,7 +653,7 @@ When needed:
 On smaller screens:
 
 - chips must wrap cleanly
-- markdown should remain attached to the notebook feel
+- markdown should remain attached to the archive feel
 - prompt should stay immediate and touch-friendly
 - spacing may compress slightly, but not enough to lose calmness
 
@@ -721,7 +721,7 @@ Every new visual addition should justify itself in terms of:
 - comprehension
 - interaction quality
 - emotional coherence
-- notebook identity
+- archive identity
 
 If an element does not clearly improve one of those areas, it should not be added.
 
@@ -747,7 +747,7 @@ Avoid these by default:
 
 Before accepting a visual change, ask:
 
-1. Does this make PromptFolio feel more like a personal command notebook?
+1. Does this make PromptFolio feel more like a personal command archive?
 2. Does this improve reading or fluency?
 3. Does this preserve the calm, authored tone?
 4. Does this keep the shell as the central object?
@@ -783,7 +783,7 @@ Future agents should read those files before making meaningful visual changes.
 
 ## 27. Final Operating Summary
 
-PromptFolio is a bilingual, theme-aware, editorial terminal portfolio whose deepest design metaphor is a personal command notebook.
+PromptFolio is a bilingual, theme-aware, editorial terminal portfolio whose deepest design metaphor is a personal command archive.
 
 Its defining traits are:
 
@@ -792,7 +792,7 @@ Its defining traits are:
 - fixed top bar as a quiet command deck
 - spacious central shell
 - header that orients quickly
-- continuous notebook-like history flow
+- continuous archive-like history flow
 - markdown as attached pages
 - a borderless live prompt
 - subtle line-based structural language

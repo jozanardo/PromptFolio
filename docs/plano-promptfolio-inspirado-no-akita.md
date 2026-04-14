@@ -2,9 +2,9 @@
 
 ## Objetivo
 
-Transformar o `PromptFolio` de um portfolio-terminal simples em uma experiencia mais memoravel, com cara de acervo pessoal vivo: menos "cartao de visitas" e mais "base de conhecimento sobre quem eu sou, no que penso e no que construo".
+Transformar o `PromptFolio` de um portfolio-terminal simples em uma experiência mais memorável, com cara de acervo pessoal vivo: menos "cartão de visitas" e mais "base de conhecimento sobre quem eu sou, no que penso e no que construo".
 
-O blog do Akita me passa exatamente essa sensacao. Ele nao e so uma home com links: ele organiza anos de producao, facilita descoberta, separa assuntos, oferece navegacao bilingue e trata conteudo como produto principal. A melhor oportunidade para o `PromptFolio` e adaptar essa logica ao formato terminal que o projeto ja tem.
+O blog do Akita me passa exatamente essa sensação. Ele não é só uma home com links: ele organiza anos de produção, facilita descoberta, separa assuntos, oferece navegação bilíngue e trata conteúdo como produto principal. A melhor oportunidade para o `PromptFolio` é adaptar essa lógica ao formato terminal que o projeto já tem.
 
 ## O que vale aproveitar do repositorio do Akita
 
@@ -85,7 +85,7 @@ Isso e muito melhor do que depender apenas de linguagem (`--lang=`), porque pass
 
 ### 4. Adicionar uma camada de narrativa pessoal
 
-O blog do Akita funciona bem porque ele nao e so uma lista tecnica; existe voz editorial. O `PromptFolio` pode ganhar isso com comandos como:
+O blog do Akita funciona bem porque ele não é só uma lista técnica; existe voz editorial. O `PromptFolio` pode ganhar isso com comandos como:
 
 - `now`: no que voce esta focado atualmente
 - `philosophy`: como voce pensa sobre software, IA, estudo ou produto

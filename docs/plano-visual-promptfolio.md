@@ -4,7 +4,7 @@
 
 Redesenhar o `PromptFolio` para que ele deixe de parecer um experimento visual muito colorido e passe a transmitir uma identidade mais madura, calma e coerente com a proposta do projeto.
 
-O objetivo nao e "enfeitar o terminal". O objetivo e construir uma interface que pareca:
+O objetivo não é "enfeitar o terminal". O objetivo é construir uma interface que pareça:
 
 - minimalista
 - fluida
@@ -12,28 +12,30 @@ O objetivo nao e "enfeitar o terminal". O objetivo e construir uma interface que
 - editorial
 - tecnologica sem exagero
 
-Em termos praticos, queremos um produto que seja agradavel de usar por varios minutos, e nao apenas impactante nos primeiros 10 segundos.
+Em termos práticos, queremos um produto que seja agradável de usar por vários minutos, e não apenas impactante nos primeiros 10 segundos.
+
+Nota: este documento registra a direção inicial do redesign. A implementação consolidada da interface e dos tokens atuais está documentada em `AGENTS.md`.
 
 ## Diagnostico do estado atual
 
-Hoje a interface tem alguns problemas de direcao visual:
+No estado anterior do projeto, a interface tinha alguns problemas de direção visual:
 
-- usa uma base muito associada a tema "dracula + neon"
+- partia de uma base visual muito mais saturada e dramática do que a direção atual
 - tem acentos chamativos demais para a importancia real dos elementos
 - o destaque visual esta espalhado em muitos lugares ao mesmo tempo
-- a experiencia de leitura do historico nao e tao calma quanto deveria
+- a experiência de leitura do histórico não é tão calma quanto deveria
 - falta um sistema claro de temas para dark mode e light mode
 - a interface parece mais um terminal tematico do que um portfolio com identidade
 
 Arquivos que concentram esse comportamento hoje:
 
-- [src/assets/App.css](/Users/zanardo/Personal/projects/PromptFolio/src/assets/App.css:1)
-- [tailwind.config.cjs](/Users/zanardo/Personal/projects/PromptFolio/tailwind.config.cjs:1)
-- [src/App.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/App.tsx:8)
-- [src/components/Header.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/Header.tsx:1)
-- [src/components/History.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/History.tsx:15)
-- [src/components/InputPrompt.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/InputPrompt.tsx:1)
-- [src/components/LanguageToggle.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/LanguageToggle.tsx:1)
+- [src/assets/App.css](../src/assets/App.css)
+- [tailwind.config.cjs](../tailwind.config.cjs)
+- [src/App.tsx](../src/App.tsx)
+- [src/components/Header.tsx](../src/components/Header.tsx)
+- [src/components/History.tsx](../src/components/History.tsx)
+- [src/components/InputPrompt.tsx](../src/components/InputPrompt.tsx)
+- [src/components/LanguageToggle.tsx](../src/components/LanguageToggle.tsx)
 
 ## Direcao estetica proposta
 
@@ -131,11 +133,11 @@ Sensacao: papel tecnico, leve, limpo, silencioso.
 - `text-soft`: `#7a828e`
 - `border`: `#ddd7cc`
 - `border-strong`: `#c9c1b4`
-- `accent`: `#245c4a`
-- `accent-soft`: `#dcebe5`
+- `accent`: `#058549`
+- `accent-soft`: `#d8ebe4`
 - `success`: `#2f6b4f`
 - `error`: `#a34a3d`
-- `focus`: `#245c4a`
+- `focus`: `#058549`
 
 ## Tema Dark
 
@@ -349,7 +351,7 @@ Criar um contexto novo parecido com o `LanguageContext` para:
 
 Arquivo principal:
 
-- [src/App.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/App.tsx:8)
+- [src/App.tsx](../src/App.tsx)
 
 O que mudar:
 
@@ -362,7 +364,7 @@ O que mudar:
 
 Arquivo:
 
-- [src/components/Header.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/Header.tsx:1)
+- [src/components/Header.tsx](../src/components/Header.tsx)
 
 O que mudar:
 
@@ -381,7 +383,7 @@ Direcao:
 
 Arquivo:
 
-- [src/components/History.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/History.tsx:15)
+- [src/components/History.tsx](../src/components/History.tsx)
 
 O que mudar:
 
@@ -401,7 +403,7 @@ Direcao:
 
 Arquivo:
 
-- [src/components/InputPrompt.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/InputPrompt.tsx:1)
+- [src/components/InputPrompt.tsx](../src/components/InputPrompt.tsx)
 
 O que mudar:
 
@@ -419,7 +421,7 @@ Direcao:
 
 Arquivo:
 
-- [src/components/LanguageToggle.tsx](/Users/zanardo/Personal/projects/PromptFolio/src/components/LanguageToggle.tsx:1)
+- [src/components/LanguageToggle.tsx](../src/components/LanguageToggle.tsx)
 
 O que mudar:
 
@@ -525,7 +527,7 @@ Cuidados:
 
 ## Etapa 1 - Fundacao visual
 
-- remover tema atual baseado em dracula/neon
+- remover o tema anterior baseado em dracula/neon
 - definir tokens semanticos no CSS global
 - configurar dark mode e light mode
 - escolher tipografia final
@@ -568,7 +570,7 @@ Vamos considerar essa etapa visual bem resolvida quando:
 - dark mode e light mode parecerem duas versoes da mesma interface
 - a leitura do historico ficar mais confortavel
 - o input parecer integrado ao sistema
-- os toggles parecerem ferramentas, nao enfeites
+- os toggles parecerem ferramentas, não enfeites
 - o projeto transmitir mais clareza e menos ruido
 
 ## Decisoes objetivas recomendadas

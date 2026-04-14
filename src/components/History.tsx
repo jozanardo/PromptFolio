@@ -48,7 +48,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
           return (
             <div
               key={idx}
-              className="history-error ml-7 rounded-2xl border border-subtle bg-surface-2 px-4 py-3 pl-5"
+              className="history-error ml-7 rounded-2xl border border-subtle bg-surface-2 pl-5 pr-4 py-3"
             >
               <div className="flex items-start gap-2.5 pl-3 leading-7">
                 <span className="font-medium text-danger">{item.cmd}</span>

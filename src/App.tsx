@@ -10,6 +10,12 @@ import InputPrompt from './components/InputPrompt';
 import TopBar from './components/TopBar';
 import { useTerminal } from './context/TerminalContext';
 
+const REVEAL_TIMINGS = {
+  shell: 40,
+  content: 180,
+  prompt: 320,
+} as const;
+
 const App: React.FC = () => {
   const { input, setInput, history, inputRef, endRef, processCommand } =
     useTerminal();
@@ -38,9 +44,18 @@ const App: React.FC = () => {
 
     setPromptInteractive(false);
 
-    const shellTimer = window.setTimeout(() => setShellVisible(true), 40);
-    const contentTimer = window.setTimeout(() => setContentVisible(true), 180);
-    const promptTimer = window.setTimeout(() => setPromptVisible(true), 320);
+    const shellTimer = window.setTimeout(
+      () => setShellVisible(true),
+      REVEAL_TIMINGS.shell
+    );
+    const contentTimer = window.setTimeout(
+      () => setContentVisible(true),
+      REVEAL_TIMINGS.content
+    );
+    const promptTimer = window.setTimeout(
+      () => setPromptVisible(true),
+      REVEAL_TIMINGS.prompt
+    );
 
     return () => {
       window.clearTimeout(shellTimer);
@@ -54,8 +69,21 @@ const App: React.FC = () => {
       return;
     }
 
+    const focusInputIfIdle = () => {
+      const activeElement = document.activeElement;
+
+      if (
+        inputRef.current &&
+        (!activeElement ||
+          activeElement === document.body ||
+          activeElement === document.documentElement)
+      ) {
+        inputRef.current.focus();
+      }
+    };
+
     const focusFrame = window.requestAnimationFrame(() => {
-      inputRef.current?.focus();
+      focusInputIfIdle();
     });
 
     return () => {
