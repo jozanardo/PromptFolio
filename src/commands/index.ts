@@ -1,59 +1,18 @@
-export enum Command {
-  HELP     = 'help',
-  LS       = 'ls',
-  WHOAMI   = 'whoami',
-  ABOUT    = 'about',
-  SKILLS   = 'skills',
-  PROJECTS = 'projects',
-  CONTACT  = 'contact',
-  CLEAR    = 'clear',
-}
+import { clearCommand } from './clear';
+import { helpCommand } from './help';
+import { legacyCommands } from './legacy';
+import { createCommandRegistry } from './runtime/commandRegistry';
 
-export interface CommandMetaType {
-  description: string;
-  usage: string;
-}
+export const commandRegistry = createCommandRegistry([
+  helpCommand,
+  ...legacyCommands,
+  clearCommand,
+]);
 
-export const commandMetaEntries = [
-  [Command.HELP, { 
-    description: 'Lista todos os comandos disponíveis.', 
-    usage: 'help',
-  }],
-  [Command.LS, {
-    description: 'Lista todos os comandos disponíveis.',
-    usage: 'help',
-  }],
-  [Command.WHOAMI, {
-    description: 'Quem sou eu.',
-    usage: 'whoami',
-  }],
-  [Command.ABOUT, {
-    description: 'Saiba mais sobre mim.',
-    usage: 'about',
-  }],
-  [Command.SKILLS, {
-    description: 'Quais tecnologias eu uso.',
-    usage: 'skills',
-  }],
-  [Command.PROJECTS, {
-    description:
-      'Veja meus projetos (use filtros: [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]).',
-    usage: 'projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]',
-  }],
-  [Command.CONTACT, {
-    description: 'Quer dizer algo?',
-    usage: 'contact',
-  }],
-  [Command.CLEAR, {
-    description: 'Limpa o histórico (header fixo).',
-    usage: 'clear',
-  }],
-] as const satisfies readonly (readonly [Command, CommandMetaType])[]; 
+export const CommandList = commandRegistry.list().map(
+  definition => definition.meta.name
+);
 
-export const CommandMeta = new Map<Command, CommandMetaType>(commandMetaEntries);
-
-export const CommandList = Array.from(CommandMeta.keys()) as Command[];
-
-export function isCommand(cmd: string): cmd is Command {
-  return CommandList.includes(cmd as Command);
+export function isCommand(cmd: string): boolean {
+  return commandRegistry.get(cmd) !== undefined;
 }

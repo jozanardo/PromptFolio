@@ -1,6 +1,6 @@
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../i18n';
-import { CommandMeta } from '../../commands';
+import { commandRegistry } from '../../commands';
 
 export function useHelp() {
   const { lang } = useLanguage();
@@ -9,10 +9,14 @@ export function useHelp() {
   function getHelpLines(): string[] {
     const lines: string[] = [t.helpTitle];
 
-    for (const [cmd, meta] of CommandMeta.entries()) {
-      lines.push(`  ${cmd.padEnd(12)} - ${meta.description}`);
-      lines.push(`    ${t.usageLabel}: ${meta.usage}`);
-    }
+    commandRegistry.list('help').forEach(definition => {
+      lines.push(
+        `  ${definition.meta.name.padEnd(12)} - ${
+          definition.meta.description[lang]
+        }`
+      );
+      lines.push(`    ${t.usageLabel}: ${definition.meta.usage[lang]}`);
+    });
 
     return lines;
   }

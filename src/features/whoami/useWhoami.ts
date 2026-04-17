@@ -3,9 +3,8 @@ import { fetchReadmeHtml } from '../../services/githubApi';
 
 export interface UseWhoamiResult {
   loading: boolean;
-  html: string;
   error: Error | null;
-  loadReadme: () => Promise<void>;
+  fetchReadme: () => Promise<string>;
 }
 
 export function useWhoami(
@@ -13,21 +12,20 @@ export function useWhoami(
   repo: string = 'jozanardo'
 ): UseWhoamiResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const [html, setHtml]       = useState<string>('');
-  const [error, setError]     = useState<Error | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
-  const loadReadme = async (): Promise<void> => {
+  const fetchReadme = async (): Promise<string> => {
     setLoading(true);
     setError(null);
     try {
-      const markdownHtml = await fetchReadmeHtml(owner, repo);
-      setHtml(markdownHtml);
+      return await fetchReadmeHtml(owner, repo);
     } catch (err: any) {
       setError(err);
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, html, error, loadReadme };
+  return { loading, error, fetchReadme };
 }

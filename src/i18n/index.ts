@@ -139,3 +139,5 @@ export const translations = {
     } as const,
   },
 } as const;
+
+export type ShellTranslations = typeof translations;
