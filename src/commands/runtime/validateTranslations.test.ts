@@ -37,4 +37,21 @@ describe('validateTranslations', () => {
       })
     ).toThrow("Missing translation key 'sections.intro' for locale 'pt' in command 'help'.");
   });
+
+  it('throws when a locale changes the primitive value type', () => {
+    expect(() =>
+      validateTranslations('help', {
+        en: {
+          title: 'Help',
+          usage: 'help',
+        },
+        pt: {
+          title: 123 as any,
+          usage: 'help',
+        },
+      } as any)
+    ).toThrow(
+      "Translation value type mismatch at 'title' for locale 'pt' in command 'help'."
+    );
+  });
 });

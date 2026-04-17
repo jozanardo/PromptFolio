@@ -267,15 +267,24 @@ const whoamiCommand: CommandDefinition<EmptyArgs, typeof legacyTranslations> = {
   execute: async (_, context) => {
     const commandTranslations = legacyTranslations[context.lang].whoami;
 
-    try {
-      const html = await context.services.whoami.fetchReadme();
-
-      return {
+    context.setHistory(prev => [
+      ...prev,
+      {
+        type: 'output',
         blocks: [
           {
             type: 'system',
             text: `🔄 ${commandTranslations.loading}`,
           },
+        ],
+      },
+    ]);
+
+    try {
+      const html = await context.services.whoami.fetchReadme();
+
+      return {
+        blocks: [
           {
             type: 'markdown',
             html,

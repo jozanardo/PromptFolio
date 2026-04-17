@@ -6,6 +6,18 @@ function isObjectLike(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
+function isPrimitive(value: unknown): value is string | number | boolean | bigint | symbol | null | undefined {
+  return !isObjectLike(value) && !Array.isArray(value);
+}
+
+function typeMismatchMessage(
+  commandName: string,
+  locale: SupportedLocale,
+  keyPath: string
+) {
+  return `Translation value type mismatch at '${keyPath}' for locale '${locale}' in command '${commandName}'.`;
+}
+
 function walkLocaleShape(
   commandName: string,
   locale: SupportedLocale,
@@ -61,10 +73,16 @@ function walkLocaleShape(
     return;
   }
 
-  if (candidateValue === undefined) {
-    throw new Error(
-      `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
-    );
+  if (isPrimitive(baseValue)) {
+    if (candidateValue === undefined) {
+      throw new Error(
+        `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
+      );
+    }
+
+    if (typeof candidateValue !== typeof baseValue) {
+      throw new Error(typeMismatchMessage(commandName, locale, keyPath));
+    }
   }
 }
 

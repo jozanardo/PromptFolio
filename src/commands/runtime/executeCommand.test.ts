@@ -1,18 +1,31 @@
-import { describe, expect, it } from 'vitest';
-import { helpCommand } from '../help';
-import { clearCommand } from '../clear';
-import { createCommandRegistry } from './commandRegistry';
+import { describe, expect, it, vi } from 'vitest';
+import { commandRegistry } from '../../commands';
 import { executeCommand } from './executeCommand';
-import type { CommandContext } from '../../types';
+import type { CommandContext, HistoryItem } from '../../types';
 
-function createContext(lang: 'en' | 'pt' = 'en'): CommandContext {
-  const registry = createCommandRegistry([helpCommand, clearCommand]);
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+
+  const promise = new Promise<T>(res => {
+    resolve = res;
+  });
+
+  return { promise, resolve };
+}
+
+function createContext(
+  lang: 'en' | 'pt' = 'en',
+  overrides: Partial<Pick<CommandContext, 'setHistory' | 'services'>> = {}
+): CommandContext {
+  const setHistory =
+    overrides.setHistory ??
+    (vi.fn() as unknown as CommandContext['setHistory']);
 
   return {
     lang,
-    registry,
+    registry: commandRegistry,
     history: [],
-    setHistory: () => undefined,
+    setHistory,
     shellMessages: {
       notFoundMessage:
         lang === 'en'
@@ -33,13 +46,15 @@ function createContext(lang: 'en' | 'pt' = 'en'): CommandContext {
       ready: false,
       records: [],
     },
-    services: {
-      whoami: {
-        loading: false,
-        error: null,
-        fetchReadme: async () => '',
-      },
-    },
+    services:
+      overrides.services ??
+      ({
+        whoami: {
+          loading: false,
+          error: null,
+          fetchReadme: async () => '',
+        },
+      } as CommandContext['services']),
   };
 }
 
@@ -60,6 +75,36 @@ describe('executeCommand', () => {
             usage: 'help',
           },
           {
+            command: 'ls',
+            description: 'Lista todos os comandos disponíveis.',
+            usage: 'help',
+          },
+          {
+            command: 'whoami',
+            description: 'Quem sou eu.',
+            usage: 'whoami',
+          },
+          {
+            command: 'about',
+            description: 'Saiba mais sobre mim.',
+            usage: 'about',
+          },
+          {
+            command: 'skills',
+            description: 'Quais tecnologias eu uso.',
+            usage: 'skills',
+          },
+          {
+            command: 'projects',
+            description: 'Veja meus projetos (use filtros: [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]).',
+            usage: 'projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]',
+          },
+          {
+            command: 'contact',
+            description: 'Quer dizer algo?',
+            usage: 'contact',
+          },
+          {
             command: 'clear',
             description: 'Limpa o histórico (header fixo).',
             usage: 'clear',
@@ -75,6 +120,51 @@ describe('executeCommand', () => {
     expect(result.result.echoInput).toBe(false);
     expect(result.result.blocks).toEqual([]);
     expect(result.result.effects).toEqual([{ type: 'clearHistory' }]);
+  });
+
+  it('shows whoami loading before awaiting the README fetch', async () => {
+    const deferred = createDeferred<string>();
+    const setHistoryMock = vi.fn();
+    const fetchReadme = vi.fn(() => deferred.promise);
+
+    const context = createContext('en', {
+      setHistory: setHistoryMock as unknown as CommandContext['setHistory'],
+      services: {
+        whoami: {
+          loading: false,
+          error: null,
+          fetchReadme,
+        },
+      },
+    });
+
+    const execution = executeCommand('whoami', context);
+
+    expect(setHistoryMock).toHaveBeenCalledTimes(1);
+    const updater = setHistoryMock.mock.calls[0][0];
+    expect(typeof updater).toBe('function');
+
+    expect((updater as (value: HistoryItem[]) => HistoryItem[])([])).toEqual([
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'system',
+            text: '🔄 Loading GitHub README…',
+          },
+        ],
+      },
+    ]);
+
+    deferred.resolve('<h1>README</h1>');
+    const result = await execution;
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'markdown',
+        html: '<h1>README</h1>',
+      },
+    ]);
   });
 
   it('returns a localized error block for unknown commands', async () => {
