@@ -16,7 +16,13 @@ describe('GitHub Actions CI workflow', () => {
     expect(workflow).toContain('push:');
     expect(workflow).toContain('- main');
     expect(workflow).toContain('cancel-in-progress: true');
-    expect(workflow).toContain('node-version: 20');
+    expect(
+      Array.from(
+        workflow.matchAll(
+          /node-version:\s*['"]?20(?:\.x|(?:\.\d+){1,2})?['"]?/g
+        )
+      )
+    ).toHaveLength(4);
     expect(workflow).toContain('lint:');
     expect(workflow).toContain('typecheck:');
     expect(workflow).toContain('test:');

@@ -92,8 +92,8 @@ const History: React.FC<HistoryProps> = ({ history }) => {
                     {record.subtitle}
                   </div>
                 ) : null}
-                {record.lines?.map(line => (
-                  <div key={line} className="leading-7 text-primary">
+                {record.lines?.map((line, lineIdx) => (
+                  <div key={`${line}-${lineIdx}`} className="leading-7 text-primary">
                     {line}
                   </div>
                 ))}
