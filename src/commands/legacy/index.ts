@@ -309,6 +309,10 @@ const projectsCommand: CommandDefinition<ProjectsArgs, typeof legacyTranslations
       en: legacyTranslations.en.projects.meta.usage,
       pt: legacyTranslations.pt.projects.meta.usage,
     },
+    parsing: {
+      booleanFlags: ['help', 'list-langs'],
+      valueFlags: ['lang', 'desc', 'name'],
+    },
     surfaces: {
       help: true,
       ls: true,

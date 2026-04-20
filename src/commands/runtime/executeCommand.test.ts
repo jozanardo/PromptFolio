@@ -122,6 +122,17 @@ describe('executeCommand', () => {
     expect(result.result.effects).toEqual([{ type: 'clearHistory' }]);
   });
 
+  it('treats projects boolean flags as boolean even when followed by positionals', async () => {
+    const result = await executeCommand('projects --help extra', createContext('en'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'text',
+        text: 'Usage: projects [--lang=<language>] [--desc=<text>] [--name=<name>] [--list-langs] [--help]',
+      },
+    ]);
+  });
+
   it('shows whoami loading before awaiting the README fetch', async () => {
     const deferred = createDeferred<string>();
     const setHistoryMock = vi.fn();

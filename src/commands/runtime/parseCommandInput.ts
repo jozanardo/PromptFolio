@@ -1,4 +1,4 @@
-import type { ParsedCommandInput } from '../../types';
+import type { CommandParsingOptions, ParsedCommandInput } from '../../types';
 
 interface TokenizeResult {
   tokens: string[];
@@ -65,12 +65,17 @@ function tokenize(input: string): TokenizeResult {
   return { tokens, error: null };
 }
 
-export function parseCommandInput(rawInput: string): ParsedCommandInput {
+export function parseCommandInput(
+  rawInput: string,
+  options: CommandParsingOptions = {}
+): ParsedCommandInput {
   const normalized = rawInput.trim();
   const { tokens, error } = tokenize(normalized);
   const [commandName = '', ...argv] = tokens;
   const flags: Record<string, string | boolean> = {};
   const positionals: string[] = [];
+  const booleanFlags = new Set(options.booleanFlags ?? []);
+  const valueFlags = new Set(options.valueFlags ?? []);
 
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
@@ -90,9 +95,18 @@ export function parseCommandInput(rawInput: string): ParsedCommandInput {
       continue;
     }
 
+    if (booleanFlags.has(body)) {
+      flags[body] = true;
+      continue;
+    }
+
     const nextToken = argv[index + 1];
 
-    if (nextToken && !nextToken.startsWith('--')) {
+    if (
+      (valueFlags.size === 0 || valueFlags.has(body)) &&
+      nextToken &&
+      !nextToken.startsWith('--')
+    ) {
       flags[body] = nextToken;
       index += 1;
       continue;

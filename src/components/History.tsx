@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n';
 import MarkdownRenderer from './MarkdownRenderer';
-import { isCommand } from '../commands';
 import { HistoryItem, TerminalBlock } from '../types';
 
 interface HistoryProps {
@@ -14,29 +13,11 @@ const History: React.FC<HistoryProps> = ({ history }) => {
   const t = translations[lang];
 
   const renderTextLine = useMemo(
-    () => (text: string, key: string) => {
-      const leading = text.match(/^\s*/)?.[0] ?? '';
-      const trimmed = text.slice(leading.length);
-      const token = trimmed.split(/\s+/)[0];
-
-      if (token && isCommand(token)) {
-        const rest = trimmed.slice(token.length);
-
-        return (
-          <div key={key} className="ml-7 whitespace-pre-wrap leading-7 text-primary">
-            <span>{leading}</span>
-            <span className="font-medium text-accent">{token}</span>
-            <span>{rest}</span>
-          </div>
-        );
-      }
-
-      return (
-        <div key={key} className="ml-7 whitespace-pre-wrap leading-7 text-primary">
-          {text}
-        </div>
-      );
-    },
+    () => (text: string, key: string) => (
+      <div key={key} className="ml-7 whitespace-pre-wrap leading-7 text-primary">
+        {text}
+      </div>
+    ),
     []
   );
 

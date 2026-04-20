@@ -36,4 +36,27 @@ describe('History', () => {
     expect(screen.getAllByText('help')).toHaveLength(2);
     expect(screen.getByText('Usage: help')).toBeInTheDocument();
   });
+
+  it('renders regular output text without command highlighting', () => {
+    const history: HistoryItem[] = [
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'text',
+            text: 'About me:',
+          },
+        ],
+      },
+    ];
+
+    const { container } = render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByText('About me:')).toBeInTheDocument();
+    expect(container.querySelector('.text-accent')).toBeNull();
+  });
 });

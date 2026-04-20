@@ -10,11 +10,17 @@ export interface LocalizedText {
   pt: string;
 }
 
+export interface CommandParsingOptions {
+  booleanFlags?: readonly string[];
+  valueFlags?: readonly string[];
+}
+
 export interface CommandMeta {
   name: string;
   category: string;
   description: LocalizedText;
   usage: LocalizedText;
+  parsing?: CommandParsingOptions;
   surfaces?: {
     help?: boolean;
     ls?: boolean;

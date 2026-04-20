@@ -12,7 +12,7 @@ export default function Header({
   isPromptVisible,
 }: HeaderProps) {
   const { lang } = useLanguage();
-  const { setInput, inputRef } = useTerminal();
+  const { setInput, inputRef, processCommand } = useTerminal();
   const t = translations[lang];
 
   const handleQuickStart = (command: string) => {
@@ -24,6 +24,10 @@ export default function Header({
     window.requestAnimationFrame(() => {
       inputRef.current?.focus();
       inputRef.current?.setSelectionRange(command.length, command.length);
+
+      window.requestAnimationFrame(() => {
+        void processCommand(command);
+      });
     });
   };
 

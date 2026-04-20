@@ -31,7 +31,11 @@ export async function executeCommand(
   rawInput: string,
   context: CommandContext
 ): Promise<CommandDispatchResult> {
-  const parsedInput = parseCommandInput(rawInput);
+  const initialParsedInput = parseCommandInput(rawInput);
+  const command = context.registry.get(initialParsedInput.commandName);
+  const parsedInput = command?.meta.parsing
+    ? parseCommandInput(rawInput, command.meta.parsing)
+    : initialParsedInput;
 
   if (!parsedInput.commandName) {
     return {
@@ -52,8 +56,6 @@ export async function executeCommand(
       ),
     };
   }
-
-  const command = context.registry.get(parsedInput.commandName);
 
   if (!command) {
     return {
