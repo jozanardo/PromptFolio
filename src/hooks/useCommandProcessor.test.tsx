@@ -1,5 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ReactNode } from 'react';
 import { useCommandProcessor } from './useCommandProcessor';
 import { LanguageProvider } from '../context/LanguageContext';
 import type { CommandDispatchResult } from '../commands/runtime/executeCommand';
@@ -74,7 +75,7 @@ describe('useCommandProcessor', () => {
       },
     } satisfies CommandDispatchResult);
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <LanguageProvider>{children}</LanguageProvider>
     );
 

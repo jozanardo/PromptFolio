@@ -6,7 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n';
 import { useWhoami } from '../features/whoami/useWhoami';
 import { useProjects } from '../features/projects/useProjects';
-import { CommandContext, HistoryItem, TerminalBlock } from '../types';
+import { CommandContext, HistoryItem } from '../types';
 
 export function useCommandProcessor(): {
   input: string;

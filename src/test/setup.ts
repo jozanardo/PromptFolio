@@ -26,4 +26,8 @@ if (
 
 beforeEach(() => {
   storage.clear();
+
+  if (typeof window !== 'undefined' && typeof window.localStorage?.clear === 'function') {
+    window.localStorage.clear();
+  }
 });
