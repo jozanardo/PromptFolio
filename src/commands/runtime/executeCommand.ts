@@ -15,11 +15,16 @@ function createErrorResult(
   command: string | undefined,
   message: string
 ): CommandExecutionResult {
-  const block: ErrorBlock = {
-    type: 'error',
-    command,
-    message,
-  };
+  const block: ErrorBlock = command
+    ? {
+        type: 'error',
+        command,
+        message,
+      }
+    : {
+        type: 'error',
+        message,
+      };
 
   return {
     blocks: [block],
@@ -37,6 +42,16 @@ export async function executeCommand(
     ? parseCommandInput(rawInput, command.meta.parsing)
     : initialParsedInput;
 
+  if (parsedInput.tokenizationError) {
+    return {
+      parsedInput,
+      result: createErrorResult(
+        parsedInput.commandName || undefined,
+        parsedInput.tokenizationError
+      ),
+    };
+  }
+
   if (!parsedInput.commandName) {
     return {
       parsedInput,
@@ -44,16 +59,6 @@ export async function executeCommand(
         blocks: [],
         echoInput: false,
       },
-    };
-  }
-
-  if (parsedInput.tokenizationError) {
-    return {
-      parsedInput,
-      result: createErrorResult(
-        parsedInput.commandName,
-        parsedInput.tokenizationError
-      ),
     };
   }
 

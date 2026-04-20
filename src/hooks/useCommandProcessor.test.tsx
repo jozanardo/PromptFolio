@@ -28,6 +28,16 @@ vi.mock('../features/whoami/useWhoami', () => ({
 
 import { executeCommand } from '../commands/runtime/executeCommand';
 
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+
+  const promise = new Promise<T>(res => {
+    resolve = res;
+  });
+
+  return { promise, resolve };
+}
+
 describe('useCommandProcessor', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -93,6 +103,111 @@ describe('useCommandProcessor', () => {
             {
               type: 'text',
               text: 'done',
+            },
+          ],
+        },
+      ]);
+    });
+  });
+
+  it('applies command history updates immediately while execution is still in flight', async () => {
+    const deferred = createDeferred<CommandDispatchResult>();
+
+    vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      context.setHistory(prev => [
+        ...prev,
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'system',
+              text: 'loading',
+            },
+          ],
+        },
+      ]);
+
+      return deferred.promise;
+    });
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <LanguageProvider>{children}</LanguageProvider>
+    );
+
+    const { result } = renderHook(() => useCommandProcessor(), { wrapper });
+
+    let execution!: Promise<void>;
+
+    await act(async () => {
+      execution = result.current.processCommand('whoami');
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'whoami',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'system',
+              text: 'loading',
+            },
+          ],
+        },
+      ]);
+    });
+
+    deferred.resolve({
+      parsedInput: {
+        raw: 'whoami',
+        normalized: 'whoami',
+        commandName: 'whoami',
+        argv: [],
+        positionals: [],
+        flags: {},
+        tokenizationError: null,
+      },
+      result: {
+        echoInput: true,
+        blocks: [
+          {
+            type: 'markdown',
+            html: '<p>done</p>',
+          },
+        ],
+        effects: [],
+      },
+    });
+
+    await act(async () => {
+      await execution;
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'whoami',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'system',
+              text: 'loading',
+            },
+          ],
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'markdown',
+              html: '<p>done</p>',
             },
           ],
         },

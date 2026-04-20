@@ -18,6 +18,14 @@ function typeMismatchMessage(
   return `Translation value type mismatch at '${keyPath}' for locale '${locale}' in command '${commandName}'.`;
 }
 
+function missingTranslationMessage(
+  commandName: string,
+  locale: SupportedLocale,
+  keyPath: string
+) {
+  return `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`;
+}
+
 function walkLocaleShape(
   commandName: string,
   locale: SupportedLocale,
@@ -30,13 +38,15 @@ function walkLocaleShape(
   if (Array.isArray(baseValue)) {
     if (!Array.isArray(candidateValue)) {
       throw new Error(
-        `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
+        candidateValue === undefined
+          ? missingTranslationMessage(commandName, locale, keyPath)
+          : typeMismatchMessage(commandName, locale, keyPath)
       );
     }
 
     if (candidateValue.length < baseValue.length) {
       throw new Error(
-        `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
+        missingTranslationMessage(commandName, locale, keyPath)
       );
     }
 
@@ -56,7 +66,9 @@ function walkLocaleShape(
   if (isObjectLike(baseValue)) {
     if (!isObjectLike(candidateValue)) {
       throw new Error(
-        `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
+        candidateValue === undefined
+          ? missingTranslationMessage(commandName, locale, keyPath)
+          : typeMismatchMessage(commandName, locale, keyPath)
       );
     }
 
@@ -76,7 +88,7 @@ function walkLocaleShape(
   if (isPrimitive(baseValue)) {
     if (candidateValue === undefined) {
       throw new Error(
-        `Missing translation key '${keyPath}' for locale '${locale}' in command '${commandName}'.`
+        missingTranslationMessage(commandName, locale, keyPath)
       );
     }
 

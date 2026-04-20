@@ -54,4 +54,23 @@ describe('validateTranslations', () => {
       "Translation value type mismatch at 'title' for locale 'pt' in command 'help'."
     );
   });
+
+  it('throws a type mismatch when a nested object is replaced with a primitive', () => {
+    expect(() =>
+      validateTranslations('help', {
+        en: {
+          title: 'Help',
+          sections: {
+            intro: 'Available commands',
+          },
+        },
+        pt: {
+          title: 'Ajuda',
+          sections: 'broken' as any,
+        },
+      } as any)
+    ).toThrow(
+      "Translation value type mismatch at 'sections' for locale 'pt' in command 'help'."
+    );
+  });
 });

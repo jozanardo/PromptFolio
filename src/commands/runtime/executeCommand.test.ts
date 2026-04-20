@@ -214,4 +214,19 @@ describe('executeCommand', () => {
       },
     ]);
   });
+
+  it('returns a parser error even when tokenization fails before a command token exists', async () => {
+    const result = await executeCommand('"', createContext('en'));
+
+    expect(result.parsedInput.commandName).toBe('');
+    expect(result.parsedInput.tokenizationError).toBe(
+      'Unclosed quote in command input.'
+    );
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        message: 'Unclosed quote in command input.',
+      },
+    ]);
+  });
 });

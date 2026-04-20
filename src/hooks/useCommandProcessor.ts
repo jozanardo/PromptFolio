@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, RefObject, SetStateAction } from 'react';
+import { useState, useEffect, useRef, RefObject } from 'react';
 import { commandRegistry } from '../commands';
 import { applyCommandEffects } from '../commands/runtime/effects';
 import { executeCommand } from '../commands/runtime/executeCommand';
@@ -73,35 +73,24 @@ export function useCommandProcessor(): {
       return;
     }
 
-    const bufferedHistoryUpdates: Array<
-      (currentHistory: HistoryItem[]) => HistoryItem[]
-    > = [];
-
-    const bufferHistoryUpdate: CommandContext['setHistory'] = (
-      update: SetStateAction<HistoryItem[]>
-    ) => {
-      bufferedHistoryUpdates.push(currentHistory =>
-        typeof update === 'function' ? update(currentHistory) : update
-      );
+    const inputEntry: HistoryItem = {
+      type: 'input',
+      text: normalizedInput,
     };
 
     setInput('');
+    setHistory(prev => [...prev, inputEntry]);
 
     const { result } = await executeCommand(
       normalizedInput,
-      createCommandContext(bufferHistoryUpdate)
+      createCommandContext(setHistory)
     );
 
     setHistory(prev => {
-      let nextHistory = prev;
-
-      if (result.echoInput ?? true) {
-        nextHistory = [...nextHistory, { type: 'input', text: normalizedInput }];
-      }
-
-      bufferedHistoryUpdates.forEach(applyUpdate => {
-        nextHistory = applyUpdate(nextHistory);
-      });
+      let nextHistory =
+        result.echoInput ?? true
+          ? prev
+          : prev.filter(item => item !== inputEntry);
 
       nextHistory = applyCommandEffects(nextHistory, result.effects);
 
