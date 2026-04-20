@@ -178,6 +178,31 @@ describe('executeCommand', () => {
     ]);
   });
 
+  it('returns a structured error block when whoami fails', async () => {
+    const result = await executeCommand(
+      'whoami',
+      createContext('en', {
+        services: {
+          whoami: {
+            loading: false,
+            error: null,
+            fetchReadme: async () => {
+              throw new Error('boom');
+            },
+          },
+        },
+      })
+    );
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        command: 'whoami',
+        message: 'boom',
+      },
+    ]);
+  });
+
   it('returns a localized error block for unknown commands', async () => {
     const result = await executeCommand('unknown', createContext('en'));
 

@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, RefObject } from 'react';
+import { useState, useEffect, useRef, RefObject, SetStateAction } from 'react';
 import { commandRegistry } from '../commands';
 import { applyCommandEffects } from '../commands/runtime/effects';
 import { executeCommand } from '../commands/runtime/executeCommand';
-import { parseCommandInput } from '../commands/runtime/parseCommandInput';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n';
 import { useWhoami } from '../features/whoami/useWhoami';
@@ -37,31 +36,15 @@ export function useCommandProcessor(): {
     });
   }, [history]);
 
-  const appendInput = (text: string) => {
-    setHistory(prev => [...prev, { type: 'input', text }]);
-  };
-
-  const appendBlocks = (blocks: TerminalBlock[]) => {
-    if (blocks.length === 0) {
-      return;
-    }
-
-    setHistory(prev => [
-      ...prev,
-      {
-        type: 'output',
-        blocks,
-      },
-    ]);
-  };
-
-  const createCommandContext = (): CommandContext => ({
+  const createCommandContext = (
+    setHistoryOverride: CommandContext['setHistory'] = setHistory
+  ): CommandContext => ({
     lang,
     shellMessages: {
       notFoundMessage: translations[lang].notFoundMessage,
     },
     history,
-    setHistory,
+    setHistory: setHistoryOverride,
     content: {
       profile: null,
       narrative: null,
@@ -90,19 +73,50 @@ export function useCommandProcessor(): {
       return;
     }
 
-    const parsedPreview = parseCommandInput(normalizedInput);
-    const shouldEchoInput = parsedPreview.commandName !== 'clear';
+    const bufferedHistoryUpdates: Array<
+      (currentHistory: HistoryItem[]) => HistoryItem[]
+    > = [];
 
-    if (shouldEchoInput) {
-      appendInput(normalizedInput);
-    }
+    const bufferHistoryUpdate: CommandContext['setHistory'] = (
+      update: SetStateAction<HistoryItem[]>
+    ) => {
+      bufferedHistoryUpdates.push(currentHistory =>
+        typeof update === 'function' ? update(currentHistory) : update
+      );
+    };
 
     setInput('');
 
-    const { result } = await executeCommand(normalizedInput, createCommandContext());
+    const { result } = await executeCommand(
+      normalizedInput,
+      createCommandContext(bufferHistoryUpdate)
+    );
 
-    setHistory(prev => applyCommandEffects(prev, result.effects));
-    appendBlocks(result.blocks);
+    setHistory(prev => {
+      let nextHistory = prev;
+
+      if (result.echoInput ?? true) {
+        nextHistory = [...nextHistory, { type: 'input', text: normalizedInput }];
+      }
+
+      bufferedHistoryUpdates.forEach(applyUpdate => {
+        nextHistory = applyUpdate(nextHistory);
+      });
+
+      nextHistory = applyCommandEffects(nextHistory, result.effects);
+
+      if (result.blocks.length > 0) {
+        nextHistory = [
+          ...nextHistory,
+          {
+            type: 'output',
+            blocks: result.blocks,
+          },
+        ];
+      }
+
+      return nextHistory;
+    });
   }
 
   return {

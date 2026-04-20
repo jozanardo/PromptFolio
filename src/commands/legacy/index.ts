@@ -292,7 +292,15 @@ const whoamiCommand: CommandDefinition<EmptyArgs, typeof legacyTranslations> = {
         ],
       };
     } catch (error: any) {
-      return createTextResult([`❌ ${error.message}`]);
+      return {
+        blocks: [
+          {
+            type: 'error',
+            command: 'whoami',
+            message: error.message,
+          },
+        ],
+      };
     }
   },
 };
