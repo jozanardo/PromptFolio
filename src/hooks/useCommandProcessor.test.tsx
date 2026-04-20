@@ -114,8 +114,31 @@ describe('useCommandProcessor', () => {
     const deferred = createDeferred<CommandDispatchResult>();
 
     vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      expect(context.history).toEqual([
+        {
+          type: 'input',
+          text: 'whoami',
+        },
+      ]);
+
       context.setHistory(prev => [
         ...prev,
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'system',
+              text: 'loading',
+            },
+          ],
+        },
+      ]);
+
+      expect(context.history).toEqual([
+        {
+          type: 'input',
+          text: 'whoami',
+        },
         {
           type: 'output',
           blocks: [

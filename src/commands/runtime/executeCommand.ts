@@ -11,6 +11,14 @@ export interface CommandDispatchResult {
   result: CommandExecutionResult;
 }
 
+function resolveErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return 'Command execution failed.';
+}
+
 function createErrorResult(
   command: string | undefined,
   message: string
@@ -72,7 +80,19 @@ export async function executeCommand(
     };
   }
 
-  const parsedArgs = command.parse(parsedInput, context);
+  let parsedArgs;
+
+  try {
+    parsedArgs = command.parse(parsedInput, context);
+  } catch (error) {
+    return {
+      parsedInput,
+      result: createErrorResult(
+        parsedInput.commandName || command.meta.name,
+        resolveErrorMessage(error)
+      ),
+    };
+  }
 
   if (!parsedArgs.ok) {
     return {
@@ -81,7 +101,19 @@ export async function executeCommand(
     };
   }
 
-  const result = await command.execute(parsedArgs.args, context, parsedInput);
+  let result;
+
+  try {
+    result = await command.execute(parsedArgs.args, context, parsedInput);
+  } catch (error) {
+    return {
+      parsedInput,
+      result: createErrorResult(
+        parsedInput.commandName || command.meta.name,
+        resolveErrorMessage(error)
+      ),
+    };
+  }
 
   return {
     parsedInput,

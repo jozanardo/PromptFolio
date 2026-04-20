@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { commandRegistry } from '../../commands';
 import { executeCommand } from './executeCommand';
-import type { CommandContext, HistoryItem } from '../../types';
+import type {
+  AnyCommandDefinition,
+  CommandContext,
+  HistoryItem,
+} from '../../types';
 
 function createDeferred<T>() {
   let resolve!: (value: T) => void;
@@ -15,7 +19,9 @@ function createDeferred<T>() {
 
 function createContext(
   lang: 'en' | 'pt' = 'en',
-  overrides: Partial<Pick<CommandContext, 'setHistory' | 'services'>> = {}
+  overrides: Partial<
+    Pick<CommandContext, 'setHistory' | 'services' | 'registry'>
+  > = {}
 ): CommandContext {
   const setHistory =
     overrides.setHistory ??
@@ -23,7 +29,7 @@ function createContext(
 
   return {
     lang,
-    registry: commandRegistry,
+    registry: overrides.registry ?? commandRegistry,
     history: [],
     setHistory,
     shellMessages: {
@@ -226,6 +232,77 @@ describe('executeCommand', () => {
       {
         type: 'error',
         message: 'Unclosed quote in command input.',
+      },
+    ]);
+  });
+
+  it('converts thrown parse errors into structured error blocks', async () => {
+    const command: AnyCommandDefinition = {
+      meta: {
+        name: 'boom-parse',
+        category: 'test',
+        description: { en: 'boom', pt: 'boom' },
+        usage: { en: 'boom-parse', pt: 'boom-parse' },
+      },
+      translations: { en: {}, pt: {} },
+      parse: () => {
+        throw new Error('parse exploded');
+      },
+      execute: () => ({ blocks: [] }),
+    };
+
+    const result = await executeCommand(
+      'boom-parse',
+      createContext('en', {
+        registry: {
+          get: name => (name === 'boom-parse' ? command : undefined),
+          list: () => [command],
+        },
+      })
+    );
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        command: 'boom-parse',
+        message: 'parse exploded',
+      },
+    ]);
+  });
+
+  it('converts thrown execute errors into structured error blocks', async () => {
+    const command: AnyCommandDefinition = {
+      meta: {
+        name: 'boom-exec',
+        category: 'test',
+        description: { en: 'boom', pt: 'boom' },
+        usage: { en: 'boom-exec', pt: 'boom-exec' },
+      },
+      translations: { en: {}, pt: {} },
+      parse: () => ({
+        ok: true,
+        args: {},
+      }),
+      execute: async () => {
+        throw new Error('execute exploded');
+      },
+    };
+
+    const result = await executeCommand(
+      'boom-exec',
+      createContext('en', {
+        registry: {
+          get: name => (name === 'boom-exec' ? command : undefined),
+          list: () => [command],
+        },
+      })
+    );
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        command: 'boom-exec',
+        message: 'execute exploded',
       },
     ]);
   });

@@ -17,7 +17,8 @@ export function useCommandProcessor(): {
   processCommand: (commandInput: string) => Promise<void>;
 } {
   const [input, setInput] = useState<string>('');
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistoryState] = useState<HistoryItem[]>([]);
+  const historyRef = useRef<HistoryItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,7 +26,17 @@ export function useCommandProcessor(): {
   const whoami = useWhoami();
   const projects = useProjects();
 
+  const setHistory: CommandContext['setHistory'] = update => {
+    const nextHistory =
+      typeof update === 'function' ? update(historyRef.current) : update;
+
+    historyRef.current = nextHistory;
+    setHistoryState(nextHistory);
+  };
+
   useEffect(() => {
+    historyRef.current = history;
+
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       typeof window.matchMedia === 'function' &&
@@ -43,7 +54,9 @@ export function useCommandProcessor(): {
     shellMessages: {
       notFoundMessage: translations[lang].notFoundMessage,
     },
-    history,
+    get history() {
+      return historyRef.current;
+    },
     setHistory: setHistoryOverride,
     content: {
       profile: null,
