@@ -8,7 +8,7 @@ interface TerminalContextType {
   history: HistoryItem[];
   inputRef: React.RefObject<HTMLInputElement | null>;
   endRef: React.RefObject<HTMLDivElement | null>;
-  processCommand: (cmd: string) => void;
+  processCommand: (cmd: string) => Promise<void>;
 }
 
 const TerminalContext = createContext<TerminalContextType | null>(null);

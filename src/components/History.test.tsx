@@ -1,0 +1,100 @@
+import { render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import History from './History';
+import { LanguageProvider } from '../context/LanguageContext';
+import type { HistoryItem } from '../types';
+
+describe('History', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('renders a helpList block with localized usage labels', () => {
+    const history: HistoryItem[] = [
+      { type: 'input', text: 'help' },
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'helpList',
+            title: 'Available commands:',
+            items: [
+              {
+                command: 'help',
+                description: 'List all available commands.',
+                usage: 'help',
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByText('Available commands:')).toBeInTheDocument();
+    expect(screen.getAllByText('help')).toHaveLength(2);
+    expect(screen.getByText('Usage: help')).toBeInTheDocument();
+  });
+
+  it('renders regular output text without command highlighting', () => {
+    const history: HistoryItem[] = [
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'text',
+            text: 'About me:',
+          },
+        ],
+      },
+    ];
+
+    const { container } = render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByText('About me:')).toBeInTheDocument();
+    expect(container.querySelector('.text-accent')).toBeNull();
+  });
+
+  it('renders duplicated record lines without React key warnings', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+
+    const history: HistoryItem[] = [
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'recordList',
+            records: [
+              {
+                title: 'projects',
+                lines: ['same line', 'same line'],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getAllByText('same line')).toHaveLength(2);
+    expect(consoleErrorSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining('Encountered two children with the same key')
+    );
+  });
+});
