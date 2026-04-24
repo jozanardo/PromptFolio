@@ -19,6 +19,10 @@ const REVEAL_TIMINGS = {
 const App: React.FC = () => {
   const { input, setInput, history, inputRef, endRef, processCommand } =
     useTerminal();
+  const hasHistory = history.length > 0;
+  const shellContentSpacing = hasHistory
+    ? 'py-8 md:py-9'
+    : 'pt-3 pb-8 md:pt-4 md:pb-9';
   const [prefersReducedMotion] = useState<boolean>(() => {
     if (typeof window === 'undefined') {
       return false;
@@ -123,7 +127,7 @@ const App: React.FC = () => {
             </div>
 
             <div
-              className="flex-1 px-6 py-8 sm:px-8 md:px-12 md:py-9 lg:px-16"
+              className={`flex-1 px-6 sm:px-8 md:px-12 lg:px-16 ${shellContentSpacing}`}
               onClick={() => {
                 if (promptInteractive) {
                   inputRef.current?.focus();
@@ -155,7 +159,7 @@ const App: React.FC = () => {
 
                   setPromptInteractive(true);
                 }}
-                className={`mt-10 transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
+                className={`${hasHistory ? 'mt-10' : 'mt-2'} transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
                   promptVisible
                     ? 'translate-y-0 opacity-100'
                     : 'pointer-events-none translate-y-3 opacity-0'

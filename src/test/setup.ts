@@ -1,33 +1,89 @@
 import '@testing-library/jest-dom/vitest';
-import { beforeEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import { afterEach, beforeAll, vi } from 'vitest';
 
-const storage = new Map<string, string>();
+beforeAll(() => {
+  (
+    globalThis as typeof globalThis & {
+      IS_REACT_ACT_ENVIRONMENT?: boolean;
+    }
+  ).IS_REACT_ACT_ENVIRONMENT = true;
 
-if (
-  typeof window !== 'undefined' &&
-  typeof window.localStorage?.getItem !== 'function'
-) {
+  const storage = new Map<string, string>();
+
   Object.defineProperty(window, 'localStorage', {
-    configurable: true,
+    writable: true,
     value: {
-      getItem: (key: string) => storage.get(key) ?? null,
-      setItem: (key: string, value: string) => {
+      getItem: vi.fn((key: string) => storage.get(key) ?? null),
+      setItem: vi.fn((key: string, value: string) => {
         storage.set(key, value);
-      },
-      removeItem: (key: string) => {
+      }),
+      removeItem: vi.fn((key: string) => {
         storage.delete(key);
-      },
-      clear: () => {
+      }),
+      clear: vi.fn(() => {
         storage.clear();
-      },
+      }),
     },
   });
-}
 
-beforeEach(() => {
-  storage.clear();
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
 
-  if (typeof window !== 'undefined' && typeof window.localStorage?.clear === 'function') {
-    window.localStorage.clear();
-  }
+  Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    writable: true,
+    value: vi.fn(),
+  });
+
+  vi.stubGlobal(
+    'requestAnimationFrame',
+    (callback: FrameRequestCallback) =>
+      window.setTimeout(() => callback(performance.now()), 16)
+  );
+  vi.stubGlobal('cancelAnimationFrame', (id: number) => window.clearTimeout(id));
+
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+
+      if (url.includes('/users/jozanardo/repos')) {
+        return new Response('[]', {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      if (url.includes('/readme')) {
+        return new Response('<p>README</p>', {
+          status: 200,
+          headers: { 'Content-Type': 'text/html' },
+        });
+      }
+
+      return new Response('{}', {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    })
+  );
+});
+
+afterEach(() => {
+  cleanup();
+  window.localStorage.clear();
+  document.documentElement.lang = 'en';
+  vi.clearAllMocks();
 });

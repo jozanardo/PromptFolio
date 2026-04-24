@@ -9,6 +9,23 @@ describe('History', () => {
     vi.restoreAllMocks();
   });
 
+  it('expõe a saída como um log acessível para tecnologias assistivas', () => {
+    window.localStorage.setItem('lang', 'pt');
+
+    render(
+      <LanguageProvider>
+        <History
+          history={[{ type: 'output', blocks: [{ type: 'text', text: 'Olá, mundo' }] }]}
+        />
+      </LanguageProvider>
+    );
+
+    const log = screen.getByRole('log', { name: 'Histórico do terminal' });
+
+    expect(log).toHaveAttribute('aria-live', 'polite');
+    expect(log).toHaveAttribute('aria-relevant', 'additions text');
+  });
+
   it('renders a helpList block with localized usage labels', () => {
     const history: HistoryItem[] = [
       { type: 'input', text: 'help' },

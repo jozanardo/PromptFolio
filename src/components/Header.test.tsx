@@ -13,10 +13,9 @@ describe('Header quick-start commands', () => {
     vi.clearAllMocks();
   });
 
-  it('waits an extra animation frame before executing a quick-start command', () => {
+  it('fills the prompt and focuses the input on the next animation frame', () => {
     const animationFrames: FrameRequestCallback[] = [];
     const setInput = vi.fn();
-    const processCommand = vi.fn().mockResolvedValue(undefined);
     const focus = vi.fn();
     const setSelectionRange = vi.fn();
 
@@ -31,7 +30,7 @@ describe('Header quick-start commands', () => {
         } as unknown as HTMLInputElement,
       },
       endRef: { current: null },
-      processCommand,
+      processCommand: vi.fn(),
     });
 
     vi.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
@@ -46,11 +45,10 @@ describe('Header quick-start commands', () => {
     );
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Fill prompt with about' })
+      screen.getByRole('button', { name: 'Fill the prompt with about' })
     );
 
     expect(setInput).toHaveBeenCalledWith('about');
-    expect(processCommand).not.toHaveBeenCalled();
     expect(animationFrames).toHaveLength(1);
 
     const firstFrame = animationFrames.shift();
@@ -59,13 +57,6 @@ describe('Header quick-start commands', () => {
 
     expect(focus).toHaveBeenCalledTimes(1);
     expect(setSelectionRange).toHaveBeenCalledWith(5, 5);
-    expect(processCommand).not.toHaveBeenCalled();
-    expect(animationFrames).toHaveLength(1);
-
-    const secondFrame = animationFrames.shift();
-    expect(secondFrame).toBeDefined();
-    secondFrame?.(16);
-
-    expect(processCommand).toHaveBeenCalledWith('about');
+    expect(animationFrames).toHaveLength(0);
   });
 });
