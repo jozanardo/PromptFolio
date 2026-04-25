@@ -12,6 +12,7 @@ beforeAll(() => {
   const storage = new Map<string, string>();
 
   Object.defineProperty(window, 'localStorage', {
+    configurable: true,
     writable: true,
     value: {
       getItem: vi.fn((key: string) => storage.get(key) ?? null),
@@ -28,6 +29,7 @@ beforeAll(() => {
   });
 
   Object.defineProperty(window, 'matchMedia', {
+    configurable: true,
     writable: true,
     value: vi.fn().mockImplementation((query: string) => ({
       matches: false,
