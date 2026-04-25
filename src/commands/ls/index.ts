@@ -49,12 +49,12 @@ export const lsCommand: CommandDefinition<LsArgs, typeof lsTranslations> = {
         .filter(command => command.meta.category === category)
         .map(command => command.meta.name);
 
-        if (commandNames.length > 0) {
-          entries.push({
-            title: categoryLabels[category] ?? category,
-            lines: commandNames,
-          });
-        }
+      if (commandNames.length > 0) {
+        entries.push({
+          title: categoryLabels[category] ?? category,
+          lines: commandNames,
+        });
+      }
 
       return entries;
     }, []);
