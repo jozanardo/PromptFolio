@@ -1,10 +1,14 @@
 import { clearCommand } from './clear';
 import { helpCommand } from './help';
 import { legacyCommands } from './legacy';
+import { lsCommand } from './ls';
 import { createCommandRegistry } from './runtime/commandRegistry';
+import { startCommand } from './start';
 
 export const commandRegistry = createCommandRegistry([
+  startCommand,
   helpCommand,
+  lsCommand,
   ...legacyCommands,
   clearCommand,
 ]);

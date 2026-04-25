@@ -1,0 +1,36 @@
+import { validateTranslations } from '../runtime/validateTranslations';
+
+export const startTranslations = validateTranslations('start', {
+  en: {
+    intro: 'PromptFolio is a personal archive guided by commands.',
+    title: 'Start exploring:',
+    outro:
+      'Type a command or use one of the shortcuts above to fill the prompt.',
+    entries: {
+      projects: 'Browse selected work and useful filters.',
+      timeline: 'Follow the journey in chronological order.',
+      now: 'See the current focus of study and building.',
+      help: 'List every available command.',
+    },
+    meta: {
+      description: 'Show the opening map of the archive.',
+      usage: 'start',
+    },
+  },
+  pt: {
+    intro: 'PromptFolio é um arquivo pessoal guiado por comandos.',
+    title: 'Comece explorando:',
+    outro:
+      'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
+    entries: {
+      projects: 'Conheça trabalhos selecionados e filtros úteis.',
+      timeline: 'Veja a trajetória em ordem cronológica.',
+      now: 'Entenda o foco atual de estudo e construção.',
+      help: 'Liste todos os comandos disponíveis.',
+    },
+    meta: {
+      description: 'Mostra o mapa inicial do arquivo.',
+      usage: 'start',
+    },
+  },
+});

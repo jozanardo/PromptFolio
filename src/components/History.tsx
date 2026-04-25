@@ -52,19 +52,17 @@ const History: React.FC<HistoryProps> = ({ history }) => {
 
       if (block.type === 'helpList') {
         return (
-          <div key={key} className="ml-3 space-y-3">
+          <div key={key} className="history-list">
             <div className="history-section-label ml-4">{block.title}</div>
             {block.items.map(item => (
-              <div key={item.command} className="border-l border-subtle-strong pl-4">
-                <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4">
-                  <span className="min-w-[5.5rem] font-medium text-accent">
-                    {item.command}
-                  </span>
-                  <span className="leading-7 text-primary">
+              <div key={item.command} className="history-list-entry">
+                <div className="history-list-main">
+                  <span className="history-list-token">{item.command}</span>
+                  <span className="history-list-copy">
                     {item.description}
                   </span>
                 </div>
-                <div className="mt-1 text-sm leading-6 text-muted">
+                <div className="history-list-meta">
                   {t.usageLabel}: {item.usage}
                 </div>
               </div>
@@ -75,28 +73,35 @@ const History: React.FC<HistoryProps> = ({ history }) => {
 
       if (block.type === 'recordList') {
         return (
-          <div key={key} className="ml-3 space-y-4">
+          <div key={key} className="history-list">
             {block.title ? (
               <div className="history-section-label ml-4">{block.title}</div>
             ) : null}
             {block.records.map(record => (
               <div
                 key={`${record.title}-${record.subtitle ?? ''}`}
-                className="border-l border-subtle-strong pl-4"
+                className="history-list-entry"
               >
-                <div className="font-medium leading-7 text-primary">
-                  {record.title}
+                <div className="history-list-main">
+                  <div className="history-list-token">{record.title}</div>
+                  {record.subtitle ? (
+                    <div className="history-list-copy">
+                      {record.subtitle}
+                    </div>
+                  ) : null}
                 </div>
-                {record.subtitle ? (
-                  <div className="text-sm leading-6 text-muted">
-                    {record.subtitle}
+                {record.lines && record.lines.length > 0 ? (
+                  <div className="history-list-subtokens">
+                    {record.lines.map((line, lineIdx) => (
+                      <span
+                        key={`${line}-${lineIdx}`}
+                        className="history-list-subtoken"
+                      >
+                        {line}
+                      </span>
+                    ))}
                   </div>
                 ) : null}
-                {record.lines?.map((line, lineIdx) => (
-                  <div key={`${line}-${lineIdx}`} className="leading-7 text-primary">
-                    {line}
-                  </div>
-                ))}
               </div>
             ))}
           </div>

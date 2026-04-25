@@ -17,8 +17,8 @@ export const clearCommand: CommandDefinition<ClearArgs, typeof clearTranslations
     },
     surfaces: {
       help: true,
-      ls: true,
-      search: true,
+      ls: false,
+      search: false,
     },
   },
   translations: clearTranslations,

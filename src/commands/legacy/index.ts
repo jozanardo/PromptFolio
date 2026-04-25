@@ -4,7 +4,6 @@ import type {
   CommandDefinition,
   CommandExecutionResult,
 } from '../../types';
-import { buildHelpListBlock } from '../help';
 import { validateTranslations } from '../runtime/validateTranslations';
 
 const legacyTranslations = validateTranslations('legacy-commands', {
@@ -75,12 +74,6 @@ const legacyTranslations = validateTranslations('legacy-commands', {
       filterNameLabel: 'name',
       noProjectsMessage: 'No projects found with the applied filters.',
     },
-    ls: {
-      meta: {
-        description: 'List all available commands.',
-        usage: 'help',
-      },
-    },
   },
   pt: {
     about: {
@@ -149,12 +142,6 @@ const legacyTranslations = validateTranslations('legacy-commands', {
       filterNameLabel: 'nome',
       noProjectsMessage: 'Nenhum projeto encontrado com os filtros aplicados.',
     },
-    ls: {
-      meta: {
-        description: 'Lista todos os comandos disponíveis.',
-        usage: 'help',
-      },
-    },
   },
 });
 
@@ -212,34 +199,6 @@ function createStaticCommand(
     },
   };
 }
-
-const lsCommand: CommandDefinition<EmptyArgs, typeof legacyTranslations> = {
-  meta: {
-    name: 'ls',
-    category: 'discovery',
-    description: {
-      en: legacyTranslations.en.ls.meta.description,
-      pt: legacyTranslations.pt.ls.meta.description,
-    },
-    usage: {
-      en: legacyTranslations.en.ls.meta.usage,
-      pt: legacyTranslations.pt.ls.meta.usage,
-    },
-    surfaces: {
-      help: true,
-      ls: true,
-      search: true,
-    },
-  },
-  translations: legacyTranslations,
-  parse: () => ({
-    ok: true,
-    args: {},
-  }),
-  execute: (_, context) => ({
-    blocks: [buildHelpListBlock(context)],
-  }),
-};
 
 const whoamiCommand: CommandDefinition<EmptyArgs, typeof legacyTranslations> = {
   meta: {
@@ -464,7 +423,6 @@ const projectsCommand: CommandDefinition<ProjectsArgs, typeof legacyTranslations
 };
 
 export const legacyCommands: AnyCommandDefinition[] = [
-  lsCommand,
   whoamiCommand,
   createStaticCommand('about'),
   createStaticCommand('skills'),

@@ -65,6 +65,43 @@ function createContext(
 }
 
 describe('executeCommand', () => {
+  it('executes start as the localized discovery entrypoint', async () => {
+    const result = await executeCommand('start', createContext('pt'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'text',
+        text: 'PromptFolio é um arquivo pessoal guiado por comandos.',
+      },
+      {
+        type: 'recordList',
+        title: 'Comece explorando:',
+        records: [
+          {
+            title: 'projects',
+            subtitle: 'Conheça trabalhos selecionados e filtros úteis.',
+          },
+          {
+            title: 'timeline',
+            subtitle: 'Veja a trajetória em ordem cronológica.',
+          },
+          {
+            title: 'now',
+            subtitle: 'Entenda o foco atual de estudo e construção.',
+          },
+          {
+            title: 'help',
+            subtitle: 'Liste todos os comandos disponíveis.',
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
+      },
+    ]);
+  });
+
   it('executes help from the registry and returns a help list block', async () => {
     const result = await executeCommand('help', createContext('pt'));
 
@@ -76,14 +113,19 @@ describe('executeCommand', () => {
         title: 'Comandos disponíveis:',
         items: [
           {
+            command: 'start',
+            description: 'Mostra o mapa inicial do arquivo.',
+            usage: 'start',
+          },
+          {
             command: 'help',
             description: 'Lista todos os comandos disponíveis.',
             usage: 'help',
           },
           {
             command: 'ls',
-            description: 'Lista todos os comandos disponíveis.',
-            usage: 'help',
+            description: 'Mostra um diretório compacto das áreas do arquivo.',
+            usage: 'ls',
           },
           {
             command: 'whoami',
@@ -114,6 +156,31 @@ describe('executeCommand', () => {
             command: 'clear',
             description: 'Limpa o histórico (header fixo).',
             usage: 'clear',
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('executes ls as a compact archive directory instead of duplicating help', async () => {
+    const result = await executeCommand('ls', createContext('en'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'recordList',
+        title: 'Archive directory:',
+        records: [
+          {
+            title: 'discovery',
+            lines: ['start', 'help', 'ls'],
+          },
+          {
+            title: 'identity',
+            lines: ['whoami', 'about', 'skills', 'contact'],
+          },
+          {
+            title: 'work',
+            lines: ['projects'],
           },
         ],
       },
