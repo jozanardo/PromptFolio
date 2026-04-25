@@ -26,7 +26,7 @@ export const translations = {
     filterDescLabel: 'description',
     filterNameLabel: 'name',
     urlLabel: 'URL',
-    quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
+    quickStartCommands: ['start', 'projects', 'whoami', 'help'] as const,
 
     // about
     aboutTitle: 'About me:',
@@ -99,7 +99,7 @@ export const translations = {
     filterDescLabel: 'descrição',
     filterNameLabel: 'nome',
     urlLabel: 'URL',
-    quickStartCommands: ['about', 'projects', 'skills', 'contact'] as const,
+    quickStartCommands: ['start', 'projects', 'whoami', 'help'] as const,
 
     // about
     aboutTitle: 'Sobre mim:',

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { commandRegistry } from '../../commands';
+import { createCommandRegistry } from './commandRegistry';
 import { executeCommand } from './executeCommand';
 import type {
   AnyCommandDefinition,
@@ -65,55 +66,321 @@ function createContext(
 }
 
 describe('executeCommand', () => {
-  it('executes help from the registry and returns a help list block', async () => {
-    const result = await executeCommand('help', createContext('pt'));
+  it.each([
+    {
+      lang: 'en',
+      blocks: [
+        {
+          type: 'text',
+          text: 'PromptFolio is a personal archive guided by commands.',
+        },
+        {
+          type: 'recordList',
+          title: 'Start exploring:',
+          records: [
+            {
+              title: 'projects',
+              subtitle: 'Browse selected work and useful filters.',
+            },
+            {
+              title: 'whoami',
+              subtitle: 'Read the short identity entry.',
+            },
+            {
+              title: 'ls',
+              subtitle: 'See the compact directory of archive areas.',
+            },
+            {
+              title: 'help',
+              subtitle: 'List every available command.',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'Type a command or use one of the shortcuts above to fill the prompt.',
+        },
+      ],
+    },
+    {
+      lang: 'pt',
+      blocks: [
+        {
+          type: 'text',
+          text: 'PromptFolio é um arquivo pessoal guiado por comandos.',
+        },
+        {
+          type: 'recordList',
+          title: 'Comece explorando:',
+          records: [
+            {
+              title: 'projects',
+              subtitle: 'Conheça trabalhos selecionados e filtros úteis.',
+            },
+            {
+              title: 'whoami',
+              subtitle: 'Leia a entrada curta de identidade.',
+            },
+            {
+              title: 'ls',
+              subtitle: 'Veja o diretório compacto das áreas do arquivo.',
+            },
+            {
+              title: 'help',
+              subtitle: 'Liste todos os comandos disponíveis.',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
+        },
+      ],
+    },
+  ] as const)(
+    'executes start as the localized discovery entrypoint in $lang',
+    async ({ lang, blocks }) => {
+      const result = await executeCommand('start', createContext(lang));
 
-    expect(result.parsedInput.commandName).toBe('help');
-    expect(result.result.echoInput).toBe(true);
+      expect(result.result.blocks).toEqual(blocks);
+      const recordList = result.result.blocks.find(
+        block => block.type === 'recordList'
+      );
+
+      expect(
+        recordList?.records.every(record => commandRegistry.get(record.title))
+      ).toBe(true);
+    }
+  );
+
+  it.each([
+    {
+      lang: 'en',
+      title: 'Available commands:',
+      items: [
+        {
+          command: 'start',
+          description: 'Show the opening map of the archive.',
+          usage: 'start',
+        },
+        {
+          command: 'help',
+          description: 'List all available commands.',
+          usage: 'help',
+        },
+        {
+          command: 'ls',
+          description: 'Show a compact directory of archive areas.',
+          usage: 'ls',
+        },
+        {
+          command: 'whoami',
+          description: 'What I do',
+          usage: 'whoami',
+        },
+        {
+          command: 'about',
+          description: 'Know about me',
+          usage: 'about',
+        },
+        {
+          command: 'skills',
+          description: 'What tech stacks I use',
+          usage: 'skills',
+        },
+        {
+          command: 'projects',
+          description:
+            'See my projects (use filters: [--lang=<language>] [--desc=<text>] [--name=<name>]).',
+          usage:
+            'projects [--lang=<language>] [--desc=<text>] [--name=<name>]',
+        },
+        {
+          command: 'contact',
+          description: 'Want to say something?',
+          usage: 'contact',
+        },
+        {
+          command: 'clear',
+          description: 'Clears the history (header stays).',
+          usage: 'clear',
+        },
+      ],
+    },
+    {
+      lang: 'pt',
+      title: 'Comandos disponíveis:',
+      items: [
+        {
+          command: 'start',
+          description: 'Mostra o mapa inicial do arquivo.',
+          usage: 'start',
+        },
+        {
+          command: 'help',
+          description: 'Lista todos os comandos disponíveis.',
+          usage: 'help',
+        },
+        {
+          command: 'ls',
+          description: 'Mostra um diretório compacto das áreas do arquivo.',
+          usage: 'ls',
+        },
+        {
+          command: 'whoami',
+          description: 'Quem sou eu.',
+          usage: 'whoami',
+        },
+        {
+          command: 'about',
+          description: 'Saiba mais sobre mim.',
+          usage: 'about',
+        },
+        {
+          command: 'skills',
+          description: 'Quais tecnologias eu uso.',
+          usage: 'skills',
+        },
+        {
+          command: 'projects',
+          description:
+            'Veja meus projetos (use filtros: [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]).',
+          usage:
+            'projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]',
+        },
+        {
+          command: 'contact',
+          description: 'Quer dizer algo?',
+          usage: 'contact',
+        },
+        {
+          command: 'clear',
+          description: 'Limpa o histórico (header fixo).',
+          usage: 'clear',
+        },
+      ],
+    },
+  ] as const)(
+    'executes help from the registry in $lang and returns a help list block',
+    async ({ lang, title, items }) => {
+      const result = await executeCommand('help', createContext(lang));
+
+      expect(result.parsedInput.commandName).toBe('help');
+      expect(result.result.echoInput).toBe(true);
+      expect(result.result.blocks).toEqual([
+        {
+          type: 'helpList',
+          title,
+          items,
+        },
+      ]);
+    }
+  );
+
+  it.each([
+    {
+      lang: 'en',
+      title: 'Archive directory:',
+      records: [
+        {
+          title: 'discovery',
+          lines: ['start', 'help', 'ls'],
+        },
+        {
+          title: 'identity',
+          lines: ['whoami', 'about', 'skills', 'contact'],
+        },
+        {
+          title: 'work',
+          lines: ['projects'],
+        },
+      ],
+    },
+    {
+      lang: 'pt',
+      title: 'Diretório do arquivo:',
+      records: [
+        {
+          title: 'descoberta',
+          lines: ['start', 'help', 'ls'],
+        },
+        {
+          title: 'identidade',
+          lines: ['whoami', 'about', 'skills', 'contact'],
+        },
+        {
+          title: 'trabalho',
+          lines: ['projects'],
+        },
+      ],
+    },
+  ] as const)(
+    'executes ls as a localized compact archive directory in $lang',
+    async ({ lang, title, records }) => {
+      const result = await executeCommand('ls', createContext(lang));
+
+      expect(result.result.blocks).toEqual([
+        {
+          type: 'recordList',
+          title,
+          records,
+        },
+      ]);
+    }
+  );
+
+  it('appends future ls categories after the preferred archive order', async () => {
+    const labCommand: AnyCommandDefinition = {
+      meta: {
+        name: 'lab',
+        category: 'experiments',
+        description: { en: 'Experimental notes', pt: 'Notas experimentais' },
+        usage: { en: 'lab', pt: 'lab' },
+        surfaces: {
+          help: true,
+          ls: true,
+          search: true,
+        },
+      },
+      translations: { en: {}, pt: {} },
+      parse: () => ({
+        ok: true,
+        args: {},
+      }),
+      execute: () => ({ blocks: [] }),
+    };
+    const registry = createCommandRegistry([
+      ...commandRegistry.list(),
+      labCommand,
+    ]);
+
+    const result = await executeCommand(
+      'ls',
+      createContext('en', {
+        registry,
+      })
+    );
+
     expect(result.result.blocks).toEqual([
       {
-        type: 'helpList',
-        title: 'Comandos disponíveis:',
-        items: [
+        type: 'recordList',
+        title: 'Archive directory:',
+        records: [
           {
-            command: 'help',
-            description: 'Lista todos os comandos disponíveis.',
-            usage: 'help',
+            title: 'discovery',
+            lines: ['start', 'help', 'ls'],
           },
           {
-            command: 'ls',
-            description: 'Lista todos os comandos disponíveis.',
-            usage: 'help',
+            title: 'identity',
+            lines: ['whoami', 'about', 'skills', 'contact'],
           },
           {
-            command: 'whoami',
-            description: 'Quem sou eu.',
-            usage: 'whoami',
+            title: 'work',
+            lines: ['projects'],
           },
           {
-            command: 'about',
-            description: 'Saiba mais sobre mim.',
-            usage: 'about',
-          },
-          {
-            command: 'skills',
-            description: 'Quais tecnologias eu uso.',
-            usage: 'skills',
-          },
-          {
-            command: 'projects',
-            description: 'Veja meus projetos (use filtros: [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]).',
-            usage: 'projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]',
-          },
-          {
-            command: 'contact',
-            description: 'Quer dizer algo?',
-            usage: 'contact',
-          },
-          {
-            command: 'clear',
-            description: 'Limpa o histórico (header fixo).',
-            usage: 'clear',
+            title: 'experiments',
+            lines: ['lab'],
           },
         ],
       },

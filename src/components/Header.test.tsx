@@ -45,10 +45,10 @@ describe('Header quick-start commands', () => {
     );
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Fill the prompt with about' })
+      screen.getByRole('button', { name: 'Fill the prompt with start' })
     );
 
-    expect(setInput).toHaveBeenCalledWith('about');
+    expect(setInput).toHaveBeenCalledWith('start');
     expect(animationFrames).toHaveLength(1);
 
     const firstFrame = animationFrames.shift();
@@ -58,5 +58,26 @@ describe('Header quick-start commands', () => {
     expect(focus).toHaveBeenCalledTimes(1);
     expect(setSelectionRange).toHaveBeenCalledWith(5, 5);
     expect(animationFrames).toHaveLength(0);
+  });
+
+  it('prioritizes the discovery commands in the first-visit chips', () => {
+    vi.mocked(useTerminal).mockReturnValue({
+      input: '',
+      setInput: vi.fn(),
+      history: [],
+      inputRef: { current: null },
+      endRef: { current: null },
+      processCommand: vi.fn(),
+    });
+
+    render(
+      <LanguageProvider>
+        <Header isContentVisible isPromptVisible />
+      </LanguageProvider>
+    );
+
+    expect(
+      screen.getAllByRole('button').map(button => button.textContent)
+    ).toEqual(['>start', '>projects', '>whoami', '>help']);
   });
 });

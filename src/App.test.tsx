@@ -58,7 +58,7 @@ describe('App quick-start commands', () => {
     renderApp();
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Fill the prompt with about' })
+      screen.getByRole('button', { name: 'Fill the prompt with start' })
     );
 
     act(() => {
@@ -66,7 +66,7 @@ describe('App quick-start commands', () => {
     });
 
     const input = screen.getByRole('textbox', { name: 'Command prompt' });
-    expect(input).toHaveValue('about');
+    expect(input).toHaveValue('start');
     expect(input).toHaveFocus();
   });
 });

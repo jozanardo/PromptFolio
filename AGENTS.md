@@ -524,6 +524,20 @@ They should not become loud or alarming.
 
 Help output should use thin structural cues and grouping so it reads as organized reference material rather than decorative UI.
 
+The visual treatment of `help` is the baseline for structured command output across PromptFolio.
+
+When a command lists other commands, aliases, local sections, categories, filters, tags, slugs, or navigable archive areas, it should follow the same family of treatment:
+
+- a quiet section label when a title is useful
+- a thin left rule for each grouped entry
+- the primary token in accent color with slightly stronger weight
+- explanatory copy in primary or muted text
+- secondary command lists as small muted inline tokens
+
+This applies especially to local, authored commands that do not depend on external data sources, such as `start`, `ls`, `about`, `skills`, `contact`, `timeline`, `journey`, `now`, and `philosophy`.
+
+Do not create bespoke cards, badges, chips, icons, or separate visual systems for those commands unless the user explicitly asks for a new direction. The goal is one coherent command archive language, with `help` as the clearest reference.
+
 ### 15.5 Markdown treatment
 
 Markdown blocks should feel like attached pages inside the shell.

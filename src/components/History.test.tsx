@@ -26,7 +26,7 @@ describe('History', () => {
     expect(log).toHaveAttribute('aria-relevant', 'additions text');
   });
 
-  it('renders a helpList block with localized usage labels', () => {
+  it('renders a helpList block with the shared command-list grammar', () => {
     const history: HistoryItem[] = [
       { type: 'input', text: 'help' },
       {
@@ -53,9 +53,16 @@ describe('History', () => {
       </LanguageProvider>
     );
 
-    expect(screen.getByText('Available commands:')).toBeInTheDocument();
-    expect(screen.getAllByText('help')).toHaveLength(2);
-    expect(screen.getByText('Usage: help')).toBeInTheDocument();
+    const commandToken = screen.getAllByText('help')[1];
+
+    expect(screen.getByText('Available commands:')).toHaveClass(
+      'history-section-label'
+    );
+    expect(commandToken).toHaveClass('history-list-token');
+    expect(screen.getByText('List all available commands.')).toHaveClass(
+      'history-list-copy'
+    );
+    expect(screen.getByText('Usage: help')).toHaveClass('history-list-meta');
   });
 
   it('renders regular output text without command highlighting', () => {
@@ -79,6 +86,45 @@ describe('History', () => {
 
     expect(screen.getByText('About me:')).toBeInTheDocument();
     expect(container.querySelector('.text-accent')).toBeNull();
+  });
+
+  it('renders record lists with the same structural grammar used by help', () => {
+    const history: HistoryItem[] = [
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'recordList',
+            title: 'Start exploring:',
+            records: [
+              {
+                title: 'projects',
+                subtitle: 'Browse selected work.',
+              },
+              {
+                title: 'discovery',
+                lines: ['start', 'help', 'ls'],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByText('projects')).toHaveClass('history-list-token');
+    expect(screen.getByText('Browse selected work.')).toHaveClass(
+      'history-list-copy'
+    );
+    expect(screen.getByText('discovery')).toHaveClass('history-list-token');
+    expect(screen.getByText('start')).toHaveClass('history-list-subtoken');
+    expect(screen.getByText('help')).toHaveClass('history-list-subtoken');
+    expect(screen.getByText('ls')).toHaveClass('history-list-subtoken');
   });
 
   it('renders duplicated record lines without React key warnings', () => {

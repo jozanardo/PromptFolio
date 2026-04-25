@@ -298,6 +298,38 @@ button {
   @apply text-[0.78rem] font-medium uppercase tracking-[0.18em] text-muted;
 }
 
+.history-list {
+  @apply ml-3 space-y-3;
+}
+
+.history-list-entry {
+  @apply border-l border-subtle-strong pl-4;
+}
+
+.history-list-main {
+  @apply flex flex-col gap-1 md:flex-row md:items-baseline md:gap-4;
+}
+
+.history-list-token {
+  @apply min-w-[5.5rem] font-medium leading-7 text-accent;
+}
+
+.history-list-copy {
+  @apply min-w-0 leading-7 text-primary;
+}
+
+.history-list-meta {
+  @apply mt-1 text-sm leading-6 text-muted;
+}
+
+.history-list-subtokens {
+  @apply mt-1 flex flex-wrap gap-x-3 gap-y-1;
+}
+
+.history-list-subtoken {
+  @apply text-sm leading-6 text-muted;
+}
+
 .history-error {
   position: relative;
   overflow: hidden;
