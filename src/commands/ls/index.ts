@@ -31,24 +31,33 @@ export const lsCommand: CommandDefinition<LsArgs, typeof lsTranslations> = {
   execute: (_, context) => {
     const t = lsTranslations[context.lang];
     const commands = context.registry.list('ls');
+    const preferredCategories = new Set<string>(CATEGORY_ORDER);
+    const categories = [
+      ...CATEGORY_ORDER,
+      ...commands
+        .map(command => command.meta.category)
+        .filter(
+          (category, index, allCategories) =>
+            !preferredCategories.has(category) &&
+            allCategories.indexOf(category) === index
+        ),
+    ];
+    const categoryLabels = t.categories as Record<string, string>;
 
-    const records = CATEGORY_ORDER.reduce<RecordListEntry[]>(
-      (entries, category) => {
-        const commandNames = commands
-          .filter(command => command.meta.category === category)
-          .map(command => command.meta.name);
+    const records = categories.reduce<RecordListEntry[]>((entries, category) => {
+      const commandNames = commands
+        .filter(command => command.meta.category === category)
+        .map(command => command.meta.name);
 
         if (commandNames.length > 0) {
           entries.push({
-            title: t.categories[category],
+            title: categoryLabels[category] ?? category,
             lines: commandNames,
           });
         }
 
-        return entries;
-      },
-      []
-    );
+      return entries;
+    }, []);
 
     return {
       blocks: [

@@ -47,12 +47,12 @@ export const startCommand: CommandDefinition<
               subtitle: t.entries.projects,
             },
             {
-              title: 'timeline',
-              subtitle: t.entries.timeline,
+              title: 'whoami',
+              subtitle: t.entries.whoami,
             },
             {
-              title: 'now',
-              subtitle: t.entries.now,
+              title: 'ls',
+              subtitle: t.entries.ls,
             },
             {
               title: 'help',
