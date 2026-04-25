@@ -59,7 +59,12 @@ beforeAll(() => {
   vi.stubGlobal(
     'fetch',
     vi.fn(async (input: string | URL | Request) => {
-      const url = String(input);
+      const url =
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+            ? input.href
+            : input.url;
 
       if (url.includes('/users/jozanardo/repos')) {
         return new Response('[]', {
@@ -75,10 +80,7 @@ beforeAll(() => {
         });
       }
 
-      return new Response('{}', {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      throw new Error(`Unexpected fetch request in test setup: ${url}`);
     })
   );
 });
