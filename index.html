@@ -14,11 +14,24 @@
     <script>
       (() => {
         const storageKey = 'theme';
+        const languageStorageKey = 'lang';
         const root = document.documentElement;
         let theme = 'dark';
+        let lang = 'en';
 
         try {
           const stored = window.localStorage.getItem(storageKey);
+          const storedLang = window.localStorage.getItem(languageStorageKey);
+
+          if (storedLang === 'pt' || storedLang === 'en') {
+            lang = storedLang;
+          } else if (
+            window.navigator.language &&
+            window.navigator.language.toLowerCase().startsWith('pt')
+          ) {
+            lang = 'pt';
+          }
+
           if (stored === 'light' || stored === 'dark') {
             theme = stored;
           } else if (
@@ -34,10 +47,18 @@
           ) {
             theme = 'light';
           }
+
+          if (
+            window.navigator.language &&
+            window.navigator.language.toLowerCase().startsWith('pt')
+          ) {
+            lang = 'pt';
+          }
         }
 
         root.dataset.theme = theme;
         root.style.colorScheme = theme;
+        root.lang = lang;
       })();
     </script>
   </head>

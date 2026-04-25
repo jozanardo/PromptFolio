@@ -10,4 +10,16 @@ describe('test setup', () => {
   it('clears localStorage before each test', () => {
     expect(window.localStorage.getItem('lang')).toBeNull();
   });
+
+  it('fails fast when a test fetches an unmocked URL', async () => {
+    await expect(fetch('https://example.test/unmocked')).rejects.toThrow(
+      'Unexpected fetch request in test setup: https://example.test/unmocked'
+    );
+  });
+
+  it('keeps the shared GitHub endpoint stubs available', async () => {
+    const response = await fetch('https://api.github.com/users/jozanardo/repos');
+
+    await expect(response.json()).resolves.toEqual([]);
+  });
 });

@@ -19,6 +19,10 @@ const REVEAL_TIMINGS = {
 const App: React.FC = () => {
   const { input, setInput, history, inputRef, endRef, processCommand } =
     useTerminal();
+  const hasHistory = history.length > 0;
+  const shellContentSpacing = hasHistory
+    ? 'py-8 md:py-9'
+    : 'pt-3 pb-8 md:pt-4 md:pb-9';
   const [prefersReducedMotion] = useState<boolean>(() => {
     if (typeof window === 'undefined') {
       return false;
@@ -109,11 +113,10 @@ const App: React.FC = () => {
       <div className="relative z-10">
         <TopBar />
 
-        <div className="mx-auto flex min-h-screen w-full max-w-[1240px] px-[6%] pb-10 pt-32 md:px-[10%] md:pt-28 xl:px-[15%]">
+        <div className="mx-auto flex min-h-screen w-full max-w-[1380px] px-[6%] pb-10 pt-32 md:px-[10%] md:pt-28 xl:px-[15%]">
           <div
-            className={`terminal-shell flex w-full flex-col overflow-hidden rounded-[28px] border border-subtle bg-surface transition-[opacity,transform,box-shadow] duration-700 ease-[cubic-bezier(0.18,0.88,0.32,1)] motion-reduce:transform-none ${
-              shellVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
-            }`}
+            className={`terminal-shell flex w-full flex-col overflow-hidden rounded-[28px] border border-subtle bg-surface transition-[opacity,transform,box-shadow] duration-700 ease-[cubic-bezier(0.18,0.88,0.32,1)] motion-reduce:transform-none ${shellVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+              }`}
           >
             <div className="border-b border-subtle px-6 py-8 sm:px-8 md:px-12 md:py-10 lg:px-16">
               <Header
@@ -123,7 +126,7 @@ const App: React.FC = () => {
             </div>
 
             <div
-              className="flex-1 px-6 py-8 sm:px-8 md:px-12 md:py-9 lg:px-16"
+              className={`flex-1 px-6 sm:px-8 md:px-12 lg:px-16 ${shellContentSpacing}`}
               onClick={() => {
                 if (promptInteractive) {
                   inputRef.current?.focus();
@@ -131,11 +134,10 @@ const App: React.FC = () => {
               }}
             >
               <div
-                className={`transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
-                  contentVisible
-                    ? 'translate-y-0 opacity-100'
-                    : 'translate-y-3 opacity-0'
-                }`}
+                className={`transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${contentVisible
+                  ? 'translate-y-0 opacity-100'
+                  : 'translate-y-3 opacity-0'
+                  }`}
               >
                 <History history={history} />
               </div>
@@ -155,11 +157,10 @@ const App: React.FC = () => {
 
                   setPromptInteractive(true);
                 }}
-                className={`mt-10 transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${
-                  promptVisible
-                    ? 'translate-y-0 opacity-100'
-                    : 'pointer-events-none translate-y-3 opacity-0'
-                } ${promptInteractive ? '' : 'pointer-events-none'}`}
+                className={`${hasHistory ? 'mt-10' : 'mt-2'} transition-[opacity,transform] duration-500 ease-out motion-reduce:transform-none ${promptVisible
+                  ? 'translate-y-0 opacity-100'
+                  : 'pointer-events-none translate-y-3 opacity-0'
+                  } ${promptInteractive ? '' : 'pointer-events-none'}`}
               >
                 <InputPrompt
                   input={input}

@@ -12,7 +12,7 @@ export default function Header({
   isPromptVisible,
 }: HeaderProps) {
   const { lang } = useLanguage();
-  const { setInput, inputRef, processCommand } = useTerminal();
+  const { setInput, inputRef } = useTerminal();
   const t = translations[lang];
 
   const handleQuickStart = (command: string) => {
@@ -24,10 +24,6 @@ export default function Header({
     window.requestAnimationFrame(() => {
       inputRef.current?.focus();
       inputRef.current?.setSelectionRange(command.length, command.length);
-
-      window.requestAnimationFrame(() => {
-        void processCommand(command);
-      });
     });
   };
 
@@ -41,9 +37,9 @@ export default function Header({
         >
           <div className="eyebrow">{t.eyebrowLabel}</div>
 
-          <p className="max-w-2xl text-[1.35rem] leading-8 text-primary md:text-[1.65rem] md:leading-10">
+          <h1 className="max-w-2xl text-[1.35rem] leading-8 text-primary md:text-[1.65rem] md:leading-10">
             {t.welcome}
-          </p>
+          </h1>
 
           <p className="max-w-[34rem] text-sm leading-7 text-muted md:text-base">
             {t.intro}
@@ -58,6 +54,10 @@ export default function Header({
         >
           <p className="text-[0.78rem] uppercase tracking-[0.16em] text-muted">
             {t.guidance}
+          </p>
+
+          <p className="max-w-[34rem] text-sm leading-6 text-soft">
+            {t.guidanceDetail}
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -79,6 +79,7 @@ export default function Header({
         </div>
 
         <div
+          id="terminal-usage-hint"
           aria-hidden={!isPromptVisible}
           className={`inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-subtle bg-surface-2 px-3 py-2 text-[0.82rem] text-soft transition-[opacity,transform] duration-500 delay-150 ease-out motion-reduce:transform-none ${
             isPromptVisible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'

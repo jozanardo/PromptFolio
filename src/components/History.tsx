@@ -109,7 +109,14 @@ const History: React.FC<HistoryProps> = ({ history }) => {
   );
 
   return (
-    <div className="history-flow space-y-5">
+    <div
+      id="terminal-history"
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions text"
+      aria-label={t.historyAriaLabel}
+      className="history-flow space-y-5"
+    >
       {history.map((item, idx) => {
         if (item.type === 'input') {
           return (

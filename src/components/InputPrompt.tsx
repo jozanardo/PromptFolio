@@ -37,8 +37,11 @@ const InputPrompt: React.FC<InputPromptProps> = ({
         spellCheck="false"
         autoComplete="off"
         autoCapitalize="none"
+        enterKeyHint="go"
+        placeholder={t.inputPlaceholder}
         tabIndex={isVisible ? 0 : -1}
         aria-label={t.inputAriaLabel}
+        aria-describedby="terminal-usage-hint"
       />
     </div>
   );

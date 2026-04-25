@@ -321,7 +321,7 @@ On large screens, the shell should maintain a well-defined editorial max width.
 
 Preferred shell max width:
 
-- between `1200px` and `1280px`
+- between `1280px` and `1380px`
 
 Do not allow the shell to grow indefinitely on wide screens.
 
