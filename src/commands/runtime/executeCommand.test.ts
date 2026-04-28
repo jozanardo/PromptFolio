@@ -65,7 +65,7 @@ describe('executeCommand', () => {
             },
             {
               title: 'whoami',
-              subtitle: 'Read the short identity entry.',
+              subtitle: 'Read the personal identity entry.',
             },
             {
               title: 'ls',
@@ -100,7 +100,7 @@ describe('executeCommand', () => {
             },
             {
               title: 'whoami',
-              subtitle: 'Leia a entrada curta de identidade.',
+              subtitle: 'Leia o retrato pessoal.',
             },
             {
               title: 'ls',
@@ -156,7 +156,7 @@ describe('executeCommand', () => {
         },
         {
           command: 'whoami',
-          description: 'Show the concise engineering identity entry.',
+          description: 'Show a personal snapshot of João.',
           usage: 'whoami',
         },
         {
@@ -210,7 +210,7 @@ describe('executeCommand', () => {
         },
         {
           command: 'whoami',
-          description: 'Mostra a entrada curta de identidade como engenheiro.',
+          description: 'Mostra um retrato pessoal do João.',
           usage: 'whoami',
         },
         {
@@ -396,23 +396,23 @@ describe('executeCommand', () => {
     expect(result.result.blocks).toEqual([
       {
         type: 'text',
-        text: 'João Zanardo is a Software Engineer focused on high-scale distributed systems, backend performance, resilience, and scalable architecture.',
+        text: 'João Zanardo is a Software Engineer shaped by critical systems and guided by curiosity, clarity, and the habit of turning complex problems into reliable products.',
       },
       {
         type: 'recordList',
-        title: 'Identity snapshot:',
+        title: 'Personal snapshot:',
         records: [
           {
-            title: 'focus',
-            subtitle: 'Building resilient backend services for cross-border shipping and delivery promises at Mercado Livre.',
+            title: 'profile',
+            subtitle: 'Works with calm execution, technical depth, and attention to impact, connecting engineering decisions with product, business, and people.',
           },
           {
-            title: 'scale',
-            subtitle: 'Working with services that evolved from under 1k to more than 11k requests per minute.',
+            title: 'interests',
+            subtitle: 'Economics, technology, and entrepreneurship; subjects that help connect systems, markets, and better decisions.',
           },
           {
-            title: 'direction',
-            subtitle: 'Deepening system design, high-scale engineering, and practical AI applied to production systems.',
+            title: 'hobbies',
+            subtitle: 'Running, weight training, Muay Thai, games, park walks with family, and barbecue.',
           },
         ],
       },
@@ -444,7 +444,7 @@ describe('executeCommand', () => {
           {
             title: 'Mercado Livre',
             meta: 'setembro de 2025 - atualmente',
-            subtitle: 'Engenheiro de Software na equipe de envios internacionais, atuando na orquestração de envios e promessas de entrega para compras internacionais.',
+            subtitle: 'Construindo serviços de back-end resilientes para garantir o cumprimento das promessas de envio e entrega internacionais no Mercado Livre.',
           },
         ],
       },
@@ -490,23 +490,23 @@ describe('executeCommand', () => {
     expect(result.result.blocks).toEqual([
       {
         type: 'text',
-        text: 'João Zanardo é Engenheiro de Software com foco em sistemas distribuídos de alta escala, desempenho em backend, resiliência e arquitetura escalável.',
+        text: 'João Zanardo é um engenheiro de software formado por sistemas críticos e guiado por curiosidade, clareza e pelo hábito de transformar problemas complexos em produtos confiáveis.',
       },
       {
         type: 'recordList',
-        title: 'Resumo de identidade:',
+        title: 'Retrato pessoal:',
         records: [
           {
-            title: 'foco',
-            subtitle: 'Construção de serviços de backend resilientes para envios internacionais e promessas de entrega no Mercado Livre.',
+            title: 'perfil',
+            subtitle: 'Trabalha com execução calma, profundidade técnica e atenção a impacto, conectando decisões de engenharia a produto, negócio e pessoas.',
           },
           {
-            title: 'escala',
-            subtitle: 'Atuação em serviços que evoluíram de menos de 1k para mais de 11k requisições por minuto.',
+            title: 'interesses',
+            subtitle: 'Economia, tecnologia e empreendedorismo; temas que ajudam a conectar sistemas, mercado e decisões melhores.',
           },
           {
-            title: 'direção',
-            subtitle: 'Aprofundamento em desenho de sistemas, engenharia de alta escala e IA aplicada a sistemas em produção.',
+            title: 'hobbies',
+            subtitle: 'Corrida, musculação, Muay Thai, games, passeios no parque com a família e churrasco.',
           },
         ],
       },

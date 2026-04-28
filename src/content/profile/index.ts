@@ -54,42 +54,42 @@ export function localizeRecords(
 export const profileContent: ProfileContent = {
   whoami: {
     intro: {
-      en: 'João Zanardo is a Software Engineer focused on high-scale distributed systems, backend performance, resilience, and scalable architecture.',
-      pt: 'João Zanardo é Engenheiro de Software com foco em sistemas distribuídos de alta escala, desempenho em backend, resiliência e arquitetura escalável.',
+      en: 'João Zanardo is a Software Engineer shaped by critical systems and guided by curiosity, clarity, and the habit of turning complex problems into reliable products.',
+      pt: 'João Zanardo é um engenheiro de software formado por sistemas críticos e guiado por curiosidade, clareza e pelo hábito de transformar problemas complexos em produtos confiáveis.',
     },
     title: {
-      en: 'Identity snapshot:',
-      pt: 'Resumo de identidade:',
+      en: 'Personal snapshot:',
+      pt: 'Retrato pessoal:',
     },
     records: [
       {
         title: {
-          en: 'focus',
-          pt: 'foco',
+          en: 'profile',
+          pt: 'perfil',
         },
         subtitle: {
-          en: 'Building resilient backend services for cross-border shipping and delivery promises at Mercado Livre.',
-          pt: 'Construção de serviços de backend resilientes para envios internacionais e promessas de entrega no Mercado Livre.',
+          en: 'Works with calm execution, technical depth, and attention to impact, connecting engineering decisions with product, business, and people.',
+          pt: 'Trabalha com execução calma, profundidade técnica e atenção a impacto, conectando decisões de engenharia a produto, negócio e pessoas.',
         },
       },
       {
         title: {
-          en: 'scale',
-          pt: 'escala',
+          en: 'interests',
+          pt: 'interesses',
         },
         subtitle: {
-          en: 'Working with services that evolved from under 1k to more than 11k requests per minute.',
-          pt: 'Atuação em serviços que evoluíram de menos de 1k para mais de 11k requisições por minuto.',
+          en: 'Economics, technology, and entrepreneurship; subjects that help connect systems, markets, and better decisions.',
+          pt: 'Economia, tecnologia e empreendedorismo; temas que ajudam a conectar sistemas, mercado e decisões melhores.',
         },
       },
       {
         title: {
-          en: 'direction',
-          pt: 'direção',
+          en: 'hobbies',
+          pt: 'hobbies',
         },
         subtitle: {
-          en: 'Deepening system design, high-scale engineering, and practical AI applied to production systems.',
-          pt: 'Aprofundamento em desenho de sistemas, engenharia de alta escala e IA aplicada a sistemas em produção.',
+          en: 'Running, weight training, Muay Thai, games, park walks with family, and barbecue.',
+          pt: 'Corrida, musculação, Muay Thai, games, passeios no parque com a família e churrasco.',
         },
       },
     ],
@@ -142,8 +142,8 @@ export const profileContent: ProfileContent = {
           pt: 'setembro de 2025 - atualmente',
         },
         subtitle: {
-          en: 'Software Engineer in Shipping, Cross Border Trade, working on shipment orchestration and delivery promises for international purchases.',
-          pt: 'Engenheiro de Software na equipe de envios internacionais, atuando na orquestração de envios e promessas de entrega para compras internacionais.',
+          en: 'Building resilient backend services to support international shipping and delivery promises at Mercado Livre.',
+          pt: 'Construindo serviços de back-end resilientes para garantir o cumprimento das promessas de envio e entrega internacionais no Mercado Livre.',
         },
       },
     ],

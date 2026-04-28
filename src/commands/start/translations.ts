@@ -8,7 +8,7 @@ export const startTranslations = validateTranslations('start', {
       'Type a command or use one of the shortcuts above to fill the prompt.',
     entries: {
       projects: 'Browse selected work and useful filters.',
-      whoami: 'Read the short identity entry.',
+      whoami: 'Read the personal identity entry.',
       ls: 'See the compact directory of archive areas.',
       help: 'List every available command.',
     },
@@ -24,7 +24,7 @@ export const startTranslations = validateTranslations('start', {
       'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
     entries: {
       projects: 'Conheça trabalhos selecionados e filtros úteis.',
-      whoami: 'Leia a entrada curta de identidade.',
+      whoami: 'Leia o retrato pessoal.',
       ls: 'Veja o diretório compacto das áreas do arquivo.',
       help: 'Liste todos os comandos disponíveis.',
     },
