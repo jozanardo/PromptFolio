@@ -133,7 +133,7 @@ describe('App onboarding', () => {
     expect(contentSection?.className).toContain('pt-3');
   });
 
-  it('retraduze o histórico de comandos quando o idioma muda', async () => {
+  it('retraduz o histórico de comandos quando o idioma muda', async () => {
     vi.useRealTimers();
     window.localStorage.setItem('lang', 'en');
     setMatchMedia(true);

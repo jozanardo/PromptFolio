@@ -14,6 +14,13 @@ import { translations } from '../i18n';
 import { useProjects } from '../features/projects/useProjects';
 import { CommandContext, HistoryItem } from '../types';
 
+function historyStartsWithSnapshot(
+  history: HistoryItem[],
+  snapshot: HistoryItem[]
+) {
+  return snapshot.every((item, index) => history[index] === item);
+}
+
 export function useCommandProcessor(): {
   input: string;
   setInput: (value: string) => void;
@@ -99,7 +106,8 @@ export function useCommandProcessor(): {
 
     previousLangRef.current = lang;
 
-    const commandsToReplay = historyRef.current.flatMap(item =>
+    const replaySourceHistory = historyRef.current;
+    const commandsToReplay = replaySourceHistory.flatMap(item =>
       item.type === 'input' ? [item.text] : []
     );
 
@@ -151,7 +159,16 @@ export function useCommandProcessor(): {
       }
 
       if (!cancelled) {
-        setHistory(rebuiltHistory);
+        setHistory(currentHistory => {
+          if (!historyStartsWithSnapshot(currentHistory, replaySourceHistory)) {
+            return currentHistory;
+          }
+
+          return [
+            ...rebuiltHistory,
+            ...currentHistory.slice(replaySourceHistory.length),
+          ];
+        });
       }
     }
 

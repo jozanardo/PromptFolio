@@ -40,12 +40,15 @@ function createDeferred<T>() {
   return { promise, resolve };
 }
 
-function createCommandResult(text: string): CommandDispatchResult {
+function createCommandResult(
+  text: string,
+  commandName = 'about'
+): CommandDispatchResult {
   return {
     parsedInput: {
-      raw: 'about',
-      normalized: 'about',
-      commandName: 'about',
+      raw: commandName,
+      normalized: commandName,
+      commandName,
       argv: [],
       positionals: [],
       flags: {},
@@ -367,6 +370,128 @@ describe('useCommandProcessor', () => {
             {
               type: 'text',
               text: 'sobre em português',
+            },
+          ],
+        },
+      ]);
+    });
+  });
+
+  it('preserves commands submitted while language replay is rebuilding history', async () => {
+    let setLang!: (lang: Language) => void;
+    const replay = createDeferred<CommandDispatchResult>();
+
+    vi.mocked(executeCommand).mockImplementation(async (commandInput, context) => {
+      if (commandInput === 'about' && context.lang === 'pt') {
+        return replay.promise;
+      }
+
+      if (commandInput === 'skills') {
+        return createCommandResult('skills em português', 'skills');
+      }
+
+      return createCommandResult('english about');
+    });
+
+    const wrapper = createLanguageWrapper(nextSetLang => {
+      setLang = nextSetLang;
+    });
+    const { result } = renderHook(() => useCommandProcessor(), {
+      wrapper,
+    });
+
+    await act(async () => {
+      await result.current.processCommand('about');
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'english about',
+            },
+          ],
+        },
+      ]);
+    });
+
+    await act(async () => {
+      setLang('pt');
+      await Promise.resolve();
+    });
+
+    await act(async () => {
+      await result.current.processCommand('skills');
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'english about',
+            },
+          ],
+        },
+        {
+          type: 'input',
+          text: 'skills',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'skills em português',
+            },
+          ],
+        },
+      ]);
+    });
+
+    await act(async () => {
+      replay.resolve(createCommandResult('sobre em português'));
+      await replay.promise;
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'sobre em português',
+            },
+          ],
+        },
+        {
+          type: 'input',
+          text: 'skills',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'skills em português',
             },
           ],
         },
