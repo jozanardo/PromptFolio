@@ -1,21 +1,31 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useCommandProcessor } from './useCommandProcessor';
-import { LanguageProvider } from '../context/LanguageContext';
+import {
+  LanguageProvider,
+  useLanguage,
+  type Language,
+} from '../context/LanguageContext';
 import type { CommandDispatchResult } from '../commands/runtime/executeCommand';
+import type { ProjectRepo } from '../features/projects/projectsService';
+
+const mockProjectsState = vi.hoisted(() => ({
+  current: {
+    repos: [] as ProjectRepo[],
+    loading: false,
+    error: null as string | null,
+    refreshProjects: vi.fn(),
+  },
+}));
 
 vi.mock('../commands/runtime/executeCommand', () => ({
   executeCommand: vi.fn(),
 }));
 
 vi.mock('../features/projects/useProjects', () => ({
-  useProjects: () => ({
-    repos: [],
-    loading: false,
-    error: null,
-    refreshProjects: vi.fn(),
-  }),
+  useProjects: () => mockProjectsState.current,
 }));
 
 import { executeCommand } from '../commands/runtime/executeCommand';
@@ -30,9 +40,62 @@ function createDeferred<T>() {
   return { promise, resolve };
 }
 
+function createCommandResult(text: string): CommandDispatchResult {
+  return {
+    parsedInput: {
+      raw: 'about',
+      normalized: 'about',
+      commandName: 'about',
+      argv: [],
+      positionals: [],
+      flags: {},
+      tokenizationError: null,
+    },
+    result: {
+      echoInput: true,
+      blocks: [
+        {
+          type: 'text',
+          text,
+        },
+      ],
+      effects: [],
+    },
+  };
+}
+
+function createLanguageWrapper(
+  captureSetLang?: (setLang: (lang: Language) => void) => void
+) {
+  const LanguageController = () => {
+    const { setLang } = useLanguage();
+
+    useEffect(() => {
+      captureSetLang?.(setLang);
+    }, [setLang]);
+
+    return null;
+  };
+
+  return function Wrapper({ children }: { children: ReactNode }) {
+    return (
+      <LanguageProvider>
+        <LanguageController />
+        {children}
+      </LanguageProvider>
+    );
+  };
+}
+
 describe('useCommandProcessor', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockProjectsState.current = {
+      repos: [],
+      loading: false,
+      error: null,
+      refreshProjects: vi.fn(),
+    };
 
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -77,10 +140,7 @@ describe('useCommandProcessor', () => {
       },
     } satisfies CommandDispatchResult);
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <LanguageProvider>{children}</LanguageProvider>
-    );
-
+    const wrapper = createLanguageWrapper();
     const { result } = renderHook(() => useCommandProcessor(), { wrapper });
 
     await act(async () => {
@@ -145,10 +205,7 @@ describe('useCommandProcessor', () => {
       return deferred.promise;
     });
 
-    const wrapper = ({ children }: { children: ReactNode }) => (
-      <LanguageProvider>{children}</LanguageProvider>
-    );
-
+    const wrapper = createLanguageWrapper();
     const { result } = renderHook(() => useCommandProcessor(), { wrapper });
 
     let execution!: Promise<void>;
@@ -223,6 +280,93 @@ describe('useCommandProcessor', () => {
             {
               type: 'markdown',
               html: '<p>done</p>',
+            },
+          ],
+        },
+      ]);
+    });
+  });
+
+  it('does not cancel language replay when project state changes during rebuild', async () => {
+    let setLang!: (lang: Language) => void;
+    const replay = createDeferred<CommandDispatchResult>();
+
+    vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      if (context.lang === 'pt') {
+        return replay.promise;
+      }
+
+      return createCommandResult('english about');
+    });
+
+    const wrapper = createLanguageWrapper(nextSetLang => {
+      setLang = nextSetLang;
+    });
+    const { result, rerender } = renderHook(() => useCommandProcessor(), {
+      wrapper,
+    });
+
+    await act(async () => {
+      await result.current.processCommand('about');
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'english about',
+            },
+          ],
+        },
+      ]);
+    });
+
+    await act(async () => {
+      setLang('pt');
+      await Promise.resolve();
+    });
+
+    mockProjectsState.current = {
+      repos: [
+        {
+          name: 'PromptFolio',
+          html_url: 'https://github.com/jozanardo/PromptFolio',
+          description: 'Portfolio',
+          language: 'TypeScript',
+          updated_at: '2026-04-28T00:00:00Z',
+        },
+      ],
+      loading: false,
+      error: null,
+      refreshProjects: vi.fn(),
+    };
+
+    rerender();
+
+    await act(async () => {
+      replay.resolve(createCommandResult('sobre em português'));
+      await replay.promise;
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'sobre em português',
             },
           ],
         },

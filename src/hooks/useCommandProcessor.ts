@@ -84,6 +84,11 @@ export function useCommandProcessor(): {
     }),
     [lang, projects.error, projects.loading, projects.repos, setHistory]
   );
+  const createCommandContextRef = useRef(createCommandContext);
+
+  useEffect(() => {
+    createCommandContextRef.current = createCommandContext;
+  }, [createCommandContext]);
 
   const previousLangRef = useRef(lang);
 
@@ -122,7 +127,7 @@ export function useCommandProcessor(): {
 
         const { result } = await executeCommand(
           commandInput,
-          createCommandContext(setReplayHistory, () => rebuiltHistory)
+          createCommandContextRef.current(setReplayHistory, () => rebuiltHistory)
         );
 
         let nextHistory =
@@ -155,7 +160,7 @@ export function useCommandProcessor(): {
     return () => {
       cancelled = true;
     };
-  }, [createCommandContext, lang, setHistory]);
+  }, [lang, setHistory]);
 
   async function processCommand(commandInput: string) {
     const normalizedInput = commandInput.trim();

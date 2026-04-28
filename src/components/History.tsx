@@ -8,6 +8,14 @@ interface HistoryProps {
   history: HistoryItem[];
 }
 
+function isSupportedRecordHref(href: string): boolean {
+  return /^(https?:\/\/|mailto:)/i.test(href);
+}
+
+function isExternalRecordHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
 const History: React.FC<HistoryProps> = ({ history }) => {
   const { lang } = useLanguage();
   const t = translations[lang];
@@ -93,15 +101,15 @@ const History: React.FC<HistoryProps> = ({ history }) => {
             </>
           );
 
-          if (record.href) {
-            const isExternal = /^https?:\/\//.test(record.href);
+          if (record.href && isSupportedRecordHref(record.href)) {
+            const isExternal = isExternalRecordHref(record.href);
 
             return (
               <a
                 className="history-list-main history-list-link"
                 href={record.href}
                 target={isExternal ? '_blank' : undefined}
-                rel={isExternal ? 'noreferrer' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
               >
                 {content}
               </a>

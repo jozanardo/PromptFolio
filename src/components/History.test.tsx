@@ -238,6 +238,35 @@ describe('History', () => {
     );
   });
 
+  it('does not render unsupported record href protocols as links', () => {
+    const history = [
+      {
+        type: 'output',
+        blocks: [
+          {
+            type: 'recordList',
+            records: [
+              {
+                title: 'Unsafe',
+                subtitle: 'javascript:alert(1)',
+                href: 'javascript:alert(1)',
+              },
+            ],
+          },
+        ],
+      },
+    ] as HistoryItem[];
+
+    render(
+      <LanguageProvider>
+        <History history={history} />
+      </LanguageProvider>
+    );
+
+    expect(screen.queryByRole('link', { name: /Unsafe/ })).toBeNull();
+    expect(screen.getByText('Unsafe')).toHaveClass('history-list-token');
+  });
+
   it('keeps long record titles from collapsing into the description column', () => {
     const css = readFileSync(
       `${process.cwd()}/src/assets/App.css`,
