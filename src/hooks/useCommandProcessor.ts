@@ -97,6 +97,7 @@ export function useCommandProcessor(): {
     createCommandContextRef.current = createCommandContext;
   }, [createCommandContext]);
 
+  const languageEpochRef = useRef(0);
   const previousLangRef = useRef(lang);
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export function useCommandProcessor(): {
     }
 
     previousLangRef.current = lang;
+    languageEpochRef.current += 1;
 
     const replaySourceHistory = historyRef.current;
     const commandsToReplay = replaySourceHistory.flatMap(item =>
@@ -195,10 +197,23 @@ export function useCommandProcessor(): {
     setInput('');
     setHistory(prev => [...prev, inputEntry]);
 
+    const commandLanguageEpoch = languageEpochRef.current;
+    const setCommandHistory: CommandContext['setHistory'] = update => {
+      if (commandLanguageEpoch !== languageEpochRef.current) {
+        return;
+      }
+
+      setHistory(update);
+    };
+
     const { result } = await executeCommand(
       normalizedInput,
-      createCommandContext(setHistory)
+      createCommandContext(setCommandHistory)
     );
+
+    if (commandLanguageEpoch !== languageEpochRef.current) {
+      return;
+    }
 
     setHistory(prev => {
       let nextHistory =

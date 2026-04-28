@@ -498,4 +498,84 @@ describe('useCommandProcessor', () => {
       ]);
     });
   });
+
+  it('ignores stale command output when language replay replaces the same input', async () => {
+    let setLang!: (lang: Language) => void;
+    const originalCommand = createDeferred<CommandDispatchResult>();
+    const replay = createDeferred<CommandDispatchResult>();
+
+    vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      if (context.lang === 'pt') {
+        return replay.promise;
+      }
+
+      return originalCommand.promise;
+    });
+
+    const wrapper = createLanguageWrapper(nextSetLang => {
+      setLang = nextSetLang;
+    });
+    const { result } = renderHook(() => useCommandProcessor(), {
+      wrapper,
+    });
+
+    let originalExecution!: Promise<void>;
+
+    await act(async () => {
+      originalExecution = result.current.processCommand('about');
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+      ]);
+    });
+
+    await act(async () => {
+      setLang('pt');
+      await Promise.resolve();
+    });
+
+    await act(async () => {
+      originalCommand.resolve(createCommandResult('english about'));
+      await originalCommand.promise;
+      await originalExecution;
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+      ]);
+    });
+
+    await act(async () => {
+      replay.resolve(createCommandResult('sobre em português'));
+      await replay.promise;
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'about',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'sobre em português',
+            },
+          ],
+        },
+      ]);
+    });
+  });
 });
