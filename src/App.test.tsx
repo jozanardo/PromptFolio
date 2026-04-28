@@ -132,4 +132,41 @@ describe('App onboarding', () => {
     expect(contentSection).not.toBeNull();
     expect(contentSection?.className).toContain('pt-3');
   });
+
+  it('retraduze o histórico de comandos quando o idioma muda', async () => {
+    vi.useRealTimers();
+    window.localStorage.setItem('lang', 'en');
+    setMatchMedia(true);
+
+    renderApp();
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    const input = screen.getByRole('textbox', { name: 'Command prompt' });
+
+    fireEvent.change(input, { target: { value: 'about' } });
+
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'Enter' });
+      await Promise.resolve();
+    });
+
+    expect(await screen.findByText('Career path:')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Cybersecurity and audit work/)
+    ).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'PT' }));
+      await Promise.resolve();
+    });
+
+    expect(await screen.findByText('Trajetória:')).toBeInTheDocument();
+    expect(screen.queryByText('Career path:')).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/Segurança cibernética e auditoria/)
+    ).toBeInTheDocument();
+  });
 });

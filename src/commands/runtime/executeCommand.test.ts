@@ -5,18 +5,7 @@ import { executeCommand } from './executeCommand';
 import type {
   AnyCommandDefinition,
   CommandContext,
-  HistoryItem,
 } from '../../types';
-
-function createDeferred<T>() {
-  let resolve!: (value: T) => void;
-
-  const promise = new Promise<T>(res => {
-    resolve = res;
-  });
-
-  return { promise, resolve };
-}
 
 function createContext(
   lang: 'en' | 'pt' = 'en',
@@ -53,15 +42,7 @@ function createContext(
       ready: false,
       records: [],
     },
-    services:
-      overrides.services ??
-      ({
-        whoami: {
-          loading: false,
-          error: null,
-          fetchReadme: async () => '',
-        },
-      } as CommandContext['services']),
+    services: overrides.services ?? ({} as CommandContext['services']),
   };
 }
 
@@ -175,17 +156,18 @@ describe('executeCommand', () => {
         },
         {
           command: 'whoami',
-          description: 'What I do',
+          description: 'Show the concise engineering identity entry.',
           usage: 'whoami',
         },
         {
           command: 'about',
-          description: 'Know about me',
+          description: 'Read the career and engineering profile summary.',
           usage: 'about',
         },
         {
           command: 'skills',
-          description: 'What tech stacks I use',
+          description:
+            'Browse backend, scale, resilience, performance, and observability skills.',
           usage: 'skills',
         },
         {
@@ -197,7 +179,7 @@ describe('executeCommand', () => {
         },
         {
           command: 'contact',
-          description: 'Want to say something?',
+          description: 'Find verified ways to reach me.',
           usage: 'contact',
         },
         {
@@ -228,17 +210,18 @@ describe('executeCommand', () => {
         },
         {
           command: 'whoami',
-          description: 'Quem sou eu.',
+          description: 'Mostra a entrada curta de identidade como engenheiro.',
           usage: 'whoami',
         },
         {
           command: 'about',
-          description: 'Saiba mais sobre mim.',
+          description: 'Leia o resumo da trajetória e do perfil de engenharia.',
           usage: 'about',
         },
         {
           command: 'skills',
-          description: 'Quais tecnologias eu uso.',
+          description:
+            'Navegue por habilidades de backend, escala, resiliência, desempenho e observabilidade.',
           usage: 'skills',
         },
         {
@@ -250,7 +233,7 @@ describe('executeCommand', () => {
         },
         {
           command: 'contact',
-          description: 'Quer dizer algo?',
+          description: 'Encontre formas verificadas de contato.',
           usage: 'contact',
         },
         {
@@ -406,72 +389,192 @@ describe('executeCommand', () => {
     ]);
   });
 
-  it('shows whoami loading before awaiting the README fetch', async () => {
-    const deferred = createDeferred<string>();
-    const setHistoryMock = vi.fn();
-    const fetchReadme = vi.fn(() => deferred.promise);
+  it('executes whoami from local profile content without external services', async () => {
+    const result = await executeCommand('whoami', createContext('en'));
 
-    const context = createContext('en', {
-      setHistory: setHistoryMock as unknown as CommandContext['setHistory'],
-      services: {
-        whoami: {
-          loading: false,
-          error: null,
-          fetchReadme,
-        },
-      },
-    });
-
-    const execution = executeCommand('whoami', context);
-
-    expect(setHistoryMock).toHaveBeenCalledTimes(1);
-    const updater = setHistoryMock.mock.calls[0][0];
-    expect(typeof updater).toBe('function');
-
-    expect((updater as (value: HistoryItem[]) => HistoryItem[])([])).toEqual([
+    expect(Object.keys(createContext('en').services)).toEqual([]);
+    expect(result.result.blocks).toEqual([
       {
-        type: 'output',
-        blocks: [
+        type: 'text',
+        text: 'João Zanardo is a Software Engineer focused on high-scale distributed systems, backend performance, resilience, and scalable architecture.',
+      },
+      {
+        type: 'recordList',
+        title: 'Identity snapshot:',
+        records: [
           {
-            type: 'system',
-            text: '🔄 Loading GitHub README…',
+            title: 'focus',
+            subtitle: 'Building resilient backend services for cross-border shipping and delivery promises at Mercado Livre.',
+          },
+          {
+            title: 'scale',
+            subtitle: 'Working with services that evolved from under 1k to more than 11k requests per minute.',
+          },
+          {
+            title: 'direction',
+            subtitle: 'Deepening system design, high-scale engineering, and practical AI applied to production systems.',
           },
         ],
       },
     ]);
+  });
 
-    deferred.resolve('<h1>README</h1>');
-    const result = await execution;
+  it('executes about as a localized career summary', async () => {
+    const result = await executeCommand('about', createContext('pt'));
 
     expect(result.result.blocks).toEqual([
       {
-        type: 'markdown',
-        html: '<h1>README</h1>',
+        type: 'text',
+        text: 'Sou Engenheiro de Software com experiência em sistemas distribuídos de alta escala, formado em Ciência e Tecnologia com ênfase em Computação pela UFABC e pós-graduando em Engenharia de Software com foco em Inteligência Artificial aplicada.',
+      },
+      {
+        type: 'recordList',
+        title: 'Trajetória:',
+        records: [
+          {
+            title: 'Santander',
+            meta: 'abril de 2021 - março de 2022',
+            subtitle: 'Segurança cibernética e auditoria, com base em segurança, governança e análise de sistemas críticos.',
+          },
+          {
+            title: 'BTG Pactual',
+            meta: 'março de 2022 - agosto de 2025',
+            subtitle: 'Desenvolvimento de sistemas escaláveis em C#, automações, evolução de legados e migrações em ambiente financeiro crítico.',
+          },
+          {
+            title: 'Mercado Livre',
+            meta: 'setembro de 2025 - atualmente',
+            subtitle: 'Engenheiro de Software na equipe de envios internacionais, atuando na orquestração de envios e promessas de entrega para compras internacionais.',
+          },
+        ],
       },
     ]);
   });
 
-  it('returns a structured error block when whoami fails', async () => {
-    const result = await executeCommand(
-      'whoami',
-      createContext('en', {
-        services: {
-          whoami: {
-            loading: false,
-            error: null,
-            fetchReadme: async () => {
-              throw new Error('boom');
-            },
-          },
-        },
-      })
-    );
+  it('executes skills as localized structured categories', async () => {
+    const result = await executeCommand('skills', createContext('pt'));
 
     expect(result.result.blocks).toEqual([
       {
-        type: 'error',
-        command: 'whoami',
-        message: 'boom',
+        type: 'recordList',
+        title: 'Habilidades por categoria:',
+        records: [
+          {
+            title: 'linguagens',
+            subtitle: 'Java, Go, C#, JavaScript, TypeScript, Python',
+          },
+          {
+            title: 'backend',
+            subtitle: 'Microsserviços, APIs, sistemas distribuídos, arquitetura orientada a eventos e serviços de alto desempenho',
+          },
+          {
+            title: 'resiliência',
+            subtitle: 'Isolamento de falhas, retentativas, estratégias de contingência, cache em múltiplas camadas e eficiência operacional',
+          },
+          {
+            title: 'desempenho',
+            subtitle: 'Threads virtuais, concorrência, paralelismo, latência e vazão',
+          },
+          {
+            title: 'observabilidade',
+            subtitle: 'Logs no Grafana, métricas no Datadog, rastreamento distribuído e análise de comportamento em produção',
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('executes whoami as a PT-BR identity entry', async () => {
+    const result = await executeCommand('whoami', createContext('pt'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'text',
+        text: 'João Zanardo é Engenheiro de Software com foco em sistemas distribuídos de alta escala, desempenho em backend, resiliência e arquitetura escalável.',
+      },
+      {
+        type: 'recordList',
+        title: 'Resumo de identidade:',
+        records: [
+          {
+            title: 'foco',
+            subtitle: 'Construção de serviços de backend resilientes para envios internacionais e promessas de entrega no Mercado Livre.',
+          },
+          {
+            title: 'escala',
+            subtitle: 'Atuação em serviços que evoluíram de menos de 1k para mais de 11k requisições por minuto.',
+          },
+          {
+            title: 'direção',
+            subtitle: 'Aprofundamento em desenho de sistemas, engenharia de alta escala e IA aplicada a sistemas em produção.',
+          },
+        ],
+      },
+    ]);
+  });
+
+  it('executes contact without unresolved placeholders', async () => {
+    const result = await executeCommand('contact', createContext('en'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'recordList',
+        title: 'Verified channels:',
+        records: [
+          {
+            title: 'GitHub',
+            subtitle: 'https://github.com/jozanardo',
+            href: 'https://github.com/jozanardo',
+          },
+          {
+            title: 'LinkedIn',
+            subtitle: 'https://www.linkedin.com/in/joão-zanardo/',
+            href: 'https://www.linkedin.com/in/joão-zanardo/',
+          },
+          {
+            title: 'Email',
+            subtitle: 'jozanardo@gmail.com',
+            href: 'mailto:jozanardo@gmail.com',
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 'GitHub, LinkedIn, and email are the verified public channels for this archive.',
+      },
+    ]);
+    expect(JSON.stringify(result.result.blocks)).not.toContain('[Your');
+    expect(JSON.stringify(result.result.blocks)).not.toContain('[Seu');
+  });
+
+  it('executes contact as a PT-BR channel list', async () => {
+    const result = await executeCommand('contact', createContext('pt'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'recordList',
+        title: 'Canais verificados:',
+        records: [
+          {
+            title: 'GitHub',
+            subtitle: 'https://github.com/jozanardo',
+            href: 'https://github.com/jozanardo',
+          },
+          {
+            title: 'LinkedIn',
+            subtitle: 'https://www.linkedin.com/in/joão-zanardo/',
+            href: 'https://www.linkedin.com/in/joão-zanardo/',
+          },
+          {
+            title: 'E-mail',
+            subtitle: 'jozanardo@gmail.com',
+            href: 'mailto:jozanardo@gmail.com',
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 'GitHub, LinkedIn e e-mail são os canais públicos verificados deste arquivo.',
       },
     ]);
   });

@@ -18,14 +18,6 @@ vi.mock('../features/projects/useProjects', () => ({
   }),
 }));
 
-vi.mock('../features/whoami/useWhoami', () => ({
-  useWhoami: () => ({
-    loading: false,
-    error: null,
-    fetchReadme: vi.fn(),
-  }),
-}));
-
 import { executeCommand } from '../commands/runtime/executeCommand';
 
 function createDeferred<T>() {
