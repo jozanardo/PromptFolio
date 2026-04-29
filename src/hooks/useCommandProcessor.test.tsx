@@ -578,4 +578,51 @@ describe('useCommandProcessor', () => {
       ]);
     });
   });
+
+  it('stops replaying queued commands after language replay is cancelled', async () => {
+    let setLang!: (lang: Language) => void;
+    const firstReplay = createDeferred<CommandDispatchResult>();
+    const replayedCommands: string[] = [];
+
+    vi.mocked(executeCommand).mockImplementation(async (commandInput, context) => {
+      if (context.lang === 'pt') {
+        replayedCommands.push(commandInput);
+
+        if (commandInput === 'about') {
+          return firstReplay.promise;
+        }
+      }
+
+      return createCommandResult(`${commandInput} output`, commandInput);
+    });
+
+    const wrapper = createLanguageWrapper(nextSetLang => {
+      setLang = nextSetLang;
+    });
+    const { result, unmount } = renderHook(() => useCommandProcessor(), {
+      wrapper,
+    });
+
+    await act(async () => {
+      await result.current.processCommand('about');
+      await result.current.processCommand('skills');
+    });
+
+    await act(async () => {
+      setLang('pt');
+      await Promise.resolve();
+    });
+
+    expect(replayedCommands).toEqual(['about']);
+
+    unmount();
+
+    await act(async () => {
+      firstReplay.resolve(createCommandResult('sobre em português'));
+      await firstReplay.promise;
+      await Promise.resolve();
+    });
+
+    expect(replayedCommands).toEqual(['about']);
+  });
 });

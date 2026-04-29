@@ -128,6 +128,10 @@ export function useCommandProcessor(): {
       };
 
       for (const commandInput of commandsToReplay) {
+        if (cancelled) {
+          return;
+        }
+
         const inputEntry: HistoryItem = {
           type: 'input',
           text: commandInput,
@@ -139,6 +143,10 @@ export function useCommandProcessor(): {
           commandInput,
           createCommandContextRef.current(setReplayHistory, () => rebuiltHistory)
         );
+
+        if (cancelled) {
+          return;
+        }
 
         let nextHistory =
           result.echoInput ?? true

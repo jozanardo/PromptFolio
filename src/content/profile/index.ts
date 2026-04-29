@@ -51,6 +51,12 @@ export function localizeRecords(
   });
 }
 
+export function resolveProfileContent(
+  profile: ProfileContent | null
+): ProfileContent {
+  return profile ?? profileContent;
+}
+
 export const profileContent: ProfileContent = {
   whoami: {
     intro: {

@@ -1,16 +1,11 @@
 import {
-  profileContent,
   localizeRecords,
-  type ProfileContent,
+  resolveProfileContent,
 } from '../../content/profile';
 import type { CommandDefinition } from '../../types';
 import { contactTranslations } from './translations';
 
 type ContactArgs = Record<string, never>;
-
-function resolveProfile(profile: ProfileContent | null): ProfileContent {
-  return profile ?? profileContent;
-}
 
 export const contactCommand: CommandDefinition<
   ContactArgs,
@@ -39,7 +34,7 @@ export const contactCommand: CommandDefinition<
     args: {},
   }),
   execute: (_, context) => {
-    const profile = resolveProfile(context.content.profile);
+    const profile = resolveProfileContent(context.content.profile);
 
     return {
       blocks: [
