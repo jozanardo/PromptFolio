@@ -47,6 +47,14 @@ export const startCommand: CommandDefinition<
               subtitle: t.entries.work,
             },
             {
+              title: 'timeline',
+              subtitle: t.entries.timeline,
+            },
+            {
+              title: 'journey',
+              subtitle: t.entries.journey,
+            },
+            {
               title: 'whoami',
               subtitle: t.entries.whoami,
             },

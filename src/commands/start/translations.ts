@@ -8,6 +8,8 @@ export const startTranslations = validateTranslations('start', {
       'Type a command or use one of the shortcuts above to fill the prompt.',
     entries: {
       work: 'Browse selected work and useful filters.',
+      timeline: 'Follow the chronological path through the archive.',
+      journey: 'Read the more authored version of that path.',
       whoami: 'Read the personal identity entry.',
       ls: 'See the compact directory of archive areas.',
       help: 'List every available command.',
@@ -24,6 +26,8 @@ export const startTranslations = validateTranslations('start', {
       'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
     entries: {
       work: 'Conheça trabalhos selecionados e filtros úteis.',
+      timeline: 'Acompanhe o percurso cronológico pelo arquivo.',
+      journey: 'Leia a versão mais autoral desse percurso.',
       whoami: 'Leia o retrato pessoal.',
       ls: 'Veja o diretório compacto das áreas do arquivo.',
       help: 'Liste todos os comandos disponíveis.',

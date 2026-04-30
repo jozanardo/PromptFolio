@@ -7,6 +7,7 @@ export const lsTranslations = validateTranslations('ls', {
       discovery: 'discovery',
       identity: 'identity',
       work: 'work',
+      journey: 'journey',
     },
     meta: {
       description: 'Show a compact directory of archive areas.',
@@ -19,6 +20,7 @@ export const lsTranslations = validateTranslations('ls', {
       discovery: 'descoberta',
       identity: 'identidade',
       work: 'trabalho',
+      journey: 'trajetória',
     },
     meta: {
       description: 'Mostra um diretório compacto das áreas do arquivo.',

@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { Language } from '../context/LanguageContext';
 import type { ProfileContent } from '../content/profile';
 import type { ProjectContent } from '../content/projects';
+import type { TimelineContent } from '../content/timeline';
 import type { ProjectRepo } from '../features/projects/projectsService';
 
 export type SupportedLocale = Language;
@@ -139,7 +140,7 @@ export interface CommandContext {
     profile: ProfileContent | null;
     projects: ProjectContent | null;
     narrative: unknown;
-    timeline: unknown;
+    timeline: TimelineContent | null;
   };
   projectCatalog: {
     repos: ProjectRepo[];

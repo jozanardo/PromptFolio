@@ -119,6 +119,12 @@
 - Checklist: modelo cronológico criado, `timeline` implementado, `journey` implementado, integração com catálogo de projetos validada, traduções completas criadas.
 - Testes obrigatórios: ordenação cronológica; agrupamento consistente; paridade entre locales; entradas sem projeto relacionado; renderização adequada dos blocos de narrativa.
 - Aceite: a trajetória profissional deixa de estar implícita e passa a ser navegável de forma clara, sem virar uma parede de texto nem duplicar a seção de projetos.
+- Implementado: `src/content/timeline` concentra a fonte cronológica bilíngue com entradas factuais, ciclos narrativos, tipos, tags e referências cruzadas para projetos.
+- Implementado: `timeline` apresenta a trajetória em leitura factual, ordenada do trabalho atual às fundações, com suporte a `--group=year|cycle|kind` e `--help`.
+- Implementado: `journey` usa a mesma fonte cronológica para uma leitura autoral por ciclos, sem duplicar a seção de projetos nem criar uma visualidade nova.
+- Implementado: `start`, `help` e `ls` passam a expor `timeline` e `journey` como parte da camada de trajetória do arquivo.
+- Testes cobertos: ordenação cronológica; agrupamento por ano, ciclo e tipo; paridade PT/EN; entrada sem projeto relacionado; help sem leitura de conteúdo; blocos narrativos do `journey`; integração dos comandos em `start`, `help` e `ls`.
+- Aceite: a trajetória profissional agora é navegável em dois modos complementares, preservando a gramática visual de listas estruturadas do PromptFolio.
 
 ## Fase 5 — Voz Editorial com `now` e `philosophy`
 
