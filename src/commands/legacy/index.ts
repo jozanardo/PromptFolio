@@ -8,48 +8,6 @@ import { validateTranslations } from '../runtime/validateTranslations';
 
 const legacyTranslations = validateTranslations('legacy-commands', {
   en: {
-    about: {
-      meta: {
-        description: 'Know about me',
-        usage: 'about',
-      },
-      title: 'About me:',
-      lines: [
-        'I am passionate about technology and software development.',
-        'Currently studying Computer Science at UFABC.',
-      ],
-    },
-    skills: {
-      meta: {
-        description: 'What tech stacks I use',
-        usage: 'skills',
-      },
-      title: 'My skills include:',
-      lines: [
-        '- TypeScript, JavaScript, Python, Java, C#, Go, Haskell',
-        '- React, Node.js, NestJS, Next.js, Tailwind CSS',
-        '- Git, Docker, Linux',
-      ],
-    },
-    contact: {
-      meta: {
-        description: 'Want to say something?',
-        usage: 'contact',
-      },
-      title: 'Contact me:',
-      lines: [
-        '- GitHub: https://github.com/jozanardo',
-        '- LinkedIn: [Your LinkedIn]',
-        '- Email: [Your Email]',
-      ],
-    },
-    whoami: {
-      meta: {
-        description: 'What I do',
-        usage: 'whoami',
-      },
-      loading: 'Loading GitHub README…',
-    },
     projects: {
       meta: {
         description:
@@ -76,48 +34,6 @@ const legacyTranslations = validateTranslations('legacy-commands', {
     },
   },
   pt: {
-    about: {
-      meta: {
-        description: 'Saiba mais sobre mim.',
-        usage: 'about',
-      },
-      title: 'Sobre mim:',
-      lines: [
-        'Sou apaixonado por tecnologia e desenvolvimento de software.',
-        'Atualmente estudando Ciência da Computação na UFABC.',
-      ],
-    },
-    skills: {
-      meta: {
-        description: 'Quais tecnologias eu uso.',
-        usage: 'skills',
-      },
-      title: 'Minhas habilidades incluem:',
-      lines: [
-        '- TypeScript, JavaScript, Python, Java, C#, Go, Haskell',
-        '- React, Node.js, NestJS, Next.js, Tailwind CSS',
-        '- Git, Docker, Linux',
-      ],
-    },
-    contact: {
-      meta: {
-        description: 'Quer dizer algo?',
-        usage: 'contact',
-      },
-      title: 'Entre em contato:',
-      lines: [
-        '- GitHub: https://github.com/jozanardo',
-        '- LinkedIn: [Seu LinkedIn]',
-        '- Email: [Seu Email]',
-      ],
-    },
-    whoami: {
-      meta: {
-        description: 'Quem sou eu.',
-        usage: 'whoami',
-      },
-      loading: 'Carregando README do GitHub…',
-    },
     projects: {
       meta: {
         description:
@@ -145,8 +61,6 @@ const legacyTranslations = validateTranslations('legacy-commands', {
   },
 });
 
-type EmptyArgs = Record<string, never>;
-
 interface ProjectsArgs {
   langFilter: string | null;
   descFilter: string | null;
@@ -164,107 +78,10 @@ function createTextResult(lines: string[]): CommandExecutionResult {
   };
 }
 
-function createStaticCommand(
-  name: 'about' | 'skills' | 'contact'
-): CommandDefinition<EmptyArgs, typeof legacyTranslations> {
-  return {
-    meta: {
-      name,
-      category: 'identity',
-      description: {
-        en: legacyTranslations.en[name].meta.description,
-        pt: legacyTranslations.pt[name].meta.description,
-      },
-      usage: {
-        en: legacyTranslations.en[name].meta.usage,
-        pt: legacyTranslations.pt[name].meta.usage,
-      },
-      surfaces: {
-        help: true,
-        ls: true,
-        search: true,
-      },
-    },
-    translations: legacyTranslations,
-    parse: () => ({
-      ok: true,
-      args: {},
-    }),
-    execute: (_, context) => {
-      const commandTranslations = legacyTranslations[context.lang][name];
-      return createTextResult([
-        commandTranslations.title,
-        ...commandTranslations.lines,
-      ]);
-    },
-  };
-}
-
-const whoamiCommand: CommandDefinition<EmptyArgs, typeof legacyTranslations> = {
-  meta: {
-    name: 'whoami',
-    category: 'identity',
-    description: {
-      en: legacyTranslations.en.whoami.meta.description,
-      pt: legacyTranslations.pt.whoami.meta.description,
-    },
-    usage: {
-      en: legacyTranslations.en.whoami.meta.usage,
-      pt: legacyTranslations.pt.whoami.meta.usage,
-    },
-    surfaces: {
-      help: true,
-      ls: true,
-      search: true,
-    },
-  },
-  translations: legacyTranslations,
-  parse: () => ({
-    ok: true,
-    args: {},
-  }),
-  execute: async (_, context) => {
-    const commandTranslations = legacyTranslations[context.lang].whoami;
-
-    context.setHistory(prev => [
-      ...prev,
-      {
-        type: 'output',
-        blocks: [
-          {
-            type: 'system',
-            text: `🔄 ${commandTranslations.loading}`,
-          },
-        ],
-      },
-    ]);
-
-    try {
-      const html = await context.services.whoami.fetchReadme();
-
-      return {
-        blocks: [
-          {
-            type: 'markdown',
-            html,
-          },
-        ],
-      };
-    } catch (error: any) {
-      return {
-        blocks: [
-          {
-            type: 'error',
-            command: 'whoami',
-            message: error.message,
-          },
-        ],
-      };
-    }
-  },
-};
-
-const projectsCommand: CommandDefinition<ProjectsArgs, typeof legacyTranslations> = {
+const projectsCommand: CommandDefinition<
+  ProjectsArgs,
+  typeof legacyTranslations
+> = {
   meta: {
     name: 'projects',
     category: 'work',
@@ -318,14 +135,22 @@ const projectsCommand: CommandDefinition<ProjectsArgs, typeof legacyTranslations
         blocks: [
           {
             type: 'system',
-            text: `🔄 ${commandTranslations.loadingProjects}`,
+            text: commandTranslations.loadingProjects,
           },
         ],
       };
     }
 
     if (context.projectCatalog.error) {
-      return createTextResult([`❌ ${context.projectCatalog.error}`]);
+      return {
+        blocks: [
+          {
+            type: 'error',
+            command: 'projects',
+            message: context.projectCatalog.error,
+          },
+        ],
+      };
     }
 
     if (args.showLangs) {
@@ -422,10 +247,4 @@ const projectsCommand: CommandDefinition<ProjectsArgs, typeof legacyTranslations
   },
 };
 
-export const legacyCommands: AnyCommandDefinition[] = [
-  whoamiCommand,
-  createStaticCommand('about'),
-  createStaticCommand('skills'),
-  projectsCommand,
-  createStaticCommand('contact'),
-];
+export const legacyCommands: AnyCommandDefinition[] = [projectsCommand];

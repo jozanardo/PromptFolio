@@ -73,13 +73,6 @@ beforeAll(() => {
         });
       }
 
-      if (url.includes('/readme')) {
-        return new Response('<p>README</p>', {
-          status: 200,
-          headers: { 'Content-Type': 'text/html' },
-        });
-      }
-
       throw new Error(`Unexpected fetch request in test setup: ${url}`);
     })
   );

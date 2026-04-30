@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { Language } from '../context/LanguageContext';
+import type { ProfileContent } from '../content/profile';
 import type { ProjectRepo } from '../features/projects/projectsService';
-import type { UseWhoamiResult } from '../features/whoami/useWhoami';
 
 export type SupportedLocale = Language;
 
@@ -56,8 +56,10 @@ export interface HelpListItem {
 
 export interface RecordListEntry {
   title: string;
+  meta?: string;
   subtitle?: string;
   lines?: string[];
+  href?: string;
 }
 
 export interface TextBlock {
@@ -133,7 +135,7 @@ export interface CommandContext {
   history: HistoryItem[];
   setHistory: Dispatch<SetStateAction<HistoryItem[]>>;
   content: {
-    profile: unknown;
+    profile: ProfileContent | null;
     narrative: unknown;
     timeline: unknown;
   };
@@ -146,9 +148,7 @@ export interface CommandContext {
     ready: boolean;
     records: unknown[];
   };
-  services: {
-    whoami: UseWhoamiResult;
-  };
+  services: Record<string, never>;
   registry: CommandRegistryLike;
 }
 

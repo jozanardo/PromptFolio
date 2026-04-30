@@ -8,6 +8,14 @@ interface HistoryProps {
   history: HistoryItem[];
 }
 
+function isSupportedRecordHref(href: string): boolean {
+  return /^(https?:\/\/|mailto:)/i.test(href);
+}
+
+function isExternalRecordHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
 const History: React.FC<HistoryProps> = ({ history }) => {
   const { lang } = useLanguage();
   const t = translations[lang];
@@ -72,6 +80,45 @@ const History: React.FC<HistoryProps> = ({ history }) => {
       }
 
       if (block.type === 'recordList') {
+        const renderRecordMain = (
+          record: (typeof block.records)[number]
+        ) => {
+          const content = (
+            <>
+              <div className="history-list-token-group">
+                <div className="history-list-token">{record.title}</div>
+                {record.meta ? (
+                  <div className="history-list-token-meta">
+                    {record.meta}
+                  </div>
+                ) : null}
+              </div>
+              {record.subtitle ? (
+                <div className="history-list-copy">
+                  {record.subtitle}
+                </div>
+              ) : null}
+            </>
+          );
+
+          if (record.href && isSupportedRecordHref(record.href)) {
+            const isExternal = isExternalRecordHref(record.href);
+
+            return (
+              <a
+                className="history-list-main history-list-link"
+                href={record.href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+              >
+                {content}
+              </a>
+            );
+          }
+
+          return <div className="history-list-main">{content}</div>;
+        };
+
         return (
           <div key={key} className="history-list">
             {block.title ? (
@@ -82,14 +129,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
                 key={`${record.title}-${record.subtitle ?? ''}`}
                 className="history-list-entry"
               >
-                <div className="history-list-main">
-                  <div className="history-list-token">{record.title}</div>
-                  {record.subtitle ? (
-                    <div className="history-list-copy">
-                      {record.subtitle}
-                    </div>
-                  ) : null}
-                </div>
+                {renderRecordMain(record)}
                 {record.lines && record.lines.length > 0 ? (
                   <div className="history-list-subtokens">
                     {record.lines.map((line, lineIdx) => (
