@@ -30,6 +30,7 @@ function createContext(
     },
     content: {
       profile: null,
+      projects: null,
       narrative: null,
       timeline: null,
     },
@@ -60,7 +61,7 @@ describe('executeCommand', () => {
           title: 'Start exploring:',
           records: [
             {
-              title: 'projects',
+              title: 'work',
               subtitle: 'Browse selected work and useful filters.',
             },
             {
@@ -95,7 +96,7 @@ describe('executeCommand', () => {
           title: 'Comece explorando:',
           records: [
             {
-              title: 'projects',
+              title: 'work',
               subtitle: 'Conheça trabalhos selecionados e filtros úteis.',
             },
             {
@@ -171,11 +172,17 @@ describe('executeCommand', () => {
           usage: 'skills',
         },
         {
-          command: 'projects',
+          command: 'work',
           description:
-            'See my projects (use filters: [--lang=<language>] [--desc=<text>] [--name=<name>]).',
+            'Browse the curated work catalog with optional filters.',
           usage:
-            'projects [--lang=<language>] [--desc=<text>] [--name=<name>]',
+            'work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
+        },
+        {
+          command: 'archive',
+          description: 'Browse the broader historical project catalog.',
+          usage:
+            'archive [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
         },
         {
           command: 'contact',
@@ -225,11 +232,17 @@ describe('executeCommand', () => {
           usage: 'skills',
         },
         {
-          command: 'projects',
+          command: 'work',
           description:
-            'Veja meus projetos (use filtros: [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]).',
+            'Navegue pelo catálogo curado de trabalho com filtros opcionais.',
           usage:
-            'projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>]',
+            'work [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
+        },
+        {
+          command: 'archive',
+          description: 'Navegue pelo catálogo histórico mais amplo de projetos.',
+          usage:
+            'archive [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
         },
         {
           command: 'contact',
@@ -275,7 +288,7 @@ describe('executeCommand', () => {
         },
         {
           title: 'work',
-          lines: ['projects'],
+          lines: ['work', 'archive'],
         },
       ],
     },
@@ -293,7 +306,7 @@ describe('executeCommand', () => {
         },
         {
           title: 'trabalho',
-          lines: ['projects'],
+          lines: ['work', 'archive'],
         },
       ],
     },
@@ -311,6 +324,33 @@ describe('executeCommand', () => {
       ]);
     }
   );
+
+  it('keeps ls compact instead of duplicating the full help response', async () => {
+    const help = await executeCommand('help', createContext('en'));
+    const ls = await executeCommand('ls', createContext('en'));
+
+    expect(ls.result.blocks).not.toEqual(help.result.blocks);
+    expect(ls.result.blocks).toEqual([
+      {
+        type: 'recordList',
+        title: 'Archive directory:',
+        records: [
+          {
+            title: 'discovery',
+            lines: ['start', 'help', 'ls'],
+          },
+          {
+            title: 'identity',
+            lines: ['whoami', 'about', 'skills', 'contact'],
+          },
+          {
+            title: 'work',
+            lines: ['work', 'archive'],
+          },
+        ],
+      },
+    ]);
+  });
 
   it('appends future ls categories after the preferred archive order', async () => {
     const labCommand: AnyCommandDefinition = {
@@ -359,7 +399,7 @@ describe('executeCommand', () => {
           },
           {
             title: 'work',
-            lines: ['projects'],
+            lines: ['work', 'archive'],
           },
           {
             title: 'experiments',
@@ -378,13 +418,13 @@ describe('executeCommand', () => {
     expect(result.result.effects).toEqual([{ type: 'clearHistory' }]);
   });
 
-  it('treats projects boolean flags as boolean even when followed by positionals', async () => {
-    const result = await executeCommand('projects --help extra', createContext('en'));
+  it('treats work boolean flags as boolean even when followed by positionals', async () => {
+    const result = await executeCommand('work --help extra', createContext('en'));
 
     expect(result.result.blocks).toEqual([
       {
         type: 'text',
-        text: 'Usage: projects [--lang=<language>] [--desc=<text>] [--name=<name>] [--list-langs] [--help]',
+        text: 'Usage: work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
       },
     ]);
   });

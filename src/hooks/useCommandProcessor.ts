@@ -10,6 +10,7 @@ import { applyCommandEffects } from '../commands/runtime/effects';
 import { executeCommand } from '../commands/runtime/executeCommand';
 import { useLanguage } from '../context/LanguageContext';
 import { profileContent } from '../content/profile';
+import { projectContent } from '../content/projects';
 import { translations } from '../i18n';
 import { useProjects } from '../features/projects/useProjects';
 import { CommandContext, HistoryItem } from '../types';
@@ -74,6 +75,7 @@ export function useCommandProcessor(): {
       setHistory: setHistoryOverride,
       content: {
         profile: profileContent,
+        projects: projectContent,
         narrative: null,
         timeline: null,
       },

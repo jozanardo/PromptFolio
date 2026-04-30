@@ -8,7 +8,7 @@ export const translations = {
     notFoundMessage: "Command not found. Type 'help' to view a list of available commands.",
     welcome: 'Explore my work, journey, and contact links.',
     intro:
-      'PromptFolio organizes my portfolio as a calm personal archive. You can click a suggestion below or type a short command to browse projects, background, skills, and ways to reach me.',
+      'PromptFolio organizes my portfolio as a calm personal archive. You can click a suggestion below or type a short command to browse selected work, background, skills, and ways to reach me.',
     guidance: 'Start here:',
     guidanceDetail:
       'Click a suggestion to fill the prompt. Then press Enter.',
@@ -19,25 +19,7 @@ export const translations = {
     inputPlaceholder: 'Type a command and press Enter',
     historyAriaLabel: 'Terminal history',
     fillPromptAriaLabel: 'Fill the prompt with',
-    loadingLanguages: 'Loading languages…',
-    projectsLoading: 'Searching projects…',
-    filterLangLabel: 'language',
-    filterDescLabel: 'description',
-    filterNameLabel: 'name',
-    urlLabel: 'URL',
-    quickStartCommands: ['start', 'projects', 'whoami', 'help'] as const,
-
-    // projects
-    projectsHelpUsage:
-      'Usage: projects [--lang=<language>] [--desc=<text>] [--name=<name>] [--list-langs] [--help]',
-    availableLangsTitle: 'Available languages:',
-    projectSingular: 'project',
-    projectPlural: 'projects',
-    allProjectsTitle: 'All projects:',
-    foundMessage: 'Found',
-    descriptionLabel: 'Description',
-    updatedLabel: 'Updated at',
-    noProjectsMessage: 'No projects found with the applied filters.',
+    quickStartCommands: ['start', 'work', 'whoami', 'help'] as const,
   },
   pt: {
     // general
@@ -47,7 +29,7 @@ export const translations = {
     notFoundMessage: "Comando não encontrado. Digite 'help' para ver a lista de comandos.",
     welcome: 'Explore meu trabalho, trajetória e formas de contato.',
     intro:
-      'O PromptFolio organiza meu portfólio como um arquivo pessoal calmo. Você pode clicar em uma sugestão abaixo ou digitar um comando curto para navegar por projetos, trajetória, habilidades e formas de contato.',
+      'O PromptFolio organiza meu portfólio como um arquivo pessoal calmo. Você pode clicar em uma sugestão abaixo ou digitar um comando curto para navegar por trabalhos selecionados, trajetória, habilidades e formas de contato.',
     guidance: 'Comece por aqui:',
     guidanceDetail:
       'Clique em uma sugestão para preencher o prompt. Depois, pressione Enter.',
@@ -58,25 +40,7 @@ export const translations = {
     inputPlaceholder: 'Digite um comando e pressione Enter',
     historyAriaLabel: 'Histórico do terminal',
     fillPromptAriaLabel: 'Preencher o prompt com',
-    loadingLanguages: 'Carregando linguagens…',
-    projectsLoading: 'Buscando projetos…',
-    filterLangLabel: 'linguagem',
-    filterDescLabel: 'descrição',
-    filterNameLabel: 'nome',
-    urlLabel: 'URL',
-    quickStartCommands: ['start', 'projects', 'whoami', 'help'] as const,
-
-    // projects
-    projectsHelpUsage:
-      'Uso: projects [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--list-langs] [--help]',
-    availableLangsTitle: 'Linguagens disponíveis:',
-    projectSingular: 'projeto',
-    projectPlural: 'projetos',
-    allProjectsTitle: 'Todos os projetos:',
-    foundMessage: 'Encontrados',
-    descriptionLabel: 'Descrição',
-    updatedLabel: 'Atualizado em',
-    noProjectsMessage: 'Nenhum projeto encontrado com os filtros aplicados.',
+    quickStartCommands: ['start', 'work', 'whoami', 'help'] as const,
   },
 } as const;
 

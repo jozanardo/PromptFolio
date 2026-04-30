@@ -99,7 +99,7 @@ describe('History', () => {
             title: 'Start exploring:',
             records: [
               {
-                title: 'projects',
+                title: 'work',
                 subtitle: 'Browse selected work.',
               },
               {
@@ -118,7 +118,7 @@ describe('History', () => {
       </LanguageProvider>
     );
 
-    expect(screen.getByText('projects')).toHaveClass('history-list-token');
+    expect(screen.getByText('work')).toHaveClass('history-list-token');
     expect(screen.getByText('Browse selected work.')).toHaveClass(
       'history-list-copy'
     );
@@ -173,7 +173,7 @@ describe('History', () => {
             type: 'recordList',
             records: [
               {
-                title: 'projects',
+                title: 'work',
                 lines: ['same line', 'same line'],
               },
             ],
