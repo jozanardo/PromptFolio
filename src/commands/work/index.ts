@@ -40,7 +40,6 @@ export const workCommand: CommandDefinition<
   }),
   execute: (args, context) => {
     const t = workTranslations[context.lang];
-    const catalog = createCatalog(context);
 
     if (args.showHelp) {
       return {
@@ -53,6 +52,7 @@ export const workCommand: CommandDefinition<
       };
     }
 
+    const catalog = createCatalog(context);
     const projectFilters = createProjectFilters(args, context.lang, {
       featuredOnly: true,
     });

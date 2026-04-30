@@ -33,7 +33,7 @@ function createContext(
       projects: projectContent,
       narrative: null,
       timeline: null,
-    } as unknown as CommandContext['content'],
+    },
     projectCatalog: {
       repos: [],
       loading: false,
@@ -49,6 +49,25 @@ function createContext(
 }
 
 describe('work command', () => {
+  it('returns help without reading project catalog content', async () => {
+    const context = createContext('en');
+
+    Object.defineProperty(context.content, 'projects', {
+      get: () => {
+        throw new Error('project content should not be read for help');
+      },
+    });
+
+    const result = await executeCommand('work --help', context);
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'text',
+        text: 'Usage: work [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
+      },
+    ]);
+  });
+
   it('executes work as a filtered editorial catalog with GitHub enrichment', async () => {
     const result = await executeCommand(
       'work --lang=TypeScript --name prompt',
