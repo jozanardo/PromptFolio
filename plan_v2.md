@@ -87,17 +87,22 @@
 
 ## Fase 3 — Catálogo de Trabalho com `work` e `archive` - Done
 
-- Objetivo: transformar a listagem atual de repositórios num catálogo editorial híbrido entre curadoria local e enriquecimento remoto.
-- Escopo: reconstruir a descoberta de trabalho selecionado como `work` e criar `archive` sobre uma mesma fonte de verdade de projetos.
-- Arquivos principais previstos: `src/commands/work/*`, `src/commands/archive/*`, `src/content/projects/*`, adaptação do serviço hoje em `src/features/projects/projectsService.ts`, eventual extração de um `src/services/projectCatalog.ts`.
-- Implementação: criar um modelo de projeto curado com campos como `slug`, `repoName`, `featured`, `summary.pt`, `summary.en`, `impact.pt`, `impact.en`, `tags`, `status`, `year`, `order` e links.
-- Implementação: criar um adaptador de GitHub que complemente os projetos curados com metadados externos como `language`, `updated_at` e `html_url`, sem substituir o conteúdo humano.
-- Implementação: `work` deverá deixar explícito que a resposta é trabalho selecionado, não “todos os repositórios”, usando subset editorial e filtros reaproveitáveis.
-- Implementação: `archive` deverá mostrar o catálogo histórico completo, agrupado de forma navegável e menos promocional, servindo como memória do acervo.
-- Implementação: comandos de catálogo que listem slugs, nomes navegáveis, filtros ativos ou agrupamentos deverão seguir o padrão visual de tokens do `help`, usando acento nos identificadores principais e evitando transformar descrições de projeto em elementos decorativos.
-- Implementação: a infraestrutura de filtros deverá deixar de morar apenas no hook de feature atual e passar a compor o runtime, para ser reaproveitável em `work`, `archive` e `search`.
-- Checklist: catálogo curado criado, adaptador GitHub isolado, `work` criado, `archive` criado, comando redundante `highlights` removido, filtros comuns implementados, fallback para falha remota definido.
-- Testes obrigatórios: merge entre dados locais e GitHub; filtros por linguagem, texto e nome; fallback quando a API remota falha; diferenciação real entre `work` e `archive`; cobertura `pt/en` de labels, descrições e estados vazios.
+- Status: concluída.
+- Resultado: a listagem antiga de repositórios foi substituída por um catálogo editorial híbrido entre curadoria local e enriquecimento remoto opcional do GitHub.
+- Escopo entregue: descoberta de trabalho selecionado em `work` e catálogo histórico completo em `archive`, ambos sobre a mesma fonte de verdade em `src/content/projects`.
+- Arquivos principais entregues: `src/commands/work/*`, `src/commands/archive/*`, `src/content/projects/*`, `src/services/projectCatalog.ts` e a adaptação do contexto de comandos para receber conteúdo local de projetos e metadados de GitHub.
+- Implementado: modelo de projeto curado com `slug`, `repoName`, `featured`, textos localizados em `summary` e `impact`, `tags`, `status`, `year`, `order`, linguagem principal e link do repositório.
+- Implementado: merge entre conteúdo local e metadados remotos opcionais, preservando o texto autoral como fonte principal e usando GitHub apenas para enriquecer linguagem, URL, data de atualização e descrição remota.
+- Implementado: `work` mostra apenas projetos `featured`, com filtros por `--lang`, `--text`, `--name` e `--tag`, além de `--list-langs` limitado ao mesmo conjunto featured.
+- Implementado: `archive` mostra o catálogo histórico completo, com os mesmos filtros e `--list-langs` sobre todo o catálogo.
+- Implementado: `--desc` permanece como alias compatível para `--text`, mas a documentação e o help oficial usam `--text`, porque o filtro pesquisa mais do que descrição.
+- Implementado: estados de loading/erro do enriquecimento GitHub aparecem também em `--list-langs`, já que a lista de linguagens pode mudar com metadados remotos.
+- Implementado: `work --help` retorna sem ler o catálogo de projetos, mantendo ajuda rápida e sem trabalho desnecessário.
+- Implementado: `projects` e `highlights` foram removidos da superfície pública e passam a retornar command not found.
+- Implementado: `highlighted` e `highlightedOnly` foram removidos do modelo e dos filtros, já que `highlights` deixou de existir como comando público.
+- Curadoria final: removidos `logic-and-algorithms`, `reda-mind` e `lfa-q1-2024`; adicionados `Aplicao-grafica-3D-com-animacoes`, `Napster` e `zookepeer`, com `Napster` e `zookepeer` marcados como featured.
+- Checklist concluído: catálogo curado criado, adaptador GitHub isolado, `work` criado, `archive` criado, comando redundante `highlights` removido, filtros comuns implementados, fallback para falha remota definido, comentários de review endereçados.
+- Testes cobertos: merge entre dados locais e GitHub; filtros por linguagem, texto, nome e tag; fallback quando a API remota falha; diferenciação real entre `work` e `archive`; remoção de comandos públicos antigos; `--list-langs` em `work` e `archive`; alias `--desc`; help sem leitura de catálogo.
 - Aceite: o usuário consegue explorar o trabalho selecionado em `work` e o catálogo histórico completo em `archive`, sem comandos redundantes retornando quase a mesma lista.
 
 ## Fase 4 — Narrativa Cronológica com `timeline` e `journey`

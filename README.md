@@ -1,12 +1,52 @@
-# React + Vite
+# PromptFolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PromptFolio is a bilingual, theme-aware personal command archive. It presents
+portfolio content through a calm terminal-inspired interface where commands,
+reading, and curated project discovery live in the same editorial flow.
 
-Currently, two official plugins are available:
+## Current V2 Status
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Phase 0: command runtime foundation - done.
+- Phase 1: initial discovery with `start`, `help`, and `ls` - done.
+- Phase 2: identity commands with `about`, `whoami`, `skills`, and `contact` - done.
+- Phase 3: editorial work catalog with `work` and `archive` - done.
 
-## Expanding the ESLint configuration
+## Implemented Commands
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `start`: opens the archive map.
+- `help`: lists registered commands from command metadata.
+- `ls`: shows a compact directory grouped by archive area.
+- `whoami`, `about`, `skills`, `contact`: local bilingual identity content.
+- `work`: shows selected/featured work from the curated catalog.
+- `archive`: shows the complete historical project catalog.
+- `clear`: clears the terminal history through a structured side effect.
+
+The legacy public `projects` and `highlights` commands are intentionally no
+longer registered.
+
+## Work Catalog
+
+The project catalog is local-first and optionally enriched by GitHub metadata.
+Local content in `src/content/projects` owns the editorial fields, while GitHub
+may enrich language, URL, update, and remote description data.
+
+- `work` shows only `featured` projects.
+- `archive` shows the full catalog.
+- Both commands support `--lang`, `--text`, `--name`, `--tag`,
+  `--list-langs`, and `--help`.
+- `--desc` remains supported as a compatibility alias for `--text`, but the
+  documented flag is `--text`.
+
+## Development
+
+```bash
+npm install
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
+
+## Planning
+
+The detailed V2 implementation plan lives in `plan_v2.md`.
