@@ -2,6 +2,7 @@ import type { CommandDefinition } from '../../types';
 import {
   createCatalog,
   createEnrichmentBlocks,
+  createLanguageRecords,
   createProjectFilters,
   createProjectRecords,
   filterProjectCatalog,
@@ -51,8 +52,22 @@ export const archiveCommand: CommandDefinition<
       };
     }
 
+    const catalog = createCatalog(context);
+
+    if (args.showLangs) {
+      return {
+        blocks: [
+          {
+            type: 'recordList',
+            title: t.availableLanguagesTitle,
+            records: createLanguageRecords(catalog, t),
+          },
+        ],
+      };
+    }
+
     const projects = filterProjectCatalog(
-      createCatalog(context),
+      catalog,
       createProjectFilters(args, context.lang)
     );
     const records = createProjectRecords(

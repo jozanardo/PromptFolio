@@ -53,24 +53,25 @@ export const workCommand: CommandDefinition<
       };
     }
 
+    const projectFilters = createProjectFilters(args, context.lang, {
+      featuredOnly: true,
+    });
+
     if (args.showLangs) {
+      const projects = filterProjectCatalog(catalog, projectFilters);
+
       return {
         blocks: [
           {
             type: 'recordList',
             title: t.availableLanguagesTitle,
-            records: createLanguageRecords(catalog, t),
+            records: createLanguageRecords(projects, t),
           },
         ],
       };
     }
 
-    const projects = filterProjectCatalog(
-      catalog,
-      createProjectFilters(args, context.lang, {
-        featuredOnly: true,
-      })
-    );
+    const projects = filterProjectCatalog(catalog, projectFilters);
 
     const records = createProjectRecords(
       projects,

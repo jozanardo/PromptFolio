@@ -126,7 +126,7 @@ describe('work command', () => {
         records: expect.arrayContaining([
           {
             title: 'TypeScript',
-            subtitle: '2 projects',
+            subtitle: '1 project',
           },
           {
             title: 'C#',
@@ -143,6 +143,14 @@ describe('work command', () => {
         ]),
       },
     ]);
+    expect(result.result.blocks[0]).toMatchObject({
+      records: expect.not.arrayContaining([
+        {
+          title: 'C++',
+          subtitle: '1 project',
+        },
+      ]),
+    });
   });
 
   it('removes the previous public commands', async () => {
@@ -237,6 +245,27 @@ describe('work command', () => {
             ],
           },
         ],
+      },
+    ]);
+  });
+
+  it('lists archive languages from the full historical catalog', async () => {
+    const result = await executeCommand('archive --list-langs', createContext('en'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'recordList',
+        title: 'Available archive languages:',
+        records: expect.arrayContaining([
+          {
+            title: 'C++',
+            subtitle: '1 project',
+          },
+          {
+            title: 'TypeScript',
+            subtitle: '2 projects',
+          },
+        ]),
       },
     ]);
   });

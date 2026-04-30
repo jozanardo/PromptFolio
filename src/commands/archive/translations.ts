@@ -8,11 +8,12 @@ export const archiveTranslations = validateTranslations('archive', {
         'archive [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
     },
     helpUsage:
-      'Usage: archive [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>] [--help]',
+      'Usage: archive [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
     intro:
       'A broader project memory, including study work, labs, and older repositories that still explain the path.',
     title: 'Historical archive:',
     empty: 'No archived project records matched those filters.',
+    availableLanguagesTitle: 'Available archive languages:',
     loadingFallback:
       'GitHub enrichment is still loading. Showing the local catalog.',
     errorPrefix: 'GitHub enrichment unavailable: ',
@@ -33,11 +34,12 @@ export const archiveTranslations = validateTranslations('archive', {
         'archive [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
     },
     helpUsage:
-      'Uso: archive [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>] [--help]',
+      'Uso: archive [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>] [--list-langs] [--help]',
     intro:
       'Uma memória mais ampla de projetos, incluindo estudos, laboratórios e repositórios antigos que ainda explicam a trajetória.',
     title: 'Arquivo histórico:',
     empty: 'Nenhum registro de projeto correspondeu a esses filtros.',
+    availableLanguagesTitle: 'Linguagens disponíveis no arquivo:',
     loadingFallback:
       'O enriquecimento do GitHub ainda está carregando. Mostrando o catálogo local.',
     errorPrefix: 'Enriquecimento do GitHub indisponível: ',
