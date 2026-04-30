@@ -69,17 +69,17 @@
 - Testes obrigatórios: `help` lista apenas comandos registrados; `ls` não duplica exatamente a resposta do `help`; `start` responde em `pt` e `en`; quick-start preenche o prompt corretamente; exemplos/uso refletem o idioma ativo; `recordList` aplica o mesmo destaque de acento usado pelos tokens de comando do `help`.
 - Aceite: um visitante novo entende o que o PromptFolio é, como começar e quais áreas explorar sem precisar adivinhar o vocabulário da CLI.
 
-## Fase 2 — Identidade Base com `about`, `whoami`, `skills` e `contact`
+## Fase 2 — Identidade Base com `about`, `whoami`, `skills` e `contact` - Done
 
 - Objetivo: consolidar a camada de identidade profissional e pessoal do PromptFolio em conteúdo local, curado e plenamente traduzível.
 - Escopo: migrar os comandos atuais de identidade para o novo runtime e transformar `whoami` em um resumo autoral em vez de uma leitura remota de README.
 - Arquivos principais previstos: `src/commands/about/*`, `src/commands/whoami/*`, `src/commands/skills/*`, `src/commands/contact/*`, `src/content/profile/*`.
 - Implementação: `about` deverá responder com um resumo editorial curto sobre quem é João, qual o recorte do portfólio e qual o contexto profissional/acadêmico relevante.
-- Implementação: `whoami` deverá responder a uma versão mais concisa e “terminal-native” do perfil, com conteúdo local em `pt` e `en`, removendo a dependência principal de `fetchReadmeHtml`.
+- Implementação: `whoami` deverá responder a um retrato pessoal e “terminal-native” de João, com seções de perfil, interesses e hobbies em `pt` e `en`, removendo a dependência principal de `fetchReadmeHtml`.
 - Implementação: `skills` deverá passar a responder a partir de uma estrutura de dados organizada por categorias, como linguagens, frameworks, fundamentos, tooling e interesses, e não apenas uma lista solta de strings.
 - Implementação: quando `skills` renderizar categorias, os nomes das categorias deverão usar o mesmo tratamento de token estrutural das seções de `ls`, mantendo descrições e itens técnicos em hierarquia textual neutra.
 - Implementação: `about`, `skills` e `contact` deverão seguir a mesma gramática visual derivada do `help` sempre que renderizarem blocos estruturados. `about` pode usar tokens para recortes de identidade ou áreas de atuação; `skills` deve usar tokens para categorias; `contact` deve usar tokens para canais como GitHub, LinkedIn e Email, com URLs e descrições em texto neutro.
-- Implementação: `contact` deverá ser migrado para o novo contrato e deixar placeholders pendentes; o conteúdo deverá ser localizável e consistente com o idioma ativo.
+- Implementação: `contact` deverá ser migrado para o novo contrato e deixar placeholders pendentes; o conteúdo deverá ser localizável, clicável e consistente com o idioma ativo.
 - Implementação: o conteúdo de perfil deverá ser separado em arquivos de dados, com campos por locale, para evitar concatenação manual e para permitir reuso em `start`, `now` e comandos futuros.
 - Checklist: perfil autoral estruturado criado, `whoami` local implementado, `skills` estruturado por categorias, `contact` sem placeholders, comandos migrados para pastas próprias, traduções `pt/en` completas.
 - Testes obrigatórios: `whoami` não depende do serviço remoto; `skills` retorna categorias corretas; `contact` localiza rótulos e conteúdo; `about` e `whoami` não divergem conceitualmente entre os idiomas.
