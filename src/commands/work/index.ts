@@ -62,6 +62,7 @@ export const workCommand: CommandDefinition<
 
       return {
         blocks: [
+          ...createEnrichmentBlocks(context, t),
           {
             type: 'recordList',
             title: t.availableLanguagesTitle,

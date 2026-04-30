@@ -57,6 +57,7 @@ export const archiveCommand: CommandDefinition<
     if (args.showLangs) {
       return {
         blocks: [
+          ...createEnrichmentBlocks(context, t),
           {
             type: 'recordList',
             title: t.availableLanguagesTitle,

@@ -176,13 +176,13 @@ describe('executeCommand', () => {
           description:
             'Browse the curated work catalog with optional filters.',
           usage:
-            'work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
+            'work [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>]',
         },
         {
           command: 'archive',
           description: 'Browse the broader historical project catalog.',
           usage:
-            'archive [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
+            'archive [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>]',
         },
         {
           command: 'contact',
@@ -236,13 +236,13 @@ describe('executeCommand', () => {
           description:
             'Navegue pelo catálogo curado de trabalho com filtros opcionais.',
           usage:
-            'work [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
+            'work [--lang=<linguagem>] [--text=<busca>] [--name=<nome>] [--tag=<tag>]',
         },
         {
           command: 'archive',
           description: 'Navegue pelo catálogo histórico mais amplo de projetos.',
           usage:
-            'archive [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
+            'archive [--lang=<linguagem>] [--text=<busca>] [--name=<nome>] [--tag=<tag>]',
         },
         {
           command: 'contact',
@@ -424,7 +424,7 @@ describe('executeCommand', () => {
     expect(result.result.blocks).toEqual([
       {
         type: 'text',
-        text: 'Usage: work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
+        text: 'Usage: work [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
       },
     ]);
   });

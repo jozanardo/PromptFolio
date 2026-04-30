@@ -70,15 +70,12 @@ describe('projectCatalog', () => {
     );
     expect(bySlug.get('grafica-3d-animacoes')).toMatchObject({
       featured: false,
-      highlighted: false,
     });
     expect(bySlug.get('napster')).toMatchObject({
       featured: true,
-      highlighted: false,
     });
     expect(bySlug.get('zookepeer')).toMatchObject({
       featured: true,
-      highlighted: false,
     });
   });
 

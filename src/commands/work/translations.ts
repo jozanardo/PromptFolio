@@ -5,10 +5,10 @@ export const workTranslations = validateTranslations('work', {
     meta: {
       description: 'Browse the curated work catalog with optional filters.',
       usage:
-        'work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>]',
+        'work [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>]',
     },
     helpUsage:
-      'Usage: work [--lang=<language>] [--desc=<text>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
+      'Usage: work [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>] [--list-langs] [--help]',
     intro:
       'Selected work from the local archive. GitHub only enriches language, URL, and update metadata when available.',
     title: 'Selected work:',
@@ -32,10 +32,10 @@ export const workTranslations = validateTranslations('work', {
       description:
         'Navegue pelo catálogo curado de trabalho com filtros opcionais.',
       usage:
-        'work [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>]',
+        'work [--lang=<linguagem>] [--text=<busca>] [--name=<nome>] [--tag=<tag>]',
     },
     helpUsage:
-      'Uso: work [--lang=<linguagem>] [--desc=<texto>] [--name=<nome>] [--tag=<tag>] [--list-langs] [--help]',
+      'Uso: work [--lang=<linguagem>] [--text=<busca>] [--name=<nome>] [--tag=<tag>] [--list-langs] [--help]',
     intro:
       'Trabalho selecionado do arquivo local. O GitHub apenas enriquece linguagem, URL e metadados de atualização quando disponível.',
     title: 'Trabalho selecionado:',

@@ -6,7 +6,6 @@ export interface CuratedProject {
   slug: string;
   repoName: string;
   featured: boolean;
-  highlighted: boolean;
   summary: LocalizedText;
   impact: LocalizedText;
   tags: string[];
@@ -35,7 +34,6 @@ export const projectContent: ProjectContent = {
       slug: 'promptfolio',
       repoName: 'PromptFolio',
       featured: true,
-      highlighted: true,
       summary: {
         en: 'Command-guided portfolio shaped as a calm personal archive.',
         pt: 'Portfólio guiado por comandos, moldado como um arquivo pessoal calmo.',
@@ -57,7 +55,6 @@ export const projectContent: ProjectContent = {
       slug: 'myorders',
       repoName: 'MyOrders',
       featured: true,
-      highlighted: true,
       summary: {
         en: 'Order-management backend project focused on C# service boundaries and domain modeling.',
         pt: 'Projeto de backend para gestão de pedidos, focado em fronteiras de serviço em C# e modelagem de domínio.',
@@ -79,7 +76,6 @@ export const projectContent: ProjectContent = {
       slug: 'lambda-chess',
       repoName: 'Lambda_Chess',
       featured: true,
-      highlighted: false,
       summary: {
         en: 'Chess engine in Haskell built as a programming paradigms final project.',
         pt: 'Engine de xadrez em Haskell construída como projeto final de paradigmas de programação.',
@@ -101,7 +97,6 @@ export const projectContent: ProjectContent = {
       slug: 'grafica-3d-animacoes',
       repoName: 'Aplicao-grafica-3D-com-animacoes',
       featured: false,
-      highlighted: false,
       summary: {
         en: 'C++ computer graphics project with 3D animation, lighting, and texture work.',
         pt: 'Projeto de computação gráfica em C++ com animações 3D, iluminação e texturização.',
@@ -123,7 +118,6 @@ export const projectContent: ProjectContent = {
       slug: 'napster',
       repoName: 'Napster',
       featured: true,
-      highlighted: false,
       summary: {
         en: 'Peer-to-peer file sharing study project in Java, focused on distributed communication and networked coordination.',
         pt: 'Projeto de compartilhamento de arquivos peer-to-peer em Java, focado em comunicação distribuída e coordenação em rede.',
@@ -145,7 +139,6 @@ export const projectContent: ProjectContent = {
       slug: 'zookepeer',
       repoName: 'zookepeer',
       featured: true,
-      highlighted: false,
       summary: {
         en: 'Coordination-oriented Java study around distributed systems concepts and service organization.',
         pt: 'Estudo em Java orientado a coordenação, conceitos de sistemas distribuídos e organização de serviços.',
@@ -167,7 +160,6 @@ export const projectContent: ProjectContent = {
       slug: 'clean-node',
       repoName: '05-nest-clean',
       featured: false,
-      highlighted: false,
       summary: {
         en: 'NestJS clean architecture exercise focused on backend boundaries and testable modules.',
         pt: 'Exercício de clean architecture com NestJS, focado em fronteiras de backend e módulos testáveis.',

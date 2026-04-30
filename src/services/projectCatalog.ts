@@ -16,7 +16,6 @@ export interface ProjectCatalogFilters {
   name?: string | null;
   tag?: string | null;
   featuredOnly?: boolean;
-  highlightedOnly?: boolean;
 }
 
 export interface ProjectLanguageSummary {
@@ -61,10 +60,6 @@ export function filterProjectCatalog(
 ): ProjectCatalogEntry[] {
   return catalog.filter(project => {
     if (filters.featuredOnly && !project.featured) {
-      return false;
-    }
-
-    if (filters.highlightedOnly && !project.highlighted) {
       return false;
     }
 

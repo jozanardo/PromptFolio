@@ -35,13 +35,20 @@ export interface WorkCommandCopy {
 
 export const workParsing = {
   booleanFlags: ['help', 'list-langs'],
-  valueFlags: ['lang', 'desc', 'name', 'tag'],
+  valueFlags: ['lang', 'text', 'desc', 'name', 'tag'],
 } as const;
 
 export function parseWorkFilters(input: ParsedCommandInput): WorkFilterArgs {
+  const textFlag =
+    typeof input.flags.text === 'string'
+      ? input.flags.text
+      : typeof input.flags.desc === 'string'
+        ? input.flags.desc
+        : null;
+
   return {
     langFilter: typeof input.flags.lang === 'string' ? input.flags.lang : null,
-    textFilter: typeof input.flags.desc === 'string' ? input.flags.desc : null,
+    textFilter: textFlag,
     nameFilter: typeof input.flags.name === 'string' ? input.flags.name : null,
     tagFilter: typeof input.flags.tag === 'string' ? input.flags.tag : null,
     showHelp: input.flags.help === true,
@@ -59,7 +66,7 @@ export function createCatalog(context: CommandContext): ProjectCatalogEntry[] {
 export function createProjectFilters(
   args: WorkFilterArgs,
   locale: SupportedLocale,
-  options: Pick<ProjectCatalogFilters, 'featuredOnly' | 'highlightedOnly'> = {}
+  options: Pick<ProjectCatalogFilters, 'featuredOnly'> = {}
 ): ProjectCatalogFilters {
   return {
     locale,

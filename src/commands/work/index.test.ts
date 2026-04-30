@@ -153,6 +153,45 @@ describe('work command', () => {
     });
   });
 
+  it('shows GitHub fallback messaging when listing work languages', async () => {
+    const result = await executeCommand(
+      'work --list-langs',
+      createContext('en', {
+        error: 'GitHub API retornou 403',
+      })
+    );
+
+    expect(result.result.blocks[0]).toEqual({
+      type: 'system',
+      text: 'GitHub enrichment unavailable: GitHub API retornou 403. Showing the local catalog.',
+    });
+    expect(result.result.blocks[1]).toMatchObject({
+      type: 'recordList',
+      title: 'Available languages:',
+    });
+  });
+
+  it('filters work with the documented text flag and keeps desc as an alias', async () => {
+    const textResult = await executeCommand(
+      'work --text "command archive"',
+      createContext('en')
+    );
+    const descResult = await executeCommand(
+      'work --desc "command archive"',
+      createContext('en')
+    );
+
+    expect(textResult.result.blocks).toEqual(descResult.result.blocks);
+    expect(textResult.result.blocks[1]).toMatchObject({
+      type: 'recordList',
+      records: [
+        {
+          title: 'promptfolio',
+        },
+      ],
+    });
+  });
+
   it('removes the previous public commands', async () => {
     const highlightsResult = await executeCommand('highlights', createContext('en'));
     const projectsResult = await executeCommand('projects', createContext('en'));
@@ -268,5 +307,23 @@ describe('work command', () => {
         ]),
       },
     ]);
+  });
+
+  it('shows GitHub fallback messaging when listing archive languages', async () => {
+    const result = await executeCommand(
+      'archive --list-langs',
+      createContext('en', {
+        loading: true,
+      })
+    );
+
+    expect(result.result.blocks[0]).toEqual({
+      type: 'system',
+      text: 'GitHub enrichment is still loading. Showing the local catalog.',
+    });
+    expect(result.result.blocks[1]).toMatchObject({
+      type: 'recordList',
+      title: 'Available archive languages:',
+    });
   });
 });

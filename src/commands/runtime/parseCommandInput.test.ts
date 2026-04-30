@@ -7,7 +7,7 @@ describe('parseCommandInput', () => {
       'work --lang=TypeScript --name "Prompt Folio"',
       {
         booleanFlags: ['help', 'list-langs'],
-        valueFlags: ['lang', 'desc', 'name'],
+        valueFlags: ['lang', 'text', 'desc', 'name'],
       }
     );
 
@@ -35,7 +35,7 @@ describe('parseCommandInput', () => {
   it('keeps declared boolean flags boolean when followed by positionals', () => {
     const parsed = parseCommandInput('work --help extra', {
       booleanFlags: ['help', 'list-langs'],
-      valueFlags: ['lang', 'desc', 'name'],
+      valueFlags: ['lang', 'text', 'desc', 'name'],
     });
 
     expect(parsed.flags).toEqual({ help: true });
