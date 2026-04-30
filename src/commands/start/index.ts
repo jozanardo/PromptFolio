@@ -43,8 +43,8 @@ export const startCommand: CommandDefinition<
           title: t.title,
           records: [
             {
-              title: 'projects',
-              subtitle: t.entries.projects,
+              title: 'work',
+              subtitle: t.entries.work,
             },
             {
               title: 'whoami',

@@ -4,14 +4,14 @@ import { parseCommandInput } from './parseCommandInput';
 describe('parseCommandInput', () => {
   it('parses named flags and quoted values', () => {
     const parsed = parseCommandInput(
-      'projects --lang=TypeScript --name "Prompt Folio"',
+      'work --lang=TypeScript --name "Prompt Folio"',
       {
         booleanFlags: ['help', 'list-langs'],
-        valueFlags: ['lang', 'desc', 'name'],
+        valueFlags: ['lang', 'text', 'desc', 'name'],
       }
     );
 
-    expect(parsed.commandName).toBe('projects');
+    expect(parsed.commandName).toBe('work');
     expect(parsed.argv).toEqual(['--lang=TypeScript', '--name', 'Prompt Folio']);
     expect(parsed.flags).toEqual({
       lang: 'TypeScript',
@@ -33,9 +33,9 @@ describe('parseCommandInput', () => {
   });
 
   it('keeps declared boolean flags boolean when followed by positionals', () => {
-    const parsed = parseCommandInput('projects --help extra', {
+    const parsed = parseCommandInput('work --help extra', {
       booleanFlags: ['help', 'list-langs'],
-      valueFlags: ['lang', 'desc', 'name'],
+      valueFlags: ['lang', 'text', 'desc', 'name'],
     });
 
     expect(parsed.flags).toEqual({ help: true });
@@ -43,9 +43,9 @@ describe('parseCommandInput', () => {
   });
 
   it('captures tokenization errors for unclosed quotes', () => {
-    const parsed = parseCommandInput('projects --name "Prompt Folio');
+    const parsed = parseCommandInput('work --name "Prompt Folio');
 
-    expect(parsed.commandName).toBe('projects');
+    expect(parsed.commandName).toBe('work');
     expect(parsed.tokenizationError).toBe('Unclosed quote in command input.');
   });
 });
