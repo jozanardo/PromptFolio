@@ -204,7 +204,7 @@ describe('executeCommand', () => {
           command: 'timeline',
           description:
             'Browse the chronological archive of work, study, and career markers.',
-          usage: 'timeline [--group=year|cycle|kind]',
+          usage: 'timeline [--group=year|cycle|milestone]',
         },
         {
           command: 'journey',
@@ -276,7 +276,7 @@ describe('executeCommand', () => {
           command: 'timeline',
           description:
             'Navegue pelo arquivo cronológico de trabalho, estudo e marcos de carreira.',
-          usage: 'timeline [--group=year|cycle|kind]',
+          usage: 'timeline [--group=year|cycle|milestone]',
         },
         {
           command: 'journey',

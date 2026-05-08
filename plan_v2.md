@@ -111,7 +111,7 @@
 - Escopo: criar uma camada cronológica reutilizável e dois comandos complementares sobre ela.
 - Arquivos principais previstos: `src/commands/timeline/*`, `src/commands/journey/*`, `src/content/timeline/*`.
 - Implementação: criar um modelo de entrada cronológica com campos como `id`, `period`, `title.pt`, `title.en`, `summary.pt`, `summary.en`, `kind`, `relatedProjects` e `tags`.
-- Implementação: `timeline` deverá privilegiar leitura factual e rápida, com entradas ordenadas e agrupáveis por ano, ciclo ou marco.
+- Implementação: `timeline` deverá privilegiar leitura factual e rápida, com entradas ordenadas e agrupáveis por ano, ciclo ou tipo de marco.
 - Implementação: `journey` deverá usar a mesma base, mas com recorte mais narrativo, explicando transições, aprendizados, mudanças de foco e evolução técnica.
 - Implementação: `timeline` e `journey` não devem duplicar conteúdo arbitrariamente; eles devem compartilhar fonte de verdade e diferir principalmente na forma de apresentação e no grau de editorialização.
 - Implementação: agrupamentos cronológicos, anos, períodos ou marcos navegáveis deverão usar o mesmo padrão de token estrutural aplicado em `help` e `ls`, enquanto o corpo narrativo permanece em texto de leitura.
@@ -120,7 +120,7 @@
 - Testes obrigatórios: ordenação cronológica; agrupamento consistente; paridade entre locales; entradas sem projeto relacionado; renderização adequada dos blocos de narrativa.
 - Aceite: a trajetória profissional deixa de estar implícita e passa a ser navegável de forma clara, sem virar uma parede de texto nem duplicar a seção de projetos.
 - Implementado: `src/content/timeline` concentra a fonte cronológica bilíngue com entradas factuais, ciclos narrativos, tipos, tags e referências cruzadas para projetos.
-- Implementado: `timeline` apresenta a trajetória em leitura factual, ordenada do trabalho atual às fundações, com suporte a `--group=year|cycle|kind` e `--help`.
+- Implementado: `timeline` apresenta a trajetória em leitura factual, ordenada do trabalho atual às fundações, com suporte a `--group=year|cycle|milestone` e `--help`.
 - Implementado: `journey` usa a mesma fonte cronológica para uma leitura autoral por ciclos, sem duplicar a seção de projetos nem criar uma visualidade nova.
 - Implementado: `start`, `help` e `ls` passam a expor `timeline` e `journey` como parte da camada de trajetória do arquivo.
 - Testes cobertos: ordenação cronológica; agrupamento por ano, ciclo e tipo; paridade PT/EN; entrada sem projeto relacionado; help sem leitura de conteúdo; blocos narrativos do `journey`; integração dos comandos em `start`, `help` e `ls`.

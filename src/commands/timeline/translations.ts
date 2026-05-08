@@ -8,18 +8,20 @@ export const timelineTranslations = validateTranslations('timeline', {
     groupTitles: {
       year: 'Timeline by year:',
       cycle: 'Timeline by cycle:',
-      kind: 'Timeline by kind:',
+      milestone: 'Timeline by milestone:',
     },
-    kindLabels: {
+    milestoneLabels: {
       career: 'career',
       project: 'project',
       study: 'study',
     },
-    helpUsage: 'Usage: timeline [--group=year|cycle|kind] [--help]',
+    helpUsage: 'Usage: timeline [--group=year|cycle|milestone] [--help]',
+    invalidGroup:
+      'Invalid value for --group. Use one of: year, cycle, milestone.',
     meta: {
       description:
         'Browse the chronological archive of work, study, and career markers.',
-      usage: 'timeline [--group=year|cycle|kind]',
+      usage: 'timeline [--group=year|cycle|milestone]',
     },
   },
   pt: {
@@ -29,18 +31,20 @@ export const timelineTranslations = validateTranslations('timeline', {
     groupTitles: {
       year: 'Timeline por ano:',
       cycle: 'Timeline por ciclo:',
-      kind: 'Timeline por tipo:',
+      milestone: 'Timeline por tipo de marco:',
     },
-    kindLabels: {
+    milestoneLabels: {
       career: 'carreira',
       project: 'projeto',
       study: 'estudo',
     },
-    helpUsage: 'Uso: timeline [--group=year|cycle|kind] [--help]',
+    helpUsage: 'Uso: timeline [--group=year|cycle|milestone] [--help]',
+    invalidGroup:
+      'Valor inválido para --group. Use um destes: year, cycle, milestone.',
     meta: {
       description:
         'Navegue pelo arquivo cronológico de trabalho, estudo e marcos de carreira.',
-      usage: 'timeline [--group=year|cycle|kind]',
+      usage: 'timeline [--group=year|cycle|milestone]',
     },
   },
 });

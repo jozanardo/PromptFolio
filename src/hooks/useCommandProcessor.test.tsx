@@ -8,6 +8,7 @@ import {
   useLanguage,
   type Language,
 } from '../context/LanguageContext';
+import { timelineContent } from '../content/timeline';
 import type { CommandDispatchResult } from '../commands/runtime/executeCommand';
 import type { ProjectRepo } from '../features/projects/projectsService';
 
@@ -158,6 +159,39 @@ describe('useCommandProcessor', () => {
             {
               type: 'text',
               text: 'done',
+            },
+          ],
+        },
+      ]);
+    });
+  });
+
+  it('provides timeline content through the shared command context', async () => {
+    vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      expect(context.content.timeline).toEqual(timelineContent);
+
+      return createCommandResult('timeline output', 'timeline');
+    });
+
+    const wrapper = createLanguageWrapper();
+    const { result } = renderHook(() => useCommandProcessor(), { wrapper });
+
+    await act(async () => {
+      await result.current.processCommand('timeline');
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'timeline',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'timeline output',
             },
           ],
         },

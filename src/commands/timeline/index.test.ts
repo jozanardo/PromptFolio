@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { commandRegistry } from '..';
 import { projectContent } from '../../content/projects';
+import { timelineContent } from '../../content/timeline';
 import { executeCommand } from '../runtime/executeCommand';
 import type { CommandContext } from '../../types';
 
@@ -127,15 +128,19 @@ describe('timeline command', () => {
         records: [
           {
             title: 'active craft',
-            lines: ['2026', '2025 - present'],
+            lines: ['Archive system · 2026', 'Mercado Livre · 2025 - present'],
           },
           {
             title: 'technical range',
-            lines: ['2025', '2023', '2023'],
+            lines: [
+              'Backend depth · 2025',
+              'Distributed systems study · 2023',
+              'Computer graphics · 2023',
+            ],
           },
           {
             title: 'critical systems',
-            lines: ['2022 - 2025', '2021 - 2022'],
+            lines: ['BTG Pactual · 2022 - 2025', 'Santander · 2021 - 2022'],
           },
         ],
       },
@@ -175,8 +180,11 @@ describe('timeline command', () => {
     ]);
   });
 
-  it('groups timeline entries by navigable milestone kind', async () => {
-    const result = await executeCommand('timeline --group=kind', createContext('en'));
+  it('groups timeline entries by navigable milestone type', async () => {
+    const result = await executeCommand(
+      'timeline --group=milestone',
+      createContext('en')
+    );
 
     expect(result.result.blocks).toEqual([
       {
@@ -185,21 +193,53 @@ describe('timeline command', () => {
       },
       {
         type: 'recordList',
-        title: 'Timeline by kind:',
+        title: 'Timeline by milestone:',
         records: [
           {
             title: 'career',
-            lines: ['2025 - present', '2022 - 2025', '2021 - 2022'],
+            lines: [
+              'Mercado Livre · 2025 - present',
+              'BTG Pactual · 2022 - 2025',
+              'Santander · 2021 - 2022',
+            ],
           },
           {
             title: 'project',
-            lines: ['2026'],
+            lines: ['Archive system · 2026'],
           },
           {
             title: 'study',
-            lines: ['2025', '2023', '2023'],
+            lines: [
+              'Backend depth · 2025',
+              'Distributed systems study · 2023',
+              'Computer graphics · 2023',
+            ],
           },
         ],
+      },
+    ]);
+  });
+
+  it('returns a parse error for unsupported grouping values', async () => {
+    const result = await executeCommand('timeline --group=foo', createContext('en'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        command: 'timeline',
+        message: 'Invalid value for --group. Use one of: year, cycle, milestone.',
+      },
+    ]);
+  });
+
+  it('returns a parse error when group is provided without a value', async () => {
+    const result = await executeCommand('timeline --group', createContext('pt'));
+
+    expect(result.result.blocks).toEqual([
+      {
+        type: 'error',
+        command: 'timeline',
+        message: 'Valor inválido para --group. Use um destes: year, cycle, milestone.',
       },
     ]);
   });
@@ -218,9 +258,33 @@ describe('timeline command', () => {
     expect(result.result.blocks).toEqual([
       {
         type: 'text',
-        text: 'Uso: timeline [--group=year|cycle|kind] [--help]',
+        text: 'Uso: timeline [--group=year|cycle|milestone] [--help]',
       },
     ]);
+  });
+
+  it('keeps timeline project and command references aligned with the archive', () => {
+    const projectSlugs = new Set(projectContent.projects.map(project => project.slug));
+    const commandNames = new Set(
+      commandRegistry.list().map(definition => definition.meta.name)
+    );
+
+    for (const entry of timelineContent.entries) {
+      expect(entry.relatedProjects.every(slug => projectSlugs.has(slug))).toBe(true);
+    }
+
+    for (const section of timelineContent.journey) {
+      for (const reference of section.references) {
+        if (reference.startsWith('#')) {
+          continue;
+        }
+
+        const isCommand = commandNames.has(reference);
+        const isProject = projectSlugs.has(reference);
+
+        expect(isCommand || isProject).toBe(true);
+      }
+    }
   });
 });
 

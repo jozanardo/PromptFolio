@@ -11,6 +11,7 @@ import { executeCommand } from '../commands/runtime/executeCommand';
 import { useLanguage } from '../context/LanguageContext';
 import { profileContent } from '../content/profile';
 import { projectContent } from '../content/projects';
+import { timelineContent } from '../content/timeline';
 import { translations } from '../i18n';
 import { useProjects } from '../features/projects/useProjects';
 import { CommandContext, HistoryItem } from '../types';
@@ -77,7 +78,7 @@ export function useCommandProcessor(): {
         profile: profileContent,
         projects: projectContent,
         narrative: null,
-        timeline: null,
+        timeline: timelineContent,
       },
       projectCatalog: {
         repos: projects.repos,

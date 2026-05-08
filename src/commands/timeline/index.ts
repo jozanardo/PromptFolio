@@ -8,9 +8,10 @@ import {
   resolveTimelineContent,
   type TimelineEntry,
 } from '../../content/timeline';
+import type { CommandParseResult } from '../../types';
 import { timelineTranslations } from './translations';
 
-type TimelineGroup = 'year' | 'cycle' | 'kind';
+type TimelineGroup = 'year' | 'cycle' | 'milestone';
 const KIND_ORDER = ['career', 'project', 'study'] as const;
 
 interface TimelineArgs {
@@ -23,13 +24,47 @@ const timelineParsing = {
   valueFlags: ['group'],
 } as const;
 
-function parseTimelineArgs(input: ParsedCommandInput): TimelineArgs {
+function parseTimelineArgs(
+  input: ParsedCommandInput,
+  invalidGroupMessage: string
+): CommandParseResult<TimelineArgs> {
+  const showHelp = input.flags.help === true;
+
+  if (showHelp) {
+    return {
+      ok: true,
+      args: {
+        group: null,
+        showHelp,
+      },
+    };
+  }
+
   const group = input.flags.group;
 
+  if (group === undefined) {
+    return {
+      ok: true,
+      args: {
+        group: null,
+        showHelp,
+      },
+    };
+  }
+
+  if (group === 'year' || group === 'cycle' || group === 'milestone') {
+    return {
+      ok: true,
+      args: {
+        group,
+        showHelp,
+      },
+    };
+  }
+
   return {
-    group:
-      group === 'year' || group === 'cycle' || group === 'kind' ? group : null,
-    showHelp: input.flags.help === true,
+    ok: false,
+    message: invalidGroupMessage,
   };
 }
 
@@ -62,7 +97,7 @@ function createGroupedRecords(
   entries: readonly TimelineEntry[],
   group: TimelineGroup,
   locale: SupportedLocale,
-  kindLabels: Record<string, string>
+  milestoneLabels: Record<string, string>
 ): RecordListEntry[] {
   const grouped = new Map<string, { lines: string[]; order: number }>();
 
@@ -72,12 +107,15 @@ function createGroupedRecords(
         ? String(entry.groupYear ?? entry.startYear)
         : group === 'cycle'
           ? entry.cycleLabel[locale]
-          : kindLabels[entry.kind];
-    const value = group === 'year' ? entry.title[locale] : entry.period[locale];
+          : milestoneLabels[entry.kind];
+    const value =
+      group === 'year'
+        ? entry.title[locale]
+        : `${entry.title[locale]} · ${entry.period[locale]}`;
     const order =
       group === 'year'
         ? -(entry.groupYear ?? entry.startYear)
-        : group === 'kind'
+        : group === 'milestone'
           ? KIND_ORDER.indexOf(entry.kind)
           : entry.order;
     const existing = grouped.get(key);
@@ -119,10 +157,8 @@ export const timelineCommand: CommandDefinition<
     },
   },
   translations: timelineTranslations,
-  parse: input => ({
-    ok: true,
-    args: parseTimelineArgs(input),
-  }),
+  parse: (input, context) =>
+    parseTimelineArgs(input, timelineTranslations[context.lang].invalidGroup),
   execute: (args, context) => {
     const t = timelineTranslations[context.lang];
 
@@ -155,7 +191,7 @@ export const timelineCommand: CommandDefinition<
                 entries,
                 args.group,
                 context.lang,
-                t.kindLabels
+                t.milestoneLabels
               ),
             }
           : {
