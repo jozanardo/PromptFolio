@@ -232,6 +232,19 @@ describe('timeline command', () => {
     ]);
   });
 
+  it('accepts kind as a compatibility alias for milestone grouping', async () => {
+    const milestoneResult = await executeCommand(
+      'timeline --group=milestone',
+      createContext('en')
+    );
+    const kindResult = await executeCommand(
+      'timeline --group=kind',
+      createContext('en')
+    );
+
+    expect(kindResult.result.blocks).toEqual(milestoneResult.result.blocks);
+  });
+
   it('returns a parse error when group is provided without a value', async () => {
     const result = await executeCommand('timeline --group', createContext('pt'));
 

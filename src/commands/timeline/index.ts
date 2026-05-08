@@ -62,6 +62,16 @@ function parseTimelineArgs(
     };
   }
 
+  if (group === 'kind') {
+    return {
+      ok: true,
+      args: {
+        group: 'milestone',
+        showHelp,
+      },
+    };
+  }
+
   return {
     ok: false,
     message: invalidGroupMessage,
