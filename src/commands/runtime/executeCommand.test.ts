@@ -65,6 +65,14 @@ describe('executeCommand', () => {
               subtitle: 'Browse selected work and useful filters.',
             },
             {
+              title: 'timeline',
+              subtitle: 'Follow the chronological path through the archive.',
+            },
+            {
+              title: 'journey',
+              subtitle: 'Read the more authored version of that path.',
+            },
+            {
               title: 'whoami',
               subtitle: 'Read the personal identity entry.',
             },
@@ -98,6 +106,14 @@ describe('executeCommand', () => {
             {
               title: 'work',
               subtitle: 'Conheça trabalhos selecionados e filtros úteis.',
+            },
+            {
+              title: 'timeline',
+              subtitle: 'Acompanhe o percurso cronológico pelo arquivo.',
+            },
+            {
+              title: 'journey',
+              subtitle: 'Leia a versão mais autoral desse percurso.',
             },
             {
               title: 'whoami',
@@ -185,6 +201,18 @@ describe('executeCommand', () => {
             'archive [--lang=<language>] [--text=<query>] [--name=<name>] [--tag=<tag>]',
         },
         {
+          command: 'timeline',
+          description:
+            'Browse the chronological archive of work, study, and career markers.',
+          usage: 'timeline [--group=year|cycle|milestone]',
+        },
+        {
+          command: 'journey',
+          description:
+            'Read the authored narrative behind the chronological archive.',
+          usage: 'journey',
+        },
+        {
           command: 'contact',
           description: 'Find verified ways to reach me.',
           usage: 'contact',
@@ -245,6 +273,18 @@ describe('executeCommand', () => {
             'archive [--lang=<linguagem>] [--text=<busca>] [--name=<nome>] [--tag=<tag>]',
         },
         {
+          command: 'timeline',
+          description:
+            'Navegue pelo arquivo cronológico de trabalho, estudo e marcos de carreira.',
+          usage: 'timeline [--group=year|cycle|milestone]',
+        },
+        {
+          command: 'journey',
+          description:
+            'Leia a narrativa autoral por trás do arquivo cronológico.',
+          usage: 'journey',
+        },
+        {
           command: 'contact',
           description: 'Encontre formas verificadas de contato.',
           usage: 'contact',
@@ -290,6 +330,10 @@ describe('executeCommand', () => {
           title: 'work',
           lines: ['work', 'archive'],
         },
+        {
+          title: 'journey',
+          lines: ['timeline', 'journey'],
+        },
       ],
     },
     {
@@ -307,6 +351,10 @@ describe('executeCommand', () => {
         {
           title: 'trabalho',
           lines: ['work', 'archive'],
+        },
+        {
+          title: 'trajetória',
+          lines: ['timeline', 'journey'],
         },
       ],
     },
@@ -346,6 +394,10 @@ describe('executeCommand', () => {
           {
             title: 'work',
             lines: ['work', 'archive'],
+          },
+          {
+            title: 'journey',
+            lines: ['timeline', 'journey'],
           },
         ],
       },
@@ -400,6 +452,10 @@ describe('executeCommand', () => {
           {
             title: 'work',
             lines: ['work', 'archive'],
+          },
+          {
+            title: 'journey',
+            lines: ['timeline', 'journey'],
           },
           {
             title: 'experiments',
