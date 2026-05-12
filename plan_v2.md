@@ -105,7 +105,7 @@
 - Testes cobertos: merge entre dados locais e GitHub; filtros por linguagem, texto, nome e tag; fallback quando a API remota falha; diferenciação real entre `work` e `archive`; remoção de comandos públicos antigos; `--list-langs` em `work` e `archive`; alias `--desc`; help sem leitura de catálogo.
 - Aceite: o usuário consegue explorar o trabalho selecionado em `work` e o catálogo histórico completo em `archive`, sem comandos redundantes retornando quase a mesma lista.
 
-## Fase 4 — Narrativa Cronológica com `timeline` e `journey`
+## Fase 4 — Narrativa Cronológica com `timeline` e `journey` - Done
 
 - Objetivo: adicionar profundidade temporal ao acervo, distinguindo histórico factual de narrativa autoral.
 - Escopo: criar uma camada cronológica reutilizável e dois comandos complementares sobre ela.
@@ -126,7 +126,7 @@
 - Testes cobertos: ordenação cronológica; agrupamento por ano, ciclo e tipo; paridade PT/EN; entrada sem projeto relacionado; help sem leitura de conteúdo; blocos narrativos do `journey`; integração dos comandos em `start`, `help` e `ls`.
 - Aceite: a trajetória profissional agora é navegável em dois modos complementares, preservando a gramática visual de listas estruturadas do PromptFolio.
 
-## Fase 5 — Voz Editorial com `now` e `philosophy`
+## Fase 5 — Voz Editorial com `now` e `philosophy` - Done
 
 - Objetivo: representar o presente e a visão de trabalho do autor, dando personalidade ao acervo sem transformar o terminal em manifesto.
 - Escopo: criar dois comandos curtos, autorais e altamente localizados, focados em contexto atual e pensamento técnico.
@@ -139,6 +139,12 @@
 - Checklist: `now` criado, `philosophy` criado, conteúdo revisado em `pt/en`, integração com `start` e `help` concluída.
 - Testes obrigatórios: locale ativo altera a resposta; conteúdo não fica vazio; ajuda e uso aparecem corretamente; o resultado segue o contrato de blocos e não depende de strings hardcoded na UI.
 - Aceite: o PromptFolio passa a comunicar não só histórico e stack, mas também direção atual e pensamento autoral.
+- Implementado: `src/content/narrative` concentra a voz editorial bilíngue para foco atual e princípios de trabalho, com helpers de resolução e localização.
+- Implementado: `now` apresenta o foco atual em backend resiliente, IA aplicada, PromptFolio e amplitude técnica usando `text` e `recordList`.
+- Implementado: `philosophy` apresenta princípios de clareza, confiabilidade, interfaces, IA com autoria e restrições reais sem depender de API externa.
+- Implementado: `start`, `help`, `ls` e os quick-start chips passam a expor a camada editorial, priorizando `start`, `work`, `timeline` e `now` na entrada inicial.
+- Testes cobertos: paridade PT/EN; conteúdo sem placeholders; ajuda sem leitura de conteúdo; independência de serviços e catálogo remoto; integração dos comandos em `start`, `help`, `ls` e header.
+- Aceite: o PromptFolio agora comunica direção atual e pensamento autoral em comandos locais, preservando a gramática visual compartilhada do arquivo.
 
 ## Fase 6 — Descoberta Transversal com `search` e Polimento Final
 

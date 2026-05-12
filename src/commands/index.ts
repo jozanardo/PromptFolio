@@ -5,6 +5,8 @@ import { contactCommand } from './contact';
 import { helpCommand } from './help';
 import { journeyCommand } from './journey';
 import { lsCommand } from './ls';
+import { nowCommand } from './now';
+import { philosophyCommand } from './philosophy';
 import { createCommandRegistry } from './runtime/commandRegistry';
 import { skillsCommand } from './skills';
 import { startCommand } from './start';
@@ -23,6 +25,8 @@ export const commandRegistry = createCommandRegistry([
   archiveCommand,
   timelineCommand,
   journeyCommand,
+  nowCommand,
+  philosophyCommand,
   contactCommand,
   clearCommand,
 ]);
