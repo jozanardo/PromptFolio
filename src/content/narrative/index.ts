@@ -27,7 +27,7 @@ export function localizeNarrativeRecords(
 }
 
 export function resolveNarrativeContent(
-  narrative: NarrativeContent | null | unknown
+  narrative: unknown
 ): NarrativeContent {
   return isNarrativeContent(narrative) ? narrative : narrativeContent;
 }
