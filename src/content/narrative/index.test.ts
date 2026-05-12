@@ -5,7 +5,7 @@ import {
   resolveNarrativeContent,
 } from '.';
 
-const placeholderPattern = /\b(TBD|TODO|placeholder|\[Your|\[Seu)\b/i;
+const placeholderPattern = /\b(TBD|TODO|placeholder)\b|\[(Your|Seu)/i;
 
 describe('narrative content', () => {
   it('contains complete localized now and philosophy content without placeholders', () => {
@@ -87,5 +87,52 @@ describe('narrative content', () => {
   it('falls back to the local narrative source when context content is missing', () => {
     expect(resolveNarrativeContent(null)).toBe(narrativeContent);
     expect(resolveNarrativeContent({})).toBe(narrativeContent);
+  });
+
+  it('detects bracketed placeholders in narrative text', () => {
+    expect('[Your summary here]').toMatch(placeholderPattern);
+    expect('[Seu resumo aqui]').toMatch(placeholderPattern);
+    expect('TODO').toMatch(placeholderPattern);
+  });
+
+  it('falls back when narrative sections do not have complete localized text', () => {
+    expect(
+      resolveNarrativeContent({
+        now: {
+          intro: null,
+          title: { en: 'Current focus:', pt: 'Foco atual:' },
+          records: [],
+        },
+        philosophy: narrativeContent.philosophy,
+      })
+    ).toBe(narrativeContent);
+
+    expect(
+      resolveNarrativeContent({
+        now: narrativeContent.now,
+        philosophy: {
+          intro: narrativeContent.philosophy.intro,
+          title: {},
+          records: [],
+        },
+      })
+    ).toBe(narrativeContent);
+  });
+
+  it('falls back when narrative records do not have complete localized fields', () => {
+    expect(
+      resolveNarrativeContent({
+        now: {
+          ...narrativeContent.now,
+          records: [
+            {
+              title: { en: 'backend' },
+              subtitle: narrativeContent.now.records[0].subtitle,
+            },
+          ],
+        },
+        philosophy: narrativeContent.philosophy,
+      })
+    ).toBe(narrativeContent);
   });
 });

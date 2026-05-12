@@ -47,9 +47,28 @@ function isNarrativeSection(section: unknown): section is NarrativeSection {
   return (
     typeof section === 'object' &&
     section !== null &&
-    typeof (section as NarrativeSection).intro === 'object' &&
-    typeof (section as NarrativeSection).title === 'object' &&
-    Array.isArray((section as NarrativeSection).records)
+    isLocalizedText((section as NarrativeSection).intro) &&
+    isLocalizedText((section as NarrativeSection).title) &&
+    Array.isArray((section as NarrativeSection).records) &&
+    (section as NarrativeSection).records.every(isNarrativeRecord)
+  );
+}
+
+function isNarrativeRecord(record: unknown): record is NarrativeRecord {
+  return (
+    typeof record === 'object' &&
+    record !== null &&
+    isLocalizedText((record as NarrativeRecord).title) &&
+    isLocalizedText((record as NarrativeRecord).subtitle)
+  );
+}
+
+function isLocalizedText(text: unknown): text is LocalizedText {
+  return (
+    typeof text === 'object' &&
+    text !== null &&
+    typeof (text as LocalizedText).en === 'string' &&
+    typeof (text as LocalizedText).pt === 'string'
   );
 }
 
