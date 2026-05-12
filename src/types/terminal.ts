@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { Language } from '../context/LanguageContext';
+import type { NarrativeContent } from '../content/narrative';
 import type { ProfileContent } from '../content/profile';
 import type { ProjectContent } from '../content/projects';
 import type { TimelineContent } from '../content/timeline';
@@ -139,7 +140,7 @@ export interface CommandContext {
   content: {
     profile: ProfileContent | null;
     projects: ProjectContent | null;
-    narrative: unknown;
+    narrative: NarrativeContent | null;
     timeline: TimelineContent | null;
   };
   projectCatalog: {

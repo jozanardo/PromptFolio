@@ -55,6 +55,10 @@ export const startCommand: CommandDefinition<
               subtitle: t.entries.journey,
             },
             {
+              title: 'now',
+              subtitle: t.entries.now,
+            },
+            {
               title: 'whoami',
               subtitle: t.entries.whoami,
             },

@@ -19,7 +19,7 @@ export const translations = {
     inputPlaceholder: 'Type a command and press Enter',
     historyAriaLabel: 'Terminal history',
     fillPromptAriaLabel: 'Fill the prompt with',
-    quickStartCommands: ['start', 'work', 'whoami', 'help'] as const,
+    quickStartCommands: ['start', 'work', 'timeline', 'now'] as const,
   },
   pt: {
     // general
@@ -40,7 +40,7 @@ export const translations = {
     inputPlaceholder: 'Digite um comando e pressione Enter',
     historyAriaLabel: 'Histórico do terminal',
     fillPromptAriaLabel: 'Preencher o prompt com',
-    quickStartCommands: ['start', 'work', 'whoami', 'help'] as const,
+    quickStartCommands: ['start', 'work', 'timeline', 'now'] as const,
   },
 } as const;
 

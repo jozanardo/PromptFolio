@@ -3,7 +3,13 @@ import { lsTranslations } from './translations';
 
 type LsArgs = Record<string, never>;
 
-const CATEGORY_ORDER = ['discovery', 'identity', 'work', 'journey'] as const;
+const CATEGORY_ORDER = [
+  'discovery',
+  'identity',
+  'work',
+  'journey',
+  'editorial',
+] as const;
 
 export const lsCommand: CommandDefinition<LsArgs, typeof lsTranslations> = {
   meta: {

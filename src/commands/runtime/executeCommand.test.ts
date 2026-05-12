@@ -73,6 +73,10 @@ describe('executeCommand', () => {
               subtitle: 'Read the more authored version of that path.',
             },
             {
+              title: 'now',
+              subtitle: 'See what is currently in focus.',
+            },
+            {
               title: 'whoami',
               subtitle: 'Read the personal identity entry.',
             },
@@ -114,6 +118,10 @@ describe('executeCommand', () => {
             {
               title: 'journey',
               subtitle: 'Leia a versão mais autoral desse percurso.',
+            },
+            {
+              title: 'now',
+              subtitle: 'Veja o que está em foco agora.',
             },
             {
               title: 'whoami',
@@ -213,6 +221,16 @@ describe('executeCommand', () => {
           usage: 'journey',
         },
         {
+          command: 'now',
+          description: 'Read what is currently in focus.',
+          usage: 'now',
+        },
+        {
+          command: 'philosophy',
+          description: 'Read the working principles behind the archive.',
+          usage: 'philosophy',
+        },
+        {
           command: 'contact',
           description: 'Find verified ways to reach me.',
           usage: 'contact',
@@ -285,6 +303,16 @@ describe('executeCommand', () => {
           usage: 'journey',
         },
         {
+          command: 'now',
+          description: 'Leia o que está em foco agora.',
+          usage: 'now',
+        },
+        {
+          command: 'philosophy',
+          description: 'Leia os princípios de trabalho por trás do arquivo.',
+          usage: 'philosophy',
+        },
+        {
           command: 'contact',
           description: 'Encontre formas verificadas de contato.',
           usage: 'contact',
@@ -334,6 +362,10 @@ describe('executeCommand', () => {
           title: 'journey',
           lines: ['timeline', 'journey'],
         },
+        {
+          title: 'editorial',
+          lines: ['now', 'philosophy'],
+        },
       ],
     },
     {
@@ -355,6 +387,10 @@ describe('executeCommand', () => {
         {
           title: 'trajetória',
           lines: ['timeline', 'journey'],
+        },
+        {
+          title: 'editorial',
+          lines: ['now', 'philosophy'],
         },
       ],
     },
@@ -398,6 +434,10 @@ describe('executeCommand', () => {
           {
             title: 'journey',
             lines: ['timeline', 'journey'],
+          },
+          {
+            title: 'editorial',
+            lines: ['now', 'philosophy'],
           },
         ],
       },
@@ -456,6 +496,10 @@ describe('executeCommand', () => {
           {
             title: 'journey',
             lines: ['timeline', 'journey'],
+          },
+          {
+            title: 'editorial',
+            lines: ['now', 'philosophy'],
           },
           {
             title: 'experiments',
