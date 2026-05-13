@@ -73,6 +73,8 @@ describe('search command', () => {
       meta: expect.stringContaining('projeto'),
       lines: expect.arrayContaining(['> work --name promptfolio']),
     });
+    expect(recordList.records[0].meta).toContain('ativo');
+    expect(recordList.records[0].meta).not.toContain('active');
   });
 
   it('searches narrative content', async () => {
@@ -88,6 +90,47 @@ describe('search command', () => {
         }),
       ]),
     });
+  });
+
+  it('finds public commands listed in help', async () => {
+    const { executeCommand } = await import('../runtime/executeCommand');
+    const result = await executeCommand('search clear', createContext('en'));
+
+    expect(result.result.blocks[1]).toMatchObject({
+      type: 'recordList',
+      records: expect.arrayContaining([
+        expect.objectContaining({
+          title: 'clear',
+          lines: expect.arrayContaining(['> clear']),
+        }),
+      ]),
+    });
+  });
+
+  it('localizes timeline result metadata', async () => {
+    const { executeCommand } = await import('../runtime/executeCommand');
+    const result = await executeCommand(
+      'search "Mercado Livre" --type=timeline --limit=1',
+      createContext('pt')
+    );
+
+    expect(result.result.blocks[1]).toMatchObject({
+      type: 'recordList',
+      records: [
+        expect.objectContaining({
+          title: 'Mercado Livre',
+          meta: expect.stringContaining('carreira'),
+        }),
+      ],
+    });
+
+    const recordList = result.result.blocks[1];
+
+    if (recordList.type !== 'recordList') {
+      throw new Error('expected recordList block');
+    }
+
+    expect(recordList.records[0].meta).not.toContain('career');
   });
 
   it('supports type and limit filters', async () => {

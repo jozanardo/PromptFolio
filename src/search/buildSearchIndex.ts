@@ -1,3 +1,5 @@
+import { timelineTranslations } from '../commands/timeline/translations';
+import { workTranslations } from '../commands/work/translations';
 import { resolveNarrativeContent } from '../content/narrative';
 import { resolveProfileContent } from '../content/profile';
 import { resolveProjectContent } from '../content/projects';
@@ -13,6 +15,25 @@ import type { SearchRecord } from './types';
 type SearchContent = CommandContext['content'];
 type SearchProjectCatalog = CommandContext['projectCatalog'];
 
+const commandCategoryLabels = {
+  en: {
+    discovery: 'discovery',
+    identity: 'identity',
+    work: 'work',
+    journey: 'journey',
+    editorial: 'editorial',
+    system: 'system',
+  },
+  pt: {
+    discovery: 'descoberta',
+    identity: 'identidade',
+    work: 'trabalho',
+    journey: 'trajetória',
+    editorial: 'editorial',
+    system: 'sistema',
+  },
+} satisfies Record<SupportedLocale, Record<string, string>>;
+
 export interface BuildSearchIndexInput {
   lang: SupportedLocale;
   registry: CommandRegistryLike;
@@ -25,6 +46,14 @@ function joinMeta(
 ): string | undefined {
   const meta = parts.filter(Boolean).join(' · ');
   return meta || undefined;
+}
+
+function localizeCommandCategory(
+  lang: SupportedLocale,
+  category: string
+): string {
+  const labels: Record<string, string> = commandCategoryLabels[lang];
+  return labels[category] ?? category;
 }
 
 export function buildSearchIndex({
@@ -41,8 +70,10 @@ export function buildSearchIndex({
   );
   const timeline = resolveTimelineContent(content.timeline);
   const narrative = resolveNarrativeContent(content.narrative);
+  const projectStatusLabels = workTranslations[lang].statusLabels;
+  const timelineKindLabels = timelineTranslations[lang].milestoneLabels;
 
-  registry.list('search').forEach(definition => {
+  registry.list('help').forEach(definition => {
     records.push({
       id: `command:${definition.meta.name}`,
       kind: 'command',
@@ -50,7 +81,7 @@ export function buildSearchIndex({
       title: definition.meta.name,
       subtitle: definition.meta.description[lang],
       command: definition.meta.name,
-      meta: definition.meta.category,
+      meta: localizeCommandCategory(lang, definition.meta.category),
       keywords: [
         definition.meta.name,
         definition.meta.category,
@@ -71,7 +102,11 @@ export function buildSearchIndex({
       command: project.featured
         ? `work --name ${project.slug}`
         : `archive --name ${project.slug}`,
-      meta: joinMeta([project.language, project.year, project.status]),
+      meta: joinMeta([
+        project.language,
+        project.year,
+        projectStatusLabels[project.status] ?? project.status,
+      ]),
       href: project.url,
       keywords: [
         project.slug,
@@ -97,7 +132,10 @@ export function buildSearchIndex({
       title: entry.title[lang],
       subtitle: entry.summary[lang],
       command: 'timeline',
-      meta: joinMeta([entry.period[lang], entry.kind]),
+      meta: joinMeta([
+        entry.period[lang],
+        timelineKindLabels[entry.kind] ?? entry.kind,
+      ]),
       keywords: [
         entry.id,
         entry.kind,
