@@ -193,5 +193,20 @@ describe('search command', () => {
         ],
       },
     });
+
+    await expect(
+      executeCommand('search backend --type', createContext('en'))
+    ).resolves.toMatchObject({
+      result: {
+        blocks: [
+          {
+            type: 'error',
+            command: 'search',
+            message:
+              'Search type needs a value. Use --type=command, project, timeline, journey, profile, narrative, or contact.',
+          },
+        ],
+      },
+    });
   });
 });

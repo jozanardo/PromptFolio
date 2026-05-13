@@ -10,6 +10,8 @@ export const searchTranslations = validateTranslations('search', {
     helpUsage:
       'Usage: search <query> [--type=command|project|timeline|journey|profile|narrative|contact] [--limit=1-10]',
     missingQuery: 'Search needs a query. Try: search backend',
+    missingTypeValue:
+      'Search type needs a value. Use --type=command, project, timeline, journey, profile, narrative, or contact.',
     invalidType:
       'Unknown search type "{type}". Use command, project, timeline, journey, profile, narrative, or contact.',
     invalidLimit: 'Search limit must be a number from 1 to 10.',
@@ -35,6 +37,8 @@ export const searchTranslations = validateTranslations('search', {
     helpUsage:
       'Uso: search <consulta> [--type=command|project|timeline|journey|profile|narrative|contact] [--limit=1-10]',
     missingQuery: 'A busca precisa de uma consulta. Tente: search backend',
+    missingTypeValue:
+      'O tipo da busca precisa de um valor. Use --type=command, project, timeline, journey, profile, narrative ou contact.',
     invalidType:
       'Tipo de busca desconhecido "{type}". Use command, project, timeline, journey, profile, narrative ou contact.',
     invalidLimit: 'O limite da busca deve ser um número de 1 a 10.',

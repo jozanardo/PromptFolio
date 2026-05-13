@@ -36,13 +36,13 @@ function parseLimit(value: string | boolean | undefined): number | null {
 
 function parseType(
   value: string | boolean | undefined
-): SearchRecordKind | null | 'invalid' {
+): SearchRecordKind | null | 'invalid' | 'missing' {
   if (value === undefined) {
     return null;
   }
 
   if (typeof value !== 'string') {
-    return 'invalid';
+    return 'missing';
   }
 
   return searchRecordKinds.includes(value as SearchRecordKind)
@@ -113,6 +113,13 @@ export const searchCommand: CommandDefinition<
     }
 
     const type = parseType(input.flags.type);
+
+    if (type === 'missing') {
+      return {
+        ok: false,
+        message: t.missingTypeValue,
+      };
+    }
 
     if (type === 'invalid') {
       return {
