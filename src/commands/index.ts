@@ -7,6 +7,7 @@ import { journeyCommand } from './journey';
 import { lsCommand } from './ls';
 import { nowCommand } from './now';
 import { philosophyCommand } from './philosophy';
+import { searchCommand } from './search';
 import { createCommandRegistry } from './runtime/commandRegistry';
 import { skillsCommand } from './skills';
 import { startCommand } from './start';
@@ -18,6 +19,7 @@ export const commandRegistry = createCommandRegistry([
   startCommand,
   helpCommand,
   lsCommand,
+  searchCommand,
   whoamiCommand,
   aboutCommand,
   skillsCommand,

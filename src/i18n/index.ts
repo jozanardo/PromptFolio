@@ -13,13 +13,13 @@ export const translations = {
     guidanceDetail:
       'Click a suggestion to fill the prompt. Then press Enter.',
     promptPre: 'Or type ',
-    promptCmd: 'help',
-    promptPost: ' and press Enter to see all available options.',
+    promptCmd: 'search backend',
+    promptPost: ' and press Enter to search the archive.',
     inputAriaLabel: 'Command prompt',
     inputPlaceholder: 'Type a command and press Enter',
     historyAriaLabel: 'Terminal history',
     fillPromptAriaLabel: 'Fill the prompt with',
-    quickStartCommands: ['start', 'work', 'timeline', 'now'] as const,
+    quickStartCommands: ['start', 'work', 'search backend', 'timeline'] as const,
   },
   pt: {
     // general
@@ -34,13 +34,13 @@ export const translations = {
     guidanceDetail:
       'Clique em uma sugestão para preencher o prompt. Depois, pressione Enter.',
     promptPre: 'Ou digite ',
-    promptCmd: 'help',
-    promptPost: ' e pressione Enter para ver todas as opções disponíveis.',
+    promptCmd: 'search backend',
+    promptPost: ' e pressione Enter para pesquisar o arquivo.',
     inputAriaLabel: 'Prompt de comando',
     inputPlaceholder: 'Digite um comando e pressione Enter',
     historyAriaLabel: 'Histórico do terminal',
     fillPromptAriaLabel: 'Preencher o prompt com',
-    quickStartCommands: ['start', 'work', 'timeline', 'now'] as const,
+    quickStartCommands: ['start', 'work', 'search backend', 'timeline'] as const,
   },
 } as const;
 

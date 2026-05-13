@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useMemo,
   useState,
   useEffect,
   useRef,
@@ -15,6 +16,7 @@ import { narrativeContent } from '../content/narrative';
 import { timelineContent } from '../content/timeline';
 import { translations } from '../i18n';
 import { useProjects } from '../features/projects/useProjects';
+import { buildSearchIndex } from '../search';
 import { CommandContext, HistoryItem } from '../types';
 
 function historyStartsWithSnapshot(
@@ -40,6 +42,25 @@ export function useCommandProcessor(): {
 
   const { lang } = useLanguage();
   const projects = useProjects();
+  const searchRecords = useMemo(
+    () =>
+      buildSearchIndex({
+        lang,
+        registry: commandRegistry,
+        content: {
+          profile: profileContent,
+          projects: projectContent,
+          narrative: narrativeContent,
+          timeline: timelineContent,
+        },
+        projectCatalog: {
+          repos: projects.repos,
+          loading: projects.loading,
+          error: projects.error,
+        },
+      }),
+    [lang, projects.error, projects.loading, projects.repos]
+  );
 
   const setHistory = useCallback<CommandContext['setHistory']>(update => {
     const nextHistory =
@@ -87,13 +108,20 @@ export function useCommandProcessor(): {
         error: projects.error,
       },
       searchIndex: {
-        ready: false,
-        records: [],
+        ready: true,
+        records: searchRecords,
       },
       services: {},
       registry: commandRegistry,
     }),
-    [lang, projects.error, projects.loading, projects.repos, setHistory]
+    [
+      lang,
+      projects.error,
+      projects.loading,
+      projects.repos,
+      searchRecords,
+      setHistory,
+    ]
   );
   const createCommandContextRef = useRef(createCommandContext);
 

@@ -47,6 +47,10 @@ export const startCommand: CommandDefinition<
               subtitle: t.entries.work,
             },
             {
+              title: 'search',
+              subtitle: t.entries.search,
+            },
+            {
               title: 'timeline',
               subtitle: t.entries.timeline,
             },
