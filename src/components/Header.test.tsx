@@ -78,6 +78,6 @@ describe('Header quick-start commands', () => {
 
     expect(
       screen.getAllByRole('button').map(button => button.textContent)
-    ).toEqual(['>start', '>work', '>timeline', '>now']);
+    ).toEqual(['>start', '>work', '>search backend', '>timeline']);
   });
 });

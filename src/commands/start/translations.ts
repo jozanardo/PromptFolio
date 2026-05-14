@@ -7,6 +7,7 @@ export const startTranslations = validateTranslations('start', {
     outro:
       'Type a command or use one of the shortcuts above to fill the prompt.',
     entries: {
+      search: 'Search across the archive by project, skill, tag, or topic.',
       work: 'Browse selected work and useful filters.',
       timeline: 'Follow the chronological path through the archive.',
       journey: 'Read the more authored version of that path.',
@@ -26,6 +27,7 @@ export const startTranslations = validateTranslations('start', {
     outro:
       'Digite um comando ou use um dos atalhos acima para preencher o prompt.',
     entries: {
+      search: 'Pesquise o arquivo por projeto, habilidade, tag ou assunto.',
       work: 'Conheça trabalhos selecionados e filtros úteis.',
       timeline: 'Acompanhe o percurso cronológico pelo arquivo.',
       journey: 'Leia a versão mais autoral desse percurso.',

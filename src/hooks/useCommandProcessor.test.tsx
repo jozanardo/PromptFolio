@@ -199,6 +199,48 @@ describe('useCommandProcessor', () => {
     });
   });
 
+  it('provides a ready localized search index through the shared command context', async () => {
+    vi.mocked(executeCommand).mockImplementation(async (_, context) => {
+      expect(context.searchIndex.ready).toBe(true);
+      expect(context.searchIndex.records).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: 'project:promptfolio',
+            locale: 'en',
+            title: 'promptfolio',
+          }),
+        ])
+      );
+
+      return createCommandResult('search context', 'search');
+    });
+
+    const wrapper = createLanguageWrapper();
+    const { result } = renderHook(() => useCommandProcessor(), { wrapper });
+
+    await act(async () => {
+      await result.current.processCommand('search backend');
+    });
+
+    await waitFor(() => {
+      expect(result.current.history).toEqual([
+        {
+          type: 'input',
+          text: 'search backend',
+        },
+        {
+          type: 'output',
+          blocks: [
+            {
+              type: 'text',
+              text: 'search context',
+            },
+          ],
+        },
+      ]);
+    });
+  });
+
   it('applies command history updates immediately while execution is still in flight', async () => {
     const deferred = createDeferred<CommandDispatchResult>();
 

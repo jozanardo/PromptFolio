@@ -146,7 +146,7 @@
 - Testes cobertos: paridade PT/EN; conteúdo sem placeholders; ajuda sem leitura de conteúdo; independência de serviços e catálogo remoto; integração dos comandos em `start`, `help`, `ls` e header.
 - Aceite: o PromptFolio agora comunica direção atual e pensamento autoral em comandos locais, preservando a gramática visual compartilhada do arquivo.
 
-## Fase 6 — Descoberta Transversal com `search` e Polimento Final
+## Fase 6 — Descoberta Transversal com `search` e Polimento Final - Done
 
 - Objetivo: permitir descoberta real sobre todo o acervo e fechar a V2 com consistência de UX, i18n e integração.
 - Escopo: implementar a busca transversal, revisar a ergonomia dos comandos e concluir os refinamentos finais do terminal.
@@ -161,6 +161,10 @@
 - Checklist: índice criado, `search` implementado, integração com catálogo e conteúdo concluída, revisão final de quick-start concluída, revisão final de i18n concluída, regressões de renderização corrigidas.
 - Testes obrigatórios: busca com resultado em `pt`; busca com resultado em `en`; busca sem resultado; busca por tag; busca por texto presente em projeto curado; busca por entrada narrativa; fluxo completo do terminal com idioma trocado; regressão visual garantindo que listas de comandos, seções e resultados preservem o destaque de token compartilhado com `help`.
 - Aceite: a V2 fecha com uma CLI coerente, navegável e pesquisável, onde o acervo realmente pode ser explorado como produto principal.
+- Implementado: `src/search` cria um índice local bilíngue sobre comandos, projetos, trajetória, narrativa, contato e perfil.
+- Implementado: `search` pesquisa o arquivo com filtro por tipo, limite de resultados, estados vazios localizados e saída em `recordList`.
+- Implementado: onboarding, `start`, `help`, `ls` e quick-starts expõem a busca como parte da descoberta principal.
+- Testes cobertos: busca em `pt` e `en`; busca sem resultado; busca por tipo; busca por texto de projeto curado; busca por entrada narrativa; integração do índice no contexto do terminal; gramática visual compartilhada dos resultados.
 
 ## Estratégia de Testes
 

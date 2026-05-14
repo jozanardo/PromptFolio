@@ -5,6 +5,7 @@ import type { ProfileContent } from '../content/profile';
 import type { ProjectContent } from '../content/projects';
 import type { TimelineContent } from '../content/timeline';
 import type { ProjectRepo } from '../features/projects/projectsService';
+import type { SearchRecord } from '../search/types';
 
 export type SupportedLocale = Language;
 
@@ -150,7 +151,7 @@ export interface CommandContext {
   };
   searchIndex: {
     ready: boolean;
-    records: unknown[];
+    records: SearchRecord[];
   };
   services: Record<string, never>;
   registry: CommandRegistryLike;

@@ -238,6 +238,41 @@ describe('History', () => {
     );
   });
 
+  it('renders search results with the shared record list grammar', () => {
+    render(
+      <LanguageProvider>
+        <History
+          history={[
+            {
+              type: 'output',
+              blocks: [
+                {
+                  type: 'recordList',
+                  title: 'Search results:',
+                  records: [
+                    {
+                      title: 'promptfolio',
+                      meta: 'project · TypeScript · 2026 · active',
+                      subtitle:
+                        'Command-guided portfolio shaped as a calm personal archive.',
+                      href: 'https://github.com/jozanardo/PromptFolio',
+                      lines: ['> work --name promptfolio', '#promptfolio'],
+                    },
+                  ],
+                },
+              ],
+            },
+          ]}
+        />
+      </LanguageProvider>
+    );
+
+    expect(screen.getByText('promptfolio')).toHaveClass('history-list-token');
+    expect(screen.getByText('> work --name promptfolio')).toHaveClass(
+      'history-list-subtoken'
+    );
+  });
+
   it('does not render unsupported record href protocols as links', () => {
     const history = [
       {

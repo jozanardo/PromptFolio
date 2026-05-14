@@ -121,7 +121,7 @@ describe('App onboarding', () => {
       'Digite um comando e pressione Enter'
     );
     expect(input).toHaveAccessibleDescription(
-      /Ou digite\s*help\s*e pressione Enter para ver todas as opções disponíveis\./i
+      /Ou digite\s*search backend\s*e pressione Enter para pesquisar o arquivo\./i
     );
 
     const promptContainer = input.parentElement?.parentElement;

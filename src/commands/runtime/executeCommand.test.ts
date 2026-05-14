@@ -65,6 +65,11 @@ describe('executeCommand', () => {
               subtitle: 'Browse selected work and useful filters.',
             },
             {
+              title: 'search',
+              subtitle:
+                'Search across the archive by project, skill, tag, or topic.',
+            },
+            {
               title: 'timeline',
               subtitle: 'Follow the chronological path through the archive.',
             },
@@ -110,6 +115,11 @@ describe('executeCommand', () => {
             {
               title: 'work',
               subtitle: 'Conheça trabalhos selecionados e filtros úteis.',
+            },
+            {
+              title: 'search',
+              subtitle:
+                'Pesquise o arquivo por projeto, habilidade, tag ou assunto.',
             },
             {
               title: 'timeline',
@@ -178,6 +188,12 @@ describe('executeCommand', () => {
           command: 'ls',
           description: 'Show a compact directory of archive areas.',
           usage: 'ls',
+        },
+        {
+          command: 'search',
+          description:
+            'Search across commands, projects, timeline, and authored notes.',
+          usage: 'search <query> [--type=<kind>] [--limit=<count>]',
         },
         {
           command: 'whoami',
@@ -260,6 +276,11 @@ describe('executeCommand', () => {
           command: 'ls',
           description: 'Mostra um diretório compacto das áreas do arquivo.',
           usage: 'ls',
+        },
+        {
+          command: 'search',
+          description: 'Pesquisa comandos, projetos, trajetória e notas autorais.',
+          usage: 'search <consulta> [--type=<tipo>] [--limit=<quantidade>]',
         },
         {
           command: 'whoami',
@@ -348,7 +369,7 @@ describe('executeCommand', () => {
       records: [
         {
           title: 'discovery',
-          lines: ['start', 'help', 'ls'],
+          lines: ['start', 'help', 'ls', 'search'],
         },
         {
           title: 'identity',
@@ -374,7 +395,7 @@ describe('executeCommand', () => {
       records: [
         {
           title: 'descoberta',
-          lines: ['start', 'help', 'ls'],
+          lines: ['start', 'help', 'ls', 'search'],
         },
         {
           title: 'identidade',
@@ -421,7 +442,7 @@ describe('executeCommand', () => {
         records: [
           {
             title: 'discovery',
-            lines: ['start', 'help', 'ls'],
+            lines: ['start', 'help', 'ls', 'search'],
           },
           {
             title: 'identity',
@@ -483,7 +504,7 @@ describe('executeCommand', () => {
         records: [
           {
             title: 'discovery',
-            lines: ['start', 'help', 'ls'],
+            lines: ['start', 'help', 'ls', 'search'],
           },
           {
             title: 'identity',
